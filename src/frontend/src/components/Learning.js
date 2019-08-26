@@ -150,10 +150,19 @@ class Learning extends React.Component{
 
     if (!loaded)
       return <p>{placeholder}</p>;
+    let next_instance = null
+    if (homework_list.results.length >== 2)
+    {
+        next_instance = (id === homework_list.results[0].id) ? homework_list.results[1] : homework_list.results[0];
+        if (next_instance.status >= 3)
+          next_instance = null;
+        }
+    else if (homework_list.results.length === 1){
+        next_instance = (id === homework_list.results[0].id) ? null : homework_list.results[0];
+        if (next_instance.status >= 3)
+          next_instance = null;
+        }
 
-    let next_instance = (id === homework_list.results[0].id) ? homework_list.results[1] : homework_list.results[0];
-    if (next_instance.status >= 3)
-      next_instance = null;
     const onClickNext = next_instance ? () => {this.handleView(2, next_instance.type, next_instance.id)} : null
     switch(view) {
       case 0:
