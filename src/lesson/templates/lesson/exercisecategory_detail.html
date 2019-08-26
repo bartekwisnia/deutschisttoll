@@ -1,0 +1,9 @@
+{%extends "lesson_base.html" %}
+
+<title>{% block head_title %}Kategoria ćwiczenia | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+    <h1>{{ object.name }}</h1>
+
+    <p> {{ object.timestamp }}, {{ object.updated|timesince }} ago </p>
+{% endblock %}

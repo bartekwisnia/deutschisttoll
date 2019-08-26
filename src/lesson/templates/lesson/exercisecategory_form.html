@@ -1,0 +1,17 @@
+{%extends "lesson_base.html" %}
+
+<title>{% block head_title %}Kategoria ćwiczenia | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+<hr/>
+<h3>{{ form.instance.name }}</h3>
+{% if errors.non_field_errors %}
+{{ errors.non_field_errors }}
+{% endif %}
+<form method='POST'>
+    {% csrf_token %}
+    {{form.as_p|safe}}
+    <button type='submit'>Dodaj</button>
+</form>
+
+{% endblock %}

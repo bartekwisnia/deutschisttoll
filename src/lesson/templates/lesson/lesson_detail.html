@@ -1,0 +1,15 @@
+{%extends "lesson_base.html" %}
+
+<title>{% block head_title %}Lekcje | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+    <h1>{{ object.title }}</h1>
+    <p>ćwiczenia:
+    <ul>
+        {% for ex in object.exercises.all %}
+            <li><a href="{{ ex.get_absolute_url }}">{{ex}}</a></li>
+        {% endfor %}
+    </ul></p>
+    <p> {{ object.timestamp }}, {{ object.updated|timesince }} ago </p>
+<a href="{{ object.get_absolute_url }}/update">edytuj</a>
+{% endblock %}

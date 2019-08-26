@@ -1,0 +1,79 @@
+{%extends "base.html" %}
+
+<title>{% block head_title %}Logowanie | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+    <div>
+        <section class="hero is-light is-fullheight">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <div class="column is-4 is-offset-4">
+
+                        <!--<p class="has-text-grey">-->
+                            <!--<a href='{% url "home" %}'>-->
+                                <!--<img src="../../../media/pictures/logo/LogoWhiteBanner16_9.png" width="240" height="135" alt="Deutsch ist toll!"/>-->
+                            <!--</a>-->
+                        <!--</p>-->
+
+                        <h3 class="title has-text-grey">Logowanie</h3>
+                        <p class="subtitle has-text-grey">Zaloguje się, aby kontynuować naukę</p>
+                        <div class="box">
+                            <!--<figure class="avatar">-->
+                                <!--<img src="https://placehold.it/128x128">-->
+                            <!--</figure>-->
+
+                            <form method="post" action="{% url 'login' %}">
+                                {% load widget_tweaks %}
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="field">
+                                    <div class="control">
+                                        {{ form.username.errors }}
+                                        {% render_field form.username class="input is-large" autofocus="" placeholder="nazwa użytkownika" %}
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        {{ form.password.errors }}
+                                        {% render_field form.password class="input is-large" autofocus="" placeholder="hasło" %}
+                                    </div>
+                                </div>
+                                <!--<div class="field">-->
+                                    <!--<label class="checkbox">-->
+                                        <!--<input type="checkbox">-->
+                                        <!--Remember me-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                                <input class="button is-block is-primary is-large is-fullwidth" type="submit" value="Zaloguj się!">
+                                <input type="hidden" name="next" value="{{ next }}">
+                            </form>
+                        </div>
+                        <p class="has-text-grey">
+                            <a href='{% url "register" %}'>Stwórz konto</a> &nbsp;·&nbsp;
+                            <a href='{% url "home" %}'>Strona główna</a>
+                            <!--<a href="../">Forgot Password</a> &nbsp;·&nbsp;-->
+                            <!--<a href="../">Need Help?</a>-->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="container">
+            {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+            {% endif %}
+
+            {% if next %}
+            {% if user.is_authenticated %}
+            <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+            {% else %}
+            <p>Please login to see this page.</p>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

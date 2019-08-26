@@ -1,0 +1,37 @@
+[
+  {
+    "model": "lesson.ExerciseType",
+    "pk": 1,
+    "fields": {
+      "name": "Gramatyka"
+    }
+  },
+  {
+    "model": "lesson.ExerciseType",
+    "pk": 2,
+    "fields": {
+      "name": "Słownictwo"
+    }
+  },
+  {
+    "model": "lesson.ExerciseType",
+    "pk": 3,
+    "fields": {
+      "name": "Ludzie"
+    }
+  },
+  {
+    "model": "lesson.ExerciseType",
+    "pk": 3,
+    "fields": {
+      "name": "Czas teraźniejszy"
+    }
+  },
+  {
+    "model": "lesson.ExerciseType",
+    "pk": 3,
+    "fields": {
+      "name": "Podstawy"
+    }
+  }
+]

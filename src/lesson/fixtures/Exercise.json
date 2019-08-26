@@ -1,0 +1,12 @@
+[
+  {
+    "model": "lesson.exercise",
+    "pk": 1,
+    "fields": {
+      "title": "Opisz zdjęcie",
+      "type": "DESCRIBE_PICTURE",
+      "picture": "",
+      "dictionary": [["word", "translation"]]
+    }
+  }
+]

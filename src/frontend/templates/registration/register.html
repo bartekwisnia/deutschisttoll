@@ -1,0 +1,71 @@
+{%extends "base.html" %}
+
+<title>{% block head_title %}Rejestracja | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+
+<section class="hero is-light is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-grey">Rejestracja</h3>
+                <p class="subtitle has-text-grey">Utwórz nowe konto</p>
+                <div class="box">
+                    <!--<figure class="avatar">-->
+                    <!--<img src="https://placehold.it/128x128">-->
+                    <!--</figure>-->
+
+                    <form method="post" action="{% url 'register' %}">
+                        {% load widget_tweaks %}
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            <div class="field">
+                                <div class="control">
+                                    {{ field.errors }}
+                                    {% render_field field class="input is-large" autofocus="" placeholder=field.label %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {{ profile.management_form }}
+                        <!--{% for form in profile %}-->
+                            <!--<div class="field">-->
+                                <!--<div class="control">-->
+                                    <!--{{ form.teacher.errors }}-->
+                                    <!--<label class="checkbox" autofocus="">{{ form.teacher }}  {{form.teacher.label}}</label>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--{% endfor %}-->
+
+                        <input class="button is-block is-primary is-large is-fullwidth" type="submit" value="Stwórz konto!">
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </form>
+
+                    <!--<form method="post" action="{% url 'register' %}">-->
+                        <!--{% csrf_token %}-->
+                        <!--{{ form.as_p }}-->
+                        <!--{{ profile.management_form }}-->
+                        <!--<table>-->
+                            <!--{% for form in profile %}-->
+                            <!--{{ form }}-->
+                            <!--{% endfor %}-->
+                        <!--</table>-->
+                    <!--</form>-->
+
+                </div>
+                <p class="has-text-grey">
+                    <a href='{% url "login" %}'>Logowanie</a> &nbsp;·&nbsp;
+                    <a href='{% url "home" %}'>Strona główna</a>
+                </p>
+            </div>
+        </div>
+        <!--<div class="content has-text-right">-->
+            <!--<a href='{% url "home" %}'>-->
+                <!--<img src="../../../media/pictures/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>-->
+            <!--</a>-->
+        <!--</div>-->
+    </div>
+</section>
+
+
+{% endblock %}

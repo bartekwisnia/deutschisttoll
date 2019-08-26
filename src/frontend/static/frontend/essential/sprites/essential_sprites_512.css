@@ -1,0 +1,1900 @@
+
+.bg-add {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -10px;
+}
+
+  .bg-add_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -10px;
+}
+
+  .bg-add_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -542px;
+}
+
+  .bg-add_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -542px;
+}
+
+  .bg-agenda {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -10px;
+}
+
+  .bg-alarm {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -542px;
+}
+
+  .bg-alarm_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -1074px;
+}
+
+  .bg-alarm_clock {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -1074px;
+}
+
+  .bg-alarm_clock_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -1074px;
+}
+
+  .bg-albums {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -10px;
+}
+
+  .bg-app {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -542px;
+}
+
+  .bg-archive {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -1074px;
+}
+
+  .bg-archive_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -1606px;
+}
+
+  .bg-archive_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -1606px;
+}
+
+  .bg-archive_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -1606px;
+}
+
+  .bg-attachment {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -1606px;
+}
+
+  .bg-back {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -10px;
+}
+
+  .bg-battery {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -542px;
+}
+
+  .bg-battery_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -1074px;
+}
+
+  .bg-battery_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -1606px;
+}
+
+  .bg-battery_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -2138px;
+}
+
+  .bg-battery_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -2138px;
+}
+
+  .bg-battery_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -2138px;
+}
+
+  .bg-battery_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -2138px;
+}
+
+  .bg-battery_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -2138px;
+}
+
+  .bg-battery_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -10px;
+}
+
+  .bg-battery_9 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -542px;
+}
+
+  .bg-binoculars {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -1074px;
+}
+
+  .bg-blueprint {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -1606px;
+}
+
+  .bg-bluetooth {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -2138px;
+}
+
+  .bg-bluetooth_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -2670px;
+}
+
+  .bg-bookmark {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -2670px;
+}
+
+  .bg-bookmark_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -2670px;
+}
+
+  .bg-briefcase {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -2670px;
+}
+
+  .bg-broken_link {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -2670px;
+}
+
+  .bg-calculator {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -2670px;
+}
+
+  .bg-calculator_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -10px;
+}
+
+  .bg-calendar {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -542px;
+}
+
+  .bg-calendar_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -1074px;
+}
+
+  .bg-calendar_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -1606px;
+}
+
+  .bg-calendar_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -2138px;
+}
+
+  .bg-calendar_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -2670px;
+}
+
+  .bg-calendar_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -3202px;
+}
+
+  .bg-calendar_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -3202px;
+}
+
+  .bg-calendar_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -3202px;
+}
+
+  .bg-checked {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -3202px;
+}
+
+  .bg-checked_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -3202px;
+}
+
+  .bg-clock {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -3202px;
+}
+
+  .bg-clock_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -3202px;
+}
+
+  .bg-close {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -10px;
+}
+
+  .bg-cloud {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -542px;
+}
+
+  .bg-cloud_computing {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -1074px;
+}
+
+  .bg-cloud_computing_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -1606px;
+}
+
+  .bg-cloud_computing_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -2138px;
+}
+
+  .bg-cloud_computing_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -2670px;
+}
+
+  .bg-cloud_computing_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -3202px;
+}
+
+  .bg-cloud_computing_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -3734px;
+}
+
+  .bg-command {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -3734px;
+}
+
+  .bg-compact_disc {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -3734px;
+}
+
+  .bg-compact_disc_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -3734px;
+}
+
+  .bg-compact_disc_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -3734px;
+}
+
+  .bg-compass {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -3734px;
+}
+
+  .bg-compose {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -3734px;
+}
+
+  .bg-controls {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -3734px;
+}
+
+  .bg-controls_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -10px;
+}
+
+  .bg-controls_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -542px;
+}
+
+  .bg-controls_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -1074px;
+}
+
+  .bg-controls_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -1606px;
+}
+
+  .bg-controls_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -2138px;
+}
+
+  .bg-controls_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -2670px;
+}
+
+  .bg-controls_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -3202px;
+}
+
+  .bg-controls_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -3734px;
+}
+
+  .bg-controls_9 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -4266px;
+}
+
+  .bg-database {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -4266px;
+}
+
+  .bg-database_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -4266px;
+}
+
+  .bg-database_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -4266px;
+}
+
+  .bg-database_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -4266px;
+}
+
+  .bg-diamond {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -4266px;
+}
+
+  .bg-diploma {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -4266px;
+}
+
+  .bg-dislike {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -4266px;
+}
+
+  .bg-dislike_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -4266px;
+}
+
+  .bg-divide {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -10px;
+}
+
+  .bg-divide_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -542px;
+}
+
+  .bg-division {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -1074px;
+}
+
+  .bg-document {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -1606px;
+}
+
+  .bg-download {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -2138px;
+}
+
+  .bg-edit {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -2670px;
+}
+
+  .bg-edit_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -3202px;
+}
+
+  .bg-eject {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -3734px;
+}
+
+  .bg-eject_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -4266px;
+}
+
+  .bg-equal {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -4798px;
+}
+
+  .bg-equal_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -4798px;
+}
+
+  .bg-equal_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -4798px;
+}
+
+  .bg-error {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -4798px;
+}
+
+  .bg-exit {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -4798px;
+}
+
+  .bg-exit_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -4798px;
+}
+
+  .bg-exit_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -4798px;
+}
+
+  .bg-eyeglasses {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -4798px;
+}
+
+  .bg-fast_forward {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -4798px;
+}
+
+  .bg-fast_forward_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -4798px;
+}
+
+  .bg-fax {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -10px;
+}
+
+  .bg-file {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -542px;
+}
+
+  .bg-file_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -1074px;
+}
+
+  .bg-file_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -1606px;
+}
+
+  .bg-film {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -2138px;
+}
+
+  .bg-fingerprint {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -2670px;
+}
+
+  .bg-flag {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -3202px;
+}
+
+  .bg-flag_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -3734px;
+}
+
+  .bg-flag_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -4266px;
+}
+
+  .bg-flag_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -4798px;
+}
+
+  .bg-flag_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -5330px;
+}
+
+  .bg-focus {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -5330px;
+}
+
+  .bg-folder {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -5330px;
+}
+
+  .bg-folder_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -5330px;
+}
+
+  .bg-folder_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -5330px;
+}
+
+  .bg-folder_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -5330px;
+}
+
+  .bg-folder_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -5330px;
+}
+
+  .bg-folder_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -5330px;
+}
+
+  .bg-folder_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -5330px;
+}
+
+  .bg-folder_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -5330px;
+}
+
+  .bg-folder_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -5330px;
+}
+
+  .bg-folder_9 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -10px;
+}
+
+  .bg-folder_10 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -542px;
+}
+
+  .bg-folder_11 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -1074px;
+}
+
+  .bg-folder_12 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -1606px;
+}
+
+  .bg-folder_13 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -2138px;
+}
+
+  .bg-folder_14 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -2670px;
+}
+
+  .bg-folder_15 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -3202px;
+}
+
+  .bg-folder_16 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -3734px;
+}
+
+  .bg-folder_17 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -4266px;
+}
+
+  .bg-folder_18 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -4798px;
+}
+
+  .bg-folder_19 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -5330px;
+}
+
+  .bg-forbidden {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -5862px;
+}
+
+  .bg-funnel {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -5862px;
+}
+
+  .bg-garbage {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -5862px;
+}
+
+  .bg-garbage_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -5862px;
+}
+
+  .bg-garbage_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -5862px;
+}
+
+  .bg-gift {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -5862px;
+}
+
+  .bg-help {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -5862px;
+}
+
+  .bg-hide {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -5862px;
+}
+
+  .bg-hold {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -5862px;
+}
+
+  .bg-home {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -5862px;
+}
+
+  .bg-home_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -5862px;
+}
+
+  .bg-home_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -5862px;
+}
+
+  .bg-hourglass {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -10px;
+}
+
+  .bg-hourglass_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -542px;
+}
+
+  .bg-hourglass_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -1074px;
+}
+
+  .bg-hourglass_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -1606px;
+}
+
+  .bg-house {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -2138px;
+}
+
+  .bg-id_card {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -2670px;
+}
+
+  .bg-id_card_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -3202px;
+}
+
+  .bg-id_card_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -3734px;
+}
+
+  .bg-id_card_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -4266px;
+}
+
+  .bg-id_card_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -4798px;
+}
+
+  .bg-id_card_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -5330px;
+}
+
+  .bg-idea {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -5862px;
+}
+
+  .bg-incoming {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -6394px;
+}
+
+  .bg-infinity {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -6394px;
+}
+
+  .bg-info {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -6394px;
+}
+
+  .bg-internet {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -6394px;
+}
+
+  .bg-key {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -6394px;
+}
+
+  .bg-lamp {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -6394px;
+}
+
+  .bg-layers {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -6394px;
+}
+
+  .bg-layers_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -6394px;
+}
+
+  .bg-like {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -6394px;
+}
+
+  .bg-like_1 {
+    width: 512px; height: 512px;
+    background-position: -4798px -6394px;
+}
+
+  .bg-like_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -6394px;
+}
+
+  .bg-link {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -6394px;
+}
+
+  .bg-list {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -6394px;
+}
+
+  .bg-list_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -10px;
+}
+
+  .bg-lock {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -542px;
+}
+
+  .bg-lock_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -1074px;
+}
+
+  .bg-locked {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -1606px;
+}
+
+  .bg-locked_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -2138px;
+}
+
+  .bg-locked_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -2670px;
+}
+
+  .bg-locked_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -3202px;
+}
+
+  .bg-locked_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -3734px;
+}
+
+  .bg-locked_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -4266px;
+}
+
+  .bg-locked_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -4798px;
+}
+
+  .bg-login {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -5330px;
+}
+
+  .bg-magic_wand {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -5862px;
+}
+
+  .bg-magnet {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -6394px;
+}
+
+  .bg-magnet_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -6926px;
+}
+
+  .bg-magnet_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -6926px;
+}
+
+  .bg-map {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -6926px;
+}
+
+  .bg-map_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -6926px;
+}
+
+  .bg-map_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -6926px;
+}
+
+  .bg-map_location {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -6926px;
+}
+
+  .bg-megaphone {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -6926px;
+}
+
+  .bg-megaphone_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -6926px;
+}
+
+  .bg-menu {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -6926px;
+}
+
+  .bg-menu_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -6926px;
+}
+
+  .bg-menu_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -6926px;
+}
+
+  .bg-menu_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -6926px;
+}
+
+  .bg-menu_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -6926px;
+}
+
+  .bg-microphone {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -6926px;
+}
+
+  .bg-microphone_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -10px;
+}
+
+  .bg-minus {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -542px;
+}
+
+  .bg-minus_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -1074px;
+}
+
+  .bg-more {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -1606px;
+}
+
+  .bg-more_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -2138px;
+}
+
+  .bg-more_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -2670px;
+}
+
+  .bg-multiply {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -3202px;
+}
+
+  .bg-multiply_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -3734px;
+}
+
+  .bg-music_player {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -4266px;
+}
+
+  .bg-music_player_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -4798px;
+}
+
+  .bg-music_player_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -5330px;
+}
+
+  .bg-music_player_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -5862px;
+}
+
+  .bg-mute {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -6394px;
+}
+
+  .bg-muted {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -6926px;
+}
+
+  .bg-navigation {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -7458px;
+}
+
+  .bg-navigation_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -7458px;
+}
+
+  .bg-network {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -7458px;
+}
+
+  .bg-newspaper {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -7458px;
+}
+
+  .bg-next {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -7458px;
+}
+
+  .bg-note {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -7458px;
+}
+
+  .bg-notebook {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -7458px;
+}
+
+  .bg-notebook_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -7458px;
+}
+
+  .bg-notebook_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -7458px;
+}
+
+  .bg-notebook_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -7458px;
+}
+
+  .bg-notebook_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -7458px;
+}
+
+  .bg-notebook_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -7458px;
+}
+
+  .bg-notepad {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -7458px;
+}
+
+  .bg-notepad_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -7458px;
+}
+
+  .bg-notepad_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -7458px;
+}
+
+  .bg-notification {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -10px;
+}
+
+  .bg-paper_plane {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -542px;
+}
+
+  .bg-paper_plane_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -1074px;
+}
+
+  .bg-pause {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -1606px;
+}
+
+  .bg-pause_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -2138px;
+}
+
+  .bg-percent {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -2670px;
+}
+
+  .bg-percent_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -3202px;
+}
+
+  .bg-perspective {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -3734px;
+}
+
+  .bg-photo_camera {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -4266px;
+}
+
+  .bg-photo_camera_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -4798px;
+}
+
+  .bg-photos {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -5330px;
+}
+
+  .bg-picture {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -5862px;
+}
+
+  .bg-picture_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -6394px;
+}
+
+  .bg-picture_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -6926px;
+}
+
+  .bg-pin {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -7458px;
+}
+
+  .bg-placeholder {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -7990px;
+}
+
+  .bg-placeholder_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -7990px;
+}
+
+  .bg-placeholder_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -7990px;
+}
+
+  .bg-placeholder_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -7990px;
+}
+
+  .bg-placeholders {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -7990px;
+}
+
+  .bg-play_button {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -7990px;
+}
+
+  .bg-play_button_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -7990px;
+}
+
+  .bg-plus {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -7990px;
+}
+
+  .bg-power {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -7990px;
+}
+
+  .bg-previous {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -7990px;
+}
+
+  .bg-price_tag {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -7990px;
+}
+
+  .bg-print {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -7990px;
+}
+
+  .bg-push_pin {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -7990px;
+}
+
+  .bg-radar {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -7990px;
+}
+
+  .bg-reading {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -7990px;
+}
+
+  .bg-record {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -7990px;
+}
+
+  .bg-repeat {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -10px;
+}
+
+  .bg-repeat_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -542px;
+}
+
+  .bg-restart {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -1074px;
+}
+
+  .bg-resume {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -1606px;
+}
+
+  .bg-rewind {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -2138px;
+}
+
+  .bg-rewind_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -2670px;
+}
+
+  .bg-route {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -3202px;
+}
+
+  .bg-save {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -3734px;
+}
+
+  .bg-search {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -4266px;
+}
+
+  .bg-search_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -4798px;
+}
+
+  .bg-send {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -5330px;
+}
+
+  .bg-server {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -5862px;
+}
+
+  .bg-server_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -6394px;
+}
+
+  .bg-server_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -6926px;
+}
+
+  .bg-server_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -7458px;
+}
+
+  .bg-settings {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -7990px;
+}
+
+  .bg-settings_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -8522px;
+}
+
+  .bg-settings_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -8522px;
+}
+
+  .bg-settings_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -8522px;
+}
+
+  .bg-settings_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -8522px;
+}
+
+  .bg-settings_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -8522px;
+}
+
+  .bg-settings_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -8522px;
+}
+
+  .bg-settings_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -8522px;
+}
+
+  .bg-settings_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -8522px;
+}
+
+  .bg-settings_9 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -8522px;
+}
+
+  .bg-share {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -8522px;
+}
+
+  .bg-share_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -8522px;
+}
+
+  .bg-share_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -8522px;
+}
+
+  .bg-shuffle {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -8522px;
+}
+
+  .bg-shuffle_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -8522px;
+}
+
+  .bg-shutdown {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -8522px;
+}
+
+  .bg-sign {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -8522px;
+}
+
+  .bg-sign_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -8522px;
+}
+
+  .bg-skip {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -10px;
+}
+
+  .bg-smartphone {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -542px;
+}
+
+  .bg-smartphone_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -1074px;
+}
+
+  .bg-smartphone_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -1606px;
+}
+
+  .bg-smartphone_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -2138px;
+}
+
+  .bg-smartphone_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -2670px;
+}
+
+  .bg-smartphone_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -3202px;
+}
+
+  .bg-smartphone_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -3734px;
+}
+
+  .bg-smartphone_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -4266px;
+}
+
+  .bg-smartphone_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -4798px;
+}
+
+  .bg-smartphone_9 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -5330px;
+}
+
+  .bg-smartphone_10 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -5862px;
+}
+
+  .bg-smartphone_11 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -6394px;
+}
+
+  .bg-speaker {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -6926px;
+}
+
+  .bg-speaker_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -7458px;
+}
+
+  .bg-speaker_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -7990px;
+}
+
+  .bg-speaker_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -8522px;
+}
+
+  .bg-speaker_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -9054px;
+}
+
+  .bg-speaker_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -9054px;
+}
+
+  .bg-speaker_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -9054px;
+}
+
+  .bg-speaker_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -9054px;
+}
+
+  .bg-speaker_8 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -9054px;
+}
+
+  .bg-spotlight {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -9054px;
+}
+
+  .bg-star {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -9054px;
+}
+
+  .bg-star_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -9054px;
+}
+
+  .bg-stop {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -9054px;
+}
+
+  .bg-stop_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -9054px;
+}
+
+  .bg-stopwatch {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -9054px;
+}
+
+  .bg-stopwatch_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -9054px;
+}
+
+  .bg-stopwatch_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -9054px;
+}
+
+  .bg-stopwatch_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -9054px;
+}
+
+  .bg-stopwatch_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -9054px;
+}
+
+  .bg-street {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -9054px;
+}
+
+  .bg-street_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -9054px;
+}
+
+  .bg-substract {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -9054px;
+}
+
+  .bg-substract_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -10px;
+}
+
+  .bg-success {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -542px;
+}
+
+  .bg-switch {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -1074px;
+}
+
+  .bg-switch_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -1606px;
+}
+
+  .bg-switch_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -2138px;
+}
+
+  .bg-switch_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -2670px;
+}
+
+  .bg-switch_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -3202px;
+}
+
+  .bg-switch_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -3734px;
+}
+
+  .bg-switch_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -4266px;
+}
+
+  .bg-switch_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -4798px;
+}
+
+  .bg-tabs {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -5330px;
+}
+
+  .bg-tabs_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -5862px;
+}
+
+  .bg-target {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -6394px;
+}
+
+  .bg-television {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -6926px;
+}
+
+  .bg-television_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -7458px;
+}
+
+  .bg-time {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -7990px;
+}
+
+  .bg-trash {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -8522px;
+}
+
+  .bg-umbrella {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -9054px;
+}
+
+  .bg-unlink {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10px -9586px;
+}
+
+  .bg-unlocked {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -542px -9586px;
+}
+
+  .bg-unlocked_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1074px -9586px;
+}
+
+  .bg-unlocked_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -1606px -9586px;
+}
+
+  .bg-upload {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2138px -9586px;
+}
+
+  .bg-user {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -2670px -9586px;
+}
+
+  .bg-user_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3202px -9586px;
+}
+
+  .bg-user_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -3734px -9586px;
+}
+
+  .bg-user_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4266px -9586px;
+}
+
+  .bg-user_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -4798px -9586px;
+}
+
+  .bg-user_5 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5330px -9586px;
+}
+
+  .bg-user_6 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -5862px -9586px;
+}
+
+  .bg-user_7 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6394px -9586px;
+}
+
+  .bg-users {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -6926px -9586px;
+}
+
+  .bg-users_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7458px -9586px;
+}
+
+  .bg-video_camera {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -7990px -9586px;
+}
+
+  .bg-video_camera_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -8522px -9586px;
+}
+
+  .bg-video_player {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9054px -9586px;
+}
+
+  .bg-video_player_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -9586px -9586px;
+}
+
+  .bg-video_player_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -10px;
+}
+
+  .bg-view {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -542px;
+}
+
+  .bg-view_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -1074px;
+}
+
+  .bg-view_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -1606px;
+}
+
+  .bg-volume_control {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -2138px;
+}
+
+  .bg-volume_control_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -2670px;
+}
+
+  .bg-warning {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -3202px;
+}
+
+  .bg-wifi {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -3734px;
+}
+
+  .bg-wifi_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -4266px;
+}
+
+  .bg-windows {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -4798px;
+}
+
+  .bg-windows_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -5330px;
+}
+
+  .bg-windows_2 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -5862px;
+}
+
+  .bg-windows_3 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -6394px;
+}
+
+  .bg-windows_4 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -6926px;
+}
+
+  .bg-wireless_internet {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -7458px;
+}
+
+  .bg-worldwide {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -7990px;
+}
+
+  .bg-worldwide_1 {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -8522px;
+}
+
+  .bg-zoom_in {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -9054px;
+}
+
+  .bg-zoom_out {
+    width: 512px; height: 512px;
+    background: url('essential_sprites.png') -10118px -9586px;
+}

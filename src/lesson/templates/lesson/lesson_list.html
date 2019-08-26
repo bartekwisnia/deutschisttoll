@@ -1,0 +1,15 @@
+{%extends "lesson_base.html" %}
+
+<title>{% block head_title %}Kategorie | {{block.super}}{% endblock head_title %}</title>
+
+{% block content %}
+{{block.super}}
+<h3>Lekcje <small><a href='{% url "lessons:lesson-create"%}'>+</a></small></h3>
+    {% for obj in object_list %}
+        <li><a href="{{ obj.get_absolute_url }}">{{obj}}</a></li>
+        {% empty %}
+        <li><a href='{% url "lessons:lesson-create" %}'>Utwórz lekcję</a></li>
+    {% endfor %}
+<ul>
+</ul>
+{% endblock %}
