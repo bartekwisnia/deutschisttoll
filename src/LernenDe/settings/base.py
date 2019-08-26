@@ -20,16 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
-filename = os.path.join(BASE_DIR, 'LernenDe/settings/key.txt')
-
-with open(filename) as f:
-    SECRET_KEY = f.read().strip()
+SECRET_KEY = 'n^9qimv%kp8def6$e8mjsq2yoe6%t(w!c#%m1(a^@^chw&b_pj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["deutschisttoll.atthost24.pl", "deutschisttoll.waw.pl"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -65,7 +61,7 @@ ROOT_URLCONF = 'LernenDe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,22 +79,11 @@ WSGI_APPLICATION = 'LernenDe.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-filename = os.path.join(BASE_DIR, 'LernenDe/settings/db_pass.txt')
-
-with open(filename) as f:
-    DB_PASSWORD = f.read().strip()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-
-        'NAME': '11503_lernende',
-        'USER': '11503_lernende',
-        'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-
     }
 }
 
@@ -138,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
