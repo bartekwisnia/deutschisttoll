@@ -20,12 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n^9qimv%kp8def6$e8mjsq2yoe6%t(w!c#%m1(a^@^chw&b_pj'
+with open('/key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["deutschisttoll.atthost24.pl", "deutschisttoll.waw.pl"]
 
 
 # Application definition
@@ -73,10 +74,20 @@ WSGI_APPLICATION = 'LernenDe.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+with open('/db_pass.txt') as f:
+    DB_PASSWORD = f.read().strip()
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'NAME': '11503_lernende',
+        'USER': '11503_lernende',
+        'PASSWORD': DB_PASSWORD,
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+
     }
 }
 
