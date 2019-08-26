@@ -20,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('/key.txt') as f:
+
+filename = os.path.join(BASE_DIR, 'LernenDe/settings/key.txt')
+
+with open(filename) as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -38,6 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lesson.apps.LessonConfig',
+    'user_profile.apps.UserProfileConfig',
+    'frontend.apps.FrontendConfig',
+    'classes.apps.ClassesConfig',
+    'blog.apps.BlogConfig',
+    'rest_framework',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -73,8 +83,9 @@ WSGI_APPLICATION = 'LernenDe.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+filename = os.path.join(BASE_DIR, 'LernenDe/settings/db_pass.txt')
 
-with open('/db_pass.txt') as f:
+with open(filename) as f:
     DB_PASSWORD = f.read().strip()
 
 DATABASES = {
@@ -129,3 +140,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Rest framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.SessionAuthentication',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
+
+# Email
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'service.lernende@gmail.com'
+EMAIL_HOST_PASSWORD = 'Nokia3100'
