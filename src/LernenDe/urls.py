@@ -25,8 +25,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from user_profile.views import RegisterView, change_password
 
 urlpatterns = [
-    path('lesson/', include('lesson.urls', namespace='lessons')),
-    path('api/', include('lesson.urls_api')),
+    path('exercise/', include('exercises.urls', namespace='exercises-namespace')),
+    path('api/', include('exercises.urls_api')),
     path('api/', include('classes.urls_api')),
     path('api/', include('blog.urls_api')),
     path('api/', include('user_profile.urls_api')),

@@ -5,7 +5,7 @@ from django.db.models import Q
 from functools import reduce
 from operator import __or__ as OR
 
-from lesson.models import Exercise
+from exercises.models import Exercise
 
 User = get_user_model()
 

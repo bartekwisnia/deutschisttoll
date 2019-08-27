@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 from jsonfield import JSONField
 
-from lesson.models import Lesson, Exercise
+from exercises.models import ExerciseSet, Exercise
 
 User = get_user_model()
 # Create your models here.
@@ -24,27 +24,11 @@ class ExerciseInstance(models.Model):
         return "{}:{}".format(self.student, self.exercise)
 
 
-class LessonInstance(models.Model):
-    student = models.ForeignKey(User, related_name='my_lessons', on_delete=models.CASCADE)
-    teacher = models.ForeignKey(User, related_name='lessons_given', blank=True, null=True, on_delete=models.SET_NULL)
-    lesson = models.ForeignKey(Lesson, related_name='lesson_instances', on_delete=models.CASCADE)
-    result = JSONField(blank=True, null=True)
-    ex_status = JSONField(blank=True, null=True)  # exercises status
-    # 0 - not started, 1 - started, 2 - finished with faults, 3 - finished without faults
-    status = models.IntegerField(blank=True, null=True, default=0)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "{}:{}".format(self.student, self.lesson)
-
-
 class LearningClass(models.Model):
     start = models.DateTimeField()
     length = models.IntegerField(blank=True, default=60)  # Length in minutes (45, 60, 90, 120 ...)
     teacher = models.ForeignKey(User, related_name='classes_prepared', on_delete=models.CASCADE)
     student = models.ForeignKey(User, related_name='classes_taken', on_delete=models.CASCADE)
-    lessons = models.ManyToManyField(Lesson, related_name='lesson_classes', blank=True, through="LessonAsActivity")
     exercises = models.ManyToManyField(Exercise, related_name='exercises_classes', blank=True,
                                        through="ExerciseAsActivity")
 
@@ -56,16 +40,6 @@ class LearningClass(models.Model):
 
     def __str__(self):
         return "{}:{}:{}".format(self.teacher, self.student, self.start)
-
-
-class LessonAsActivity(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    learning_class = models.ForeignKey(LearningClass, on_delete=models.CASCADE)
-    order = models.IntegerField()
-    result = JSONField(blank=True, null=True)
-    ex_status = JSONField(blank=True, null=True)  # exercises status
-    # 0 - not started, 1 - started, 2 - finished with faults, 3 - finished without faults
-    status = models.IntegerField(blank=True, null=True, default=0)
 
 
 class ExerciseAsActivity(models.Model):

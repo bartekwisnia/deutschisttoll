@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from .models import Entry
-from lesson.serializers import ExerciseSerializer
-from lesson.models import Exercise
+from exercises.serializers import ExerciseSerializer
+from exercises.models import Exercise
 from user_profile.serializers import ProfileSerializer
 
 
 class EntrySerializer(serializers.ModelSerializer):
     exercise = ExerciseSerializer(read_only=True)
-    exercise_id = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all(), source='exercise')
+    exercise_id = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all(), source='exercise', required=False)
 
     class Meta:
         model = Entry

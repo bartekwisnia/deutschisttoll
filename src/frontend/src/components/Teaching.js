@@ -4,7 +4,7 @@ import DataProvider from "./DataProvider";
 import key from "weak-key";
 import { Icon, StatusIcon, SearchBar, Tile, HomeworkTypeIcon } from './Components';
 import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus, addDays } from "./Utils"
-import { Lesson, LessonForm, LessonPreview, MapLesson, LessonList } from "./Lessons";
+import { ExerciseSetList } from "./ExerciseSet";
 import { Exercise, ExerciseList } from "./Exercises";
 import { Blog, BlogList } from "./Blog";
 import DateTimePicker from 'react-datetime-picker';
@@ -622,9 +622,7 @@ class TeachingOverview extends React.Component{
     super(props);
     this.state = {
       view: 0, // 0 - overview (add words), 1 - plan lesson, 2 - add exercise, 3 - blog
-      endpoint_lesson :   "api/teacher/lesson/",
       endpoint_exercise :   "api/teacher/exercise/",
-      lesson_instances : [],
       exercise_instances : [],
       loaded_lesson: false,
       exercises_loaded: false,
@@ -633,7 +631,6 @@ class TeachingOverview extends React.Component{
       query: "",
     };
   }
-
 
   forceRefresh(){
       const {refresh} = this.state;
@@ -653,13 +650,17 @@ class TeachingOverview extends React.Component{
 
   handleExercises = () => {
     const {exercise_instances} = this.state;
-    exercise_instances.results = handleDate(exercise_instances.results);
+    console.log("exercise_instances");
+    console.log(exercise_instances);
+    if (exercise_instances){
+      exercise_instances.results = handleDate(exercise_instances.results);
+    }
     //console.log(exercise_instances);
     this.setState({exercise_instances: exercise_instances, exercises_loaded: true});
   }
 
   getExercises = (callback) => {
-    //console.log("force refresh");
+    console.log("teacheing overview get exercises");
     const {endpoint_exercise, refresh} = this.state;
     const {student} = this.props;
     getData(endpoint_exercise, {}, 'exercise_instances', 'loaded_exercise_fake', 'placeholder', this, callback);
@@ -706,6 +707,7 @@ class TeachingOverview extends React.Component{
   }
 
   componentDidMount() {
+    console.log("teacheing overview mount");
       this.getExercises(this.handleExercises);
   }
 
@@ -799,7 +801,6 @@ class TeachingOverview extends React.Component{
           <div className="tile is-ancestor">
             <div className="tile is-vertical is-4">
                 <Tile tag={calendar}/>
-                <Tile tag={students_list}/>
             </div>
             <div className="tile is-vertical is-4">
               <Tile tag={next_classes}/>
@@ -856,7 +857,7 @@ class AddContent extends React.Component{
                                         refresh={refresh}
                                         handleSelect={(el, index) => this.props.addExercise(el, index)}
                                         />
-    const lesson_add =  <LessonList select_list={true}
+    const lesson_add =  <ExerciseSetList select_list={true}
                                         query={query}
                                         refresh={refresh}
                                         handleSelect={(el, index) => this.props.addLesson(el, index)}
@@ -873,7 +874,7 @@ class AddContent extends React.Component{
                             <SearchBar value={query}
                                        handleChange={this.handleChange}
                                        name={"query"}/>
-                            {content_type ? lesson_add : exercise_add}
+                            {exercise_add}
             </React.Fragment>
           );
     }
@@ -1569,16 +1570,7 @@ render() {
     activity_status = status[activity];
   }
 
-  const activity_render = activity_instance.lesson ?
-      <Lesson
-        detail_view={4}
-        detail_id={activity_instance.id}
-        results = {activity_results}
-        status = {activity_status}
-        setResult = {this.setResults}
-      />
-      :
-      <Exercise
+  const activity_render = <Exercise
         detail_view={4}
         detail_id={activity_instance.id}
         results = {activity_results}

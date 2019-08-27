@@ -4,7 +4,7 @@ import DataProvider from "./DataProvider";
 import key from "weak-key";
 import { Icon, StatusIcon, SearchBar, Tile, HomeworkTypeIcon } from './Components';
 import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus } from "./Utils"
-import { Lesson, LessonForm, LessonPreview, MapLesson, LessonList } from "./Lessons";
+import { ExerciseSetList } from "./ExerciseSet";
 import { ExercisePlay, Exercise } from "./Exercises";
 import { LearningClassesList, LearningClass } from "./Teaching";
 
@@ -21,7 +21,6 @@ class Learning extends React.Component{
       placeholder: "Ładowanie...",
       homework_list_endpoint: "api/student/homework",
       exercise_instance_endpoint: "api/student/exercise/",
-      lesson_instance_endpoint: "api/student/lesson/",
       learning_class_endpoint: "api/student/learning-class/",
       homework_instance : [],
       homework_instance_loaded : false,
@@ -55,8 +54,8 @@ class Learning extends React.Component{
 
   getHomeworkInstance = (callback) => {
     // console.log("loading exercise instance");
-    const {exercise_instance_endpoint, lesson_instance_endpoint, homework_type, id} = this.state;
-    const endpoint = homework_type ? lesson_instance_endpoint : exercise_instance_endpoint;
+    const {exercise_instance_endpoint, homework_type, id} = this.state;
+    const endpoint = exercise_instance_endpoint;
     const {student} = this.props;
     getData(endpoint+id, {}, 'homework_instance', 'homework_instance_loaded', 'placeholder', this, callback);
   };
@@ -102,8 +101,8 @@ class Learning extends React.Component{
   }
 
   setHomeworkResult = (result, status) => {
-    const {homework_instance, exercise_instance_endpoint, lesson_instance_endpoint, homework_type, id} = this.state;
-    const endpoint = homework_type ? lesson_instance_endpoint : exercise_instance_endpoint;
+    const {homework_instance, exercise_instance_endpoint, homework_type, id} = this.state;
+    const endpoint = exercise_instance_endpoint;
     homework_instance.result = result;
     homework_instance.status = status;
     this.setState({homework_instance: homework_instance});
@@ -175,19 +174,7 @@ class Learning extends React.Component{
                 </section>
               </React.Fragment>
       case 2:
-        const homework = homework_type ?
-          <Lesson
-            key={"lesson_instance"+homework_instance.id+'play'}
-            detail_view={4}
-            detail_id={homework_instance.lesson}
-            onClickNext = {onClickNext}
-            onClickExit = {() => this.handleView(0)}
-            results = {homework_instance.result}
-            status = {homework_instance.status}
-            setResult = {this.setHomeworkResult}
-          />
-          :
-          <Exercise
+        const homework = <Exercise
             key = {"exercise_instance"+homework_instance.id+"play"}
             detail_view={4}
             detail_id={homework_instance.exercise}
@@ -415,20 +402,11 @@ class LearningOverview extends React.Component{
     }
 
 
-  const next_homework = next_instance ? (next_instance.type ?
-        <Lesson
-          key = "next_lesson"
-          detail_view={5}
-          detail_id={next_instance.lesson}
-          onClickPlay = {() => this.props.handleView(2, next_instance.type, next_instance.id)}
-        />
-        :
-        <Exercise
+  const next_homework = next_instance ? <Exercise
           key = "next_exercise"
           detail_view={5}
           detail_id={next_instance.lesson}
-          onClickPlay = {() => this.props.handleView(2, next_instance.type, next_instance.id)}
-        />) : <React.Fragment></React.Fragment>;
+          onClickPlay = {() => this.props.handleView(2, next_instance.type, next_instance.id)}/> : <React.Fragment></React.Fragment>;
 
 
   const next_activity = <React.Fragment>

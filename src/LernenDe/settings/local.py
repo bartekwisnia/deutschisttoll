@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lesson.apps.LessonConfig',
+    'exercises.apps.ExercisesConfig',
     'user_profile.apps.UserProfileConfig',
     'frontend.apps.FrontendConfig',
     'classes.apps.ClassesConfig',

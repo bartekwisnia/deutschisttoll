@@ -187,16 +187,18 @@ class Exercise extends React.Component{
                                      />
                      </div>
       case 1:
-          return <ExerciseForm
-                            key={"lesson_form_"+detail_id}
-                            endpoint={endpoint} id={detail_id}
-                            loaded={true}
-                            model_config={model_config}
-                            object_delete={() => this.handleDelete(detail_id)}
-                            endEdit={this.endEdit}
-                            refresh={refresh}
-                            handlePlay={() => this.props.selectSite(4, detail_id)}
-                            />
+          return  <div className="column is-7 is-offset-1">
+                    <ExerciseForm
+                                      key={"lesson_form_"+detail_id}
+                                      endpoint={endpoint} id={detail_id}
+                                      loaded={true}
+                                      model_config={model_config}
+                                      object_delete={() => this.handleDelete(detail_id)}
+                                      endEdit={this.endEdit}
+                                      refresh={refresh}
+                                      handlePlay={() => this.props.selectSite(4, detail_id)}
+                                      />
+          </div>
 
       case 2:
           return      <div className="column is-4 is-offset-2">
@@ -499,7 +501,7 @@ function ExerciseDictPlay(props){
         <div className="level-item">
           <div className="buttons are-medium">
             {dict.map((el, index) =>
-              <ExerciseWordPlay number={index} key={index} result={results[index]} word={el.word} translation={el.translation} onClick={props.onClick} play={1}/>)}
+              <ExerciseWordPlay number={index} key={index} result={results[index]} word={el.word} translation={el.translation} puzzle = {puzzles[index]} onClick={props.onClick} play={1}/>)}
           </div>
         </div>
       </div>
