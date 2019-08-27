@@ -14,11 +14,10 @@ from rest_framework import authentication, permissions
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status
 
-from .models import ExerciseInstance, LessonInstance, LearningClass, LessonAsActivity, ExerciseAsActivity
-from lesson.models import Lesson, Exercise
+from .models import ExerciseInstance, LearningClass, ExerciseAsActivity
+from exercises.models import ExerciseSet, Exercise
 
-from. serializers import LessonInstanceTeacherSerializer, LessonInstanceStudentSerializer, LearningClassSerializer, \
-    ExerciseInstanceStudentSerializer, ExerciseInstanceTeacherSerializer
+from. serializers import ExerciseInstanceStudentSerializer, ExerciseInstanceTeacherSerializer, LearningClassSerializer
 from user_profile.models import Profile
 
 from itertools import chain
@@ -119,74 +118,6 @@ class ExerciseInstanceStudentRetrieveUpdateDestroy(generics.RetrieveUpdateDestro
         print(request.data)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
-    
-
-class LessonInstanceTeacherListCreate(generics.ListCreateAPIView):
-    queryset = LessonInstance.objects.all()
-    serializer_class = LessonInstanceTeacherSerializer
-    permission_classes = (IsAuthenticated, IsTeacher)
-
-    def get_queryset(self):
-        qs = LessonInstance.objects.filter(teacher=self.request.user)
-        student_id = self.request.GET.get('student')
-        if student_id:
-            qs = qs.filter(student=student_id)
-        return qs
-
-    def perform_create(self, serializer):
-            serializer.save(teacher=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        print(request.data)
-        response = super(LessonInstanceTeacherListCreate, self).create(request)
-        return response
-
-
-class LessonInstanceTeacherRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = LessonInstance.objects.all()
-    serializer_class = LessonInstanceTeacherSerializer
-    permission_classes = (IsAuthenticated, IsInvolved)
-
-    def put(self, request, *args, **kwargs):
-        print(request.data)
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
-
-
-class LessonInstanceStudentListCreate(generics.ListCreateAPIView):
-    queryset = LessonInstance.objects.all()
-    serializer_class = LessonInstanceStudentSerializer
-    permission_classes = (IsAuthenticated, )
-
-    def get_queryset(self):
-        # query = self.request.GET.get('query')
-        # lesson_id = self.request.GET.get('lesson')
-        # print(self.request.GET)
-        qs = LessonInstance.objects.filter(student=self.request.user)
-        # if lesson_id:
-        #     qs = qs.exclude(lesson__id=lesson_id)
-        # if query:
-        #     qs = qs.search(query)
-        return qs
-
-    def perform_create(self, serializer):
-        serializer.save(teacher=None, student=self.request.user)
-
-    # def create(self, request, *args, **kwargs):
-    #     print(request.data)
-    #     response = super(LessonInstanceStudentCreate, self).create(request)
-    #     return response
-
-
-class LessonInstanceStudentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = LessonInstance.objects.all()
-    serializer_class = LessonInstanceStudentSerializer
-    permission_classes = (IsAuthenticated, IsInvolved)
-
-    def put(self, request, *args, **kwargs):
-        print(request.data)
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
 
 
 class LearningClassTeacherListCreate(generics.ListCreateAPIView):
@@ -245,27 +176,18 @@ class LearningClassTeacherRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAP
         # print(request.data)
 
         if 'activities' in list(request.data.keys()):
-            new_lessons_ids = [a['id'] for a in request.data['activities'] if a['lesson']]
             new_exercises_ids = [a['id'] for a in request.data['activities'] if not a['lesson']]
-            new_lessons = Lesson.objects.filter(id__in=new_lessons_ids)
             new_exercises = Exercise.objects.filter(id__in=new_exercises_ids)
             # Clear deleted lessons
-            LessonAsActivity.objects.filter(learning_class=instance).exclude(lesson__in=new_lessons).delete()
             ExerciseAsActivity.objects.filter(learning_class=instance).exclude(exercise__in=new_exercises).delete()
             # Update or create new lessons
             for a in request.data['activities']:
-                if a['lesson']:
-                    lesson_object = Lesson.objects.get(id=a['id'])
-                    obj, created = LessonAsActivity.objects.get_or_create(learning_class=instance, lesson=lesson_object,
-                                                           defaults={'order': a['order']})
-                else:
-                    exercise_object = Exercise.objects.get(id=a['id'])
-                    obj, created = ExerciseAsActivity.objects.get_or_create(learning_class=instance, exercise=exercise_object,
-                                                             defaults={'order': a['order']})
+                exercise_object = Exercise.objects.get(id=a['id'])
+                obj, created = ExerciseAsActivity.objects.get_or_create(learning_class=instance, exercise=exercise_object,
+                                                         defaults={'order': a['order']})
                 obj.order = a['order']
                 obj.save()
         else:
-            LessonAsActivity.objects.filter(learning_class=instance).delete()
             ExerciseAsActivity.objects.filter(learning_class=instance).delete()
             
         response = super(LearningClassTeacherRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
@@ -317,25 +239,15 @@ class TeacherHomeworkList(APIView):
 
         student_id = self.request.GET.get('student')
         if student_id:
-            qs = LessonInstance.objects.filter(teacher=request.user, student=student_id)\
-                .annotate(type=Value(1, IntegerField()))\
-                .values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
-                             "lesson", "lesson__title", "result", "status", "timestamp", "updated").union(
-                ExerciseInstance.objects.filter(teacher=request.user, student=student_id)
-                    .annotate(type=Value(0, IntegerField()))
-                    .values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
-                                 "exercise", "exercise__title", "result", "status", "timestamp", "updated"))\
-                .order_by('-updated')
+            qs = ExerciseInstance.objects.filter(teacher=request.user, student=student_id).\
+                annotate(type=Value(0, IntegerField())).\
+                values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
+                       "exercise", "exercise__title", "result", "status", "timestamp", "updated").order_by('-updated')
         else:
-            qs = LessonInstance.objects.filter(teacher=request.user)\
-                .annotate(type=Value(1, IntegerField()))\
-                .values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
-                             "lesson", "lesson__title", "result", "status", "timestamp", "updated").union(
-                ExerciseInstance.objects.filter(teacher=request.user)
-                    .annotate(type=Value(0, IntegerField()))
-                    .values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
-                            "exercise", "exercise__title", "result", "status", "timestamp", "updated")) \
-                .order_by('-updated')
+            qs = ExerciseInstance.objects.filter(teacher=request.user).\
+                annotate(type=Value(0, IntegerField())).\
+                values("id", "type", "student", "student__first_name", "student__last_name", "student__username",
+                       "exercise", "exercise__title", "result", "status", "timestamp", "updated").order_by('-updated')
         paginator = LimitOffsetPagination()
         qs = paginator.paginate_queryset(qs, request)
         return Response({
@@ -363,11 +275,6 @@ class LearningClassStudentRetrieveUpdate(generics.RetrieveUpdateAPIView):
         res = json.loads(request.data['result'])
         stat = json.loads(request.data['act_status'])
 
-        for l in obj.lessons.all():
-            a = LessonAsActivity.objects.get(lesson=l, learning_class=obj)
-            a.result = res[a.order]
-            a.ex_status = stat[a.order]
-            a.save()
         for e in obj.exercises.all():
             a = ExerciseAsActivity.objects.get(exercise=e, learning_class=obj)
             a.result = res[a.order]
@@ -388,26 +295,17 @@ class StudentHomeworkList(APIView):
         Return a list of all homeworks (lessons and exercises)
         """
         student_id = self.request.user
-        started = LessonInstance.objects.filter(student=student_id, status=1) \
-            .annotate(type=Value(1, IntegerField())) \
-            .values("id", "type", "lesson", "lesson__title", "result", "status", "timestamp", "updated").union(
-            ExerciseInstance.objects.filter(student=student_id, status=1)
-                .annotate(type=Value(0, IntegerField()))
-                .values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated")) \
+        started = ExerciseInstance.objects.filter(student=student_id, status=1).\
+            annotate(type=Value(0, IntegerField())).\
+            values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated") \
             .order_by('-updated')
-        not_started = LessonInstance.objects.filter(student=student_id, status=0) \
-            .annotate(type=Value(1, IntegerField())) \
-            .values("id", "type", "lesson", "lesson__title", "result", "status", "timestamp", "updated").union(
-            ExerciseInstance.objects.filter(student=student_id, status=0)
-                .annotate(type=Value(0, IntegerField()))
-                .values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated")) \
+        not_started = ExerciseInstance.objects.filter(student=student_id, status=0).\
+            annotate(type=Value(0, IntegerField())).\
+            values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated") \
             .order_by('-updated')
-        rest = LessonInstance.objects.filter(student=student_id, status__gte=2) \
-            .annotate(type=Value(1, IntegerField())) \
-            .values("id", "type", "lesson", "lesson__title", "result", "status", "timestamp", "updated").union(
-            ExerciseInstance.objects.filter(student=student_id, status__gte=2)
-                .annotate(type=Value(0, IntegerField()))
-                .values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated")) \
+        rest = ExerciseInstance.objects.filter(student=student_id, status__gte=2).\
+            annotate(type=Value(0, IntegerField())).\
+            values("id", "type", "exercise", "exercise__title", "result", "status", "timestamp", "updated") \
             .order_by('-updated')
         qs = list(chain(started, not_started, rest))
         paginator = LimitOffsetPagination()

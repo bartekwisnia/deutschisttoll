@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 from rest_framework import generics, exceptions
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Entry
 from. serializers import EntrySerializer
@@ -45,7 +47,27 @@ class EntryListCreate(generics.ListCreateAPIView):
             qs = qs.search(query)
         return qs
 
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        if 'exercise_id' in request.data and request.data['exercise_id'] == '0':
+            request.data._mutable = True
+            request.data.pop('exercise_id')
+            print(request.data)
+        return super(EntryListCreate, self).post(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        print('creating')
+        serializer = self.get_serializer(data=request.data)
+        print(serializer)
+        is_valid = serializer.is_valid(raise_exception=True)
+        print('serializer validity')
+        print(is_valid)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     def perform_create(self, serializer):
+        print(self.request.data)
         serializer.save(author=self.request.user)
 
 

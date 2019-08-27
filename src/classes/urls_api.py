@@ -1,7 +1,5 @@
 from django.urls import path
-from .views import LessonInstanceTeacherListCreate, LessonInstanceStudentListCreate, \
-    LessonInstanceTeacherRetrieveUpdateDestroy, LessonInstanceStudentRetrieveUpdateDestroy, \
-    ExerciseInstanceTeacherListCreate, ExerciseInstanceStudentListCreate, \
+from .views import ExerciseInstanceTeacherListCreate, ExerciseInstanceStudentListCreate, \
     ExerciseInstanceTeacherRetrieveUpdateDestroy, ExerciseInstanceStudentRetrieveUpdateDestroy, \
     LearningClassTeacherListCreate, LearningClassTeacherRetrieveUpdateDestroy, LearningClassStudentList, \
     LearningClassStudentRetrieveUpdate, TeacherHomeworkList, StudentHomeworkList
@@ -15,12 +13,6 @@ urlpatterns = [
          name='exercise-instance-teacher-object'),
     path('student/exercise/<int:pk>', ExerciseInstanceStudentRetrieveUpdateDestroy.as_view(),
          name='exercise-instance-student-object'),
-    path('teacher/lesson/', LessonInstanceTeacherListCreate.as_view(), name='lesson-instance-teacher'),
-    path('student/lesson/', LessonInstanceStudentListCreate.as_view(), name='lesson-instance-student'),
-    path('teacher/lesson/<int:pk>', LessonInstanceTeacherRetrieveUpdateDestroy.as_view(),
-         name='lesson-instance-teacher-object'),
-    path('student/lesson/<int:pk>', LessonInstanceStudentRetrieveUpdateDestroy.as_view(),
-         name='lesson-instance-student-object'),
     path('teacher/learning-class/', LearningClassTeacherListCreate.as_view(), name='learning-class-teacher'),
     path('teacher/learning-class/<int:pk>', LearningClassTeacherRetrieveUpdateDestroy.as_view(),
          name='learning-class-teacher-object'),

@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
-from .models import LearningClass, LessonInstance, ExerciseInstance, LessonAsActivity, ExerciseAsActivity
+from .models import LearningClass, ExerciseInstance, ExerciseAsActivity
 from user_profile.serializers import ProfileSerializer
 from user_profile.models import Profile
-from lesson.models import Lesson, Exercise
+from exercises.models import ExerciseSet, Exercise
 
 User = get_user_model()
 
@@ -73,63 +73,6 @@ class ExerciseInstanceStudentSerializer(serializers.ModelSerializer):
         return value
 
 
-class LessonInstanceTeacherSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-
-    def get_name(self, obj):
-        return obj.lesson.title
-
-    class Meta:
-        model = LessonInstance
-        fields = '__all__'
-        # exclude = ('owner', )
-        extra_kwargs = {'teacher': {'read_only': True, 'required': False},
-                        'name': {'read_only': True, 'required': False},
-                        'student_name': {'read_only': True, 'required': False}}
-
-    def validate_student(self, value):
-        """
-        Check that you assign lesson to your student
-        """
-        user_profile = User.objects.get(username=self.context['request'].user)
-        teacher_profile = Profile.objects.get(user=user_profile)
-        if value not in teacher_profile.students.all():
-            raise serializers.ValidationError("You can only assign lessons to your students")
-        return value
-
-    def validate_lesson(self, value):
-        """
-        Check that you assign your lesson or public lesson if you are student
-        """
-        user_object = User.objects.get(username=self.context['request'].user)
-        if value.owner != user_object:
-            raise serializers.ValidationError("You can only assign your own lessons")
-        return value
-
-
-class LessonInstanceStudentSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-
-    def get_name(self, obj):
-        return obj.lesson.title
-
-    class Meta:
-        model = LessonInstance
-        fields = '__all__'
-        # exclude = ('owner', )
-        extra_kwargs = {'teacher': {'read_only': True, 'required': False},
-                        'name': {'read_only': True, 'required': False},
-                        'student': {'read_only': True, 'required': False}}
-
-    def validate_lesson(self, value):
-        """
-        Check that you assign public lesson if you are student
-        """
-        if not value.public:
-            raise serializers.ValidationError("As a student you can only learn public lessons")
-        return value
-
-
 class LearningClassSerializer(serializers.ModelSerializer):
     student_name = serializers.SerializerMethodField()
     activities = serializers.SerializerMethodField()
@@ -143,12 +86,6 @@ class LearningClassSerializer(serializers.ModelSerializer):
 
     def get_activities(self, obj):
         activities = []
-        for l in obj.lessons.all():
-            activity = LessonAsActivity.objects.get(lesson=l, learning_class=obj)
-            activities.append({"lesson": 1, "id": l.id, "title": l.title, "type": "",
-                               "categories": l.categories, "level": l.level, "order": activity.order,
-                               "result": activity.result, "ex_status": activity.ex_status, "status": activity.status})
-            print(activity.ex_status)
         for e in obj.exercises.all():
             a = ExerciseAsActivity.objects.filter(exercise=e, learning_class=obj)[0]
             activities.append({"lesson": 0, "id": e.id, "title": e.title, "type": e.type,
@@ -168,7 +105,7 @@ class LearningClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = LearningClass
         # fields = '__all__'
-        exclude = ('lessons', 'exercises')
+        exclude = ('exercises',)
         extra_kwargs = {'teacher': {'read_only': True, 'required': False},
                         'student_name': {'read_only': True, 'required': False},
                         'activities': {'read_only': True, 'required': False},
@@ -182,17 +119,6 @@ class LearningClassSerializer(serializers.ModelSerializer):
         teacher_profile = Profile.objects.get(user=user_profile)
         if value not in teacher_profile.students.all():
             raise serializers.ValidationError("You can only assign lessons to your students")
-        return value
-
-    def validate_lessons(self, value):
-        """
-        Check that you assign your lesson
-        """
-        # print('lessons to validate in learning class: {}'.format(value))
-        user_object = User.objects.get(username=self.context['request'].user)
-        for lesson in value:
-            if lesson.owner != user_object:
-                raise serializers.ValidationError("You can only assign your own lessons")
         return value
 
     def validate_exercises(self, value):
