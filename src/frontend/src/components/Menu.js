@@ -117,7 +117,7 @@ class MenuPub extends React.Component{
           </div>
           <div className="navbar-start">
             <div className="navbar-item">
-              <a className="button is-success" onClick={() => this.props.selectSite(0)}>
+              <a className="button is-success" onClick={() => this.props.selectSite(2)}>
                 Blog
               </a>
             </div>

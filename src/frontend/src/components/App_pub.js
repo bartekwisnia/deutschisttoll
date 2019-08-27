@@ -36,14 +36,14 @@ class AppPub extends React.Component{
   render(){
     const {placeholder, site} = this.state;
     const loaded = true;
-
     let disp_site = <p>Nothing to display</p>;
-    switch(site) {
-      case 0:
-          disp_site = <Blog/>;
-          break;
+    const sel_site = site ? site : 1;
+    switch(sel_site) {
       case 1:
           disp_site = <Contact/>;
+          break;
+      case 2:
+          disp_site = <Blog/>;
           break;
       default:
           disp_site = <p>Nothing to display</p>;
