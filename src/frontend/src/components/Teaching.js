@@ -229,14 +229,16 @@ class HomeworkList extends React.Component{
   }
 
   handleInstances = () => {
+    console.log("handling homework instances");
     const {instances} = this.state;
     instances.results = handleDate(instances.results);
-    //console.log(exercise_instances);
+    console.log("handling done:");
+    console.log(instances);
     this.setState({instances: instances, loaded: true});
   }
 
   getInstances = () => {
-    //console.log("force refresh");
+    console.log("getting homework instances");
     const {endpoint} = this.state;
     const {student} = this.props;
     const options = student ? {student: student.id} : {};
