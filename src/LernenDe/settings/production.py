@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'user_profile.apps.UserProfileConfig',
     'frontend.apps.FrontendConfig',
     'classes.apps.ClassesConfig',
+    'lessons.apps.LessonsConfig',
     'blog.apps.BlogConfig',
     'rest_framework',
     'widget_tweaks'

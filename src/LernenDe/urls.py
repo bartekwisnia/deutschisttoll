@@ -27,7 +27,7 @@ from user_profile.views import RegisterView, change_password
 urlpatterns = [
     path('exercise/', include('exercises.urls', namespace='exercises-namespace')),
     path('api/', include('exercises.urls_api')),
-    path('api/', include('classes.urls_api')),
+    path('api/', include('lessons.urls_api')),
     path('api/', include('blog.urls_api')),
     path('api/', include('user_profile.urls_api')),
     #
