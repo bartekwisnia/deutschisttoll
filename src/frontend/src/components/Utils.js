@@ -11,7 +11,8 @@ function getData(endpoint, options, data_var, loaded_var, placeholder_var, calle
   fetch(url)
     .then(response => {
       if (response.status !== 200) {
-        //console.log(response);
+        console.log(endpoint);
+        console.log(response);
         let state = {};
         state[placeholder_var] = "Something went wrong";
         return caller.setState(state);
