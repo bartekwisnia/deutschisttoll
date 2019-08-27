@@ -1,2 +1,8 @@
-/src/**/migrations
+# Text backup files
+*.bak
+
+# Database
+*.sqlite3
+
+# React build
 main.js
