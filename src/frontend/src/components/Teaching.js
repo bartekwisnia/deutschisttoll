@@ -231,9 +231,16 @@ class HomeworkList extends React.Component{
   handleInstances = () => {
     console.log("handling homework instances");
     const {instances} = this.state;
-    instances.results = handleDate(instances.results);
-    console.log("handling done:");
-    console.log(instances);
+    if (instances){
+      if (instances.count > 0){
+        console.log("before handling:")
+        console.log(instances);
+        instances.results = handleDate(instances.results);
+        console.log("handling done:");
+        console.log(instances);
+      }
+    }
+
     this.setState({instances: instances, loaded: true});
   }
 
