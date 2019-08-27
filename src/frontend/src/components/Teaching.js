@@ -301,7 +301,7 @@ class HomeworkList extends React.Component{
       // <td key={'homework'+index+"-type"}>
       //   <HomeworkTypeIcon type={el.type} handleClick = {() => {startExercise(el, index)}}/>
       // </td>
-    const elements = instances.results;
+    const elements = instances ? instances.results : [];
     const startExercise = (el, index) => {
     }
     const instances_list = <div>
