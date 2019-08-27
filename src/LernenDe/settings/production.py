@@ -29,7 +29,7 @@ with open(filename) as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["deutschisttoll.atthost24.pl", "deutschisttoll.waw.pl"]
+ALLOWED_HOSTS = ["deutschisttoll.atthost24.pl", "deutschisttoll.waw.pl", "185.255.40.38"]
 
 
 # Application definition
