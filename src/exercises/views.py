@@ -11,9 +11,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
-from .models import Exercise, ExerciseSet, exercise_get_config, exercise_set_get_config
+from .models import Exercise, ExerciseSet, exercise_get_config, exercise_set_get_config, WordInExercise
 from .forms import ExerciseForm, ExerciseSetForm
-from. serializers import ExerciseSerializer, ExerciseSetSerializer
+from. serializers import ExerciseSerializer, ExerciseSetSerializer, WordInExerciseSerializer
+
+from dictionary.models import Word
 
 # -----------------
 # API views:
@@ -62,11 +64,6 @@ class ExerciseListCreate(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        print(request.data)
-        response = super(ExerciseListCreate, self).create(request)
-        return response
 
 
 class ExerciseSearch(generics.ListAPIView):
@@ -195,127 +192,25 @@ def exercise_set_config(request):
     if request.method == 'GET':
         return JsonResponse(exercise_set_get_config())
 
-# -----------------
-# Standard views:
-# -----------------
+
+class WordInExerciseListCreate(generics.ListCreateAPIView):
+    queryset = WordInExercise.objects.all()
+    serializer_class = WordInExerciseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return WordInExercise.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
-class ExerciseCreateView(CreateView):
-    model = Exercise
-    form_class = ExerciseForm
+class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = WordInExercise.objects.all()
+    serializer_class = WordInExerciseSerializer
+    permission_classes = (IsAuthenticated,)
 
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-    def get_success_url(self):
-        return reverse('lessons:exercise-list')
-
-    def get_form_kwargs(self):
-        words_count = self.request.GET.get('words_count')
-        if not words_count:
-            words_count = 1
-        else:
-            words_count = int(words_count)
-        # words_count = 1
-        kwargs = super(ExerciseCreateView, self).get_form_kwargs()
-        kwargs.update({'words_count': words_count})
-        return kwargs
-
-
-class ExerciseListView(LoginRequiredMixin, ListView):
-    model = Exercise
-
-    # def get_queryset(self):
-    #     return E.objects.order_by('-start')
-
-
-class ExerciseUpdateView(UpdateView):
-    model = Exercise
-    form_class = ExerciseForm
-
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-    def get_form_kwargs(self):
-        words_count = self.request.GET.get('words_count')
-        if not words_count:
-            words_count = 1
-        else:
-            words_count = int(words_count)
-        # words_count = 1
-        kwargs = super(ExerciseUpdateView, self).get_form_kwargs()
-        kwargs.update({'words_count': words_count})
-        return kwargs
-
-
-class ExerciseDetailView(DetailView):
-    model = Exercise
-
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-
-class ExerciseSetCreateView(CreateView):
-    model = ExerciseSet
-    form_class = ExerciseSetForm
-
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-    def get_success_url(self):
-        return reverse('lessons:lesson-list')
-
-
-class ExerciseSetListView(LoginRequiredMixin, ListView):
-    model = ExerciseSet
-
-    # def get_queryset(self):
-    #     return E.objects.order_by('-start')
-
-
-class ExerciseSetUpdateView(UpdateView):
-    model = ExerciseSet
-    form_class = ExerciseSetForm
-
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-
-class ExerciseSetDetailView(DetailView):
-    model = ExerciseSet
-
-    # def get_object(self, queryset=None):
-    #     return Project.objects.get(no=self.kwargs.get('no'))
-
-
-# class ExerciseCategoryCreateView(CreateView):
-#     model = ExerciseCategory
-#     form_class = ExerciseCategoryForm
-#
-#     # def get_object(self, queryset=None):
-#     #     return Project.objects.get(no=self.kwargs.get('no'))
-#
-#     def get_success_url(self):
-#         return reverse('lessons:category-list')
-#
-#
-# class ExerciseCategoryListView(LoginRequiredMixin, ListView):
-#     model = ExerciseCategory
-#
-#     # def get_queryset(self):
-#     #     return E.objects.order_by('-start')
-#
-#
-# class ExerciseCategoryUpdateView(UpdateView):
-#     model = ExerciseCategory
-#     form_class = ExerciseCategoryForm
-#
-#     # def get_object(self, queryset=None):
-#     #     return Project.objects.get(no=self.kwargs.get('no'))
-#
-#
-# class ExerciseCategoryDetailView(DetailView):
-#     model = ExerciseCategory
-#
-#     # def get_object(self, queryset=None):
-#     #     return Project.objects.get(no=self.kwargs.get('no'))
+    def put(self, request, *args, **kwargs):
+        print(request.data)
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)

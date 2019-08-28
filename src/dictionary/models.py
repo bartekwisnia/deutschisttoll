@@ -6,9 +6,18 @@ User = get_user_model()
 # Create your models here.
 
 
+class WordIcon(models.Model):
+    picture = models.ImageField(null=True, blank=True, upload_to='pictures')
+    description = models.CharField(max_length=30, blank=True, null=True)
+
+    def __str__(self):
+        return self.description
+
+
 class Word(models.Model):
     text = models.CharField(max_length=30)
     preposition = models.CharField(max_length=5)
+    icon = models.ForeignKey(WordIcon, related_name='words', on_delete=models.SET_NULL, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

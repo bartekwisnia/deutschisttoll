@@ -8,6 +8,8 @@ from django.db.models.signals import post_save
 from operator import __or__ as OR
 from functools import reduce
 
+from dictionary.models import Word
+
 User = get_user_model()
 # Create your models here.
 
@@ -92,16 +94,21 @@ class ExerciseManager(models.Manager):
 
 class Exercise(models.Model):
     DESCRIBE_PICTURE = 'DES_PIC'
-    SELECT_TRANSLATION = 'SEL_TRANS'
-    TYPES = ((DESCRIBE_PICTURE, "Opisz zdjęcie"), (SELECT_TRANSLATION, "Wybierz tłumaczenie"))
+    TRANSLATION = 'SEL_TRANS'
+    PUZZLES = 'PUZ'
+    CLICK = 'CLICK'
+    SORT = 'SORT'
+    TYPES = ((DESCRIBE_PICTURE, "Opisz zdjęcie"), (TRANSLATION, "Tłumaczenie"), (PUZZLES, "Puzzle"),
+             (CLICK, "Naciśnij i zapamiętaj"), (SORT, "Sortowanie"))
 
     title = models.CharField(max_length=30)
     type = models.CharField(max_length=30, choices=TYPES, default=DESCRIBE_PICTURE)
+    variant = models.IntegerField(default=0, blank=True)
     owner = models.ForeignKey(User, related_name='exercises', on_delete=models.CASCADE)
     public = models.BooleanField(default=False)
     favourite = models.BooleanField(default=False)
     picture = models.ImageField(null=True, blank=True, upload_to='pictures')
-    content = JSONField(blank=True, null=True)
+    words = models.ManyToManyField(Word, through="WordInExercise", related_name='used_in_exercises', blank=True)
     categories = models.TextField(null=True, blank=True, help_text="gramatyka, czas przeszły")
     level = models.TextField(null=True, blank=True, help_text="A1, A2")
 
@@ -118,6 +125,14 @@ class Exercise(models.Model):
 
     def get_categories(self):
         return self.categories.split(",")
+
+
+class WordInExercise(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=30, blank=True, null=True)
+    highlight_start = models.IntegerField(default=0, blank=True)
+    highlight_end = models.IntegerField(default=0, blank=True)
 
 
 def exercise_set_get_config():
@@ -138,7 +153,7 @@ class ExerciseSet(models.Model):
     owner = models.ForeignKey(User, related_name='lessons', on_delete=models.CASCADE)
     public = models.BooleanField(default=False)
     favourite = models.BooleanField(default=False)
-    exercises = models.ManyToManyField(Exercise, related_name='lesson', blank=True)
+    exercises = models.ManyToManyField(Exercise, related_name='member_of_sets', blank=True)
     categories = models.TextField(null=True, blank=True, help_text="gramatyka, czas przeszły", default='')
     level = models.TextField(null=True, blank=True, help_text="A1, A2", default='')
 

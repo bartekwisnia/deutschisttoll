@@ -1,9 +1,38 @@
 from rest_framework import serializers
-from .models import Exercise, ExerciseSet
+from .models import Exercise, ExerciseSet, WordInExercise
+from dictionary.models import Word
+from dictionary.serializers import WordSerializer
+
+
+# class WordInExerciseSerializer(serializers.Serializer):
+#     word_id = serializers.PrimaryKeyRelatedField(queryset=Word.objects.all())
+#     comment = serializers.CharField(max_length=30)
+#     highlight_start = serializers.IntegerField(default=0, blank=True)
+#     highlight_end = serializers.IntegerField(default=0, blank=True)
+#
+#     def create(self, validated_data):
+#         return Word(**validated_data)
+#
+#     def update(self, instance, validated_data):
+#         instance.email = validated_data.get('email', instance.email)
+#         instance.content = validated_data.get('content', instance.content)
+#         instance.created = validated_data.get('created', instance.created)
+#         return instance
+
+
+class WordInExerciseSerializer(serializers.ModelSerializer):
+    word = serializers.PrimaryKeyRelatedField(queryset=Word.objects.all())
+    exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
+
+    class Meta:
+        model = WordInExercise
+        fields = '__all__'
+        depth = 2
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(choices=Exercise.TYPES)
+    words = WordSerializer(many=True, read_only=True)
     # type_choices = serializers.JSONField(source='get_types', read_only=True)
 
     class Meta:
@@ -11,6 +40,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = '__all__'
         # exclude = ('owner', )
         extra_kwargs = {'owner': {'read_only': True, 'required': False}}
+        depth = 1
 
 
 class ExerciseTagsSerializer(serializers.ModelSerializer):
