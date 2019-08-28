@@ -28,6 +28,7 @@ urlpatterns = [
     path('exercise/', include('exercises.urls', namespace='exercises-namespace')),
     path('api/', include('exercises.urls_api')),
     path('api/', include('lessons.urls_api')),
+    path('api/', include('dictionary.urls_api')),
     path('api/', include('blog.urls_api')),
     path('api/', include('user_profile.urls_api')),
     #
