@@ -120,137 +120,40 @@ class Teaching extends React.Component{
 }
 
 
-class ExerciseInstancesList extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      endpoint :   "api/teacher/exercise/",
-      exercise_instances : [],
-      exercises_loaded: false,
-      placeholder: "Ładowanie...",
-    };
-  }
-
-  handleExercises = () => {
-    const {exercise_instances} = this.state;
-    exercise_instances.results = handleDate(exercise_instances.results);
-    //console.log(exercise_instances);
-    this.setState({exercise_instances: exercise_instances, exercises_loaded: true});
-  }
-
-  getExercises = () => {
-    //console.log("force refresh");
-    const {endpoint} = this.state;
-    const {student} = this.props;
-    const options = student ? {student: student.id} : {};
-    getData(endpoint, options, 'exercise_instances', 'exercises_loaded_fake', 'placeholder', this, this.handleExercises);
-  };
-
-  getUserName(user_profile){
-  const { first_name, last_name, username } = user_profile;
-  return((first_name || last_name) ? first_name + " " + last_name : username);
-  // return("user");
-  }
-
-  componentDidMount() {
-    this.getExercises();
-  }
-
-  componentDidUpdate(prevProps) {
-    const student = this.props.student_;
-    const student_old = prevProps.student;
-    if (student)
-      if (!student_old){
-        this.getExercises();
-      }
-      else if (student.id !== student_old.id)
-      {
-        this.getExercises();
-      }
-    }
-
-  render(){
-    const { exercises_loaded, placeholder, endpoint, exercise_instances} = this.state;
-    const { student } = this.props;
-    const loaded = exercises_loaded;
-
-    if (!loaded)
-      return <p>{placeholder}</p>;
-
-    //const user_info = <h2 className="subtitle">{this.getUserName(student.user)}</h2>
-
-    const icon_td_style = {
-        paddingRight: '0.0em',
-        paddingLeft: '0.0em'
-      };
-
-    const elements = exercise_instances.results;
-    const startExercise = (el, index) => {
-    }
-    const exercises_list = <div>
-                              <table className="table is-striped is-fullwidth is-hoverable">
-                                <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
-                                <tbody>
-                                  {elements.map((el, index) => {
-                                      return <tr key={el.id}>
-                                              <td key={el.id+"-num"}>{index+1}</td>
-                                              {!student && <td key={el.id+"-student_name"}>{el.student_name}</td>}
-                                              {student && <td key={el.id+"-date"}>{dateToYMD(el.timestamp)}</td>}
-                                              {!student && <td key={el.id+"-date"}>{dateToYMD(el.updated)}</td>}
-                                              <td key={el.id+"-name"}>{el.name}</td>
-                                              <td key={el.id+"-status"}>
-                                                <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                              <td style={icon_td_style} key={el.id+"-play"}>
-                                                <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                            </tr>
-                                          })}
-                                </tbody>
-                              </table>
-                            </div>
-
-    return (<React.Fragment>
-            {exercises_list}
-         </React.Fragment>);
-  }
-}
-
-
 class HomeworkList extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       endpoint :   "/api/teacher/homework/",
-      instances : [],
+      data : [],
       loaded: false,
       placeholder: "Ładowanie...",
     };
   }
 
   handleInstances = () => {
-    console.log("handling homework instances");
-    const {instances} = this.state;
-    console.log(instances);
-    if (instances){
-      if (instances.count > 0){
-        console.log("before handling:")
-        console.log(instances);
-        instances.results = handleDate(instances.results);
-        console.log("handling done:");
-        console.log(instances);
+    // console.log("handling homework instances");
+    const {data} = this.state;
+    // console.log(data);
+    if (data){
+      if (data.count > 0){
+        // console.log("before handling:")
+        // console.log(data);
+        data.results = handleDate(data.results);
+        // console.log("handling done:");
+        // console.log(instances);
       }
     }
 
-    this.setState({instances: instances, loaded: true});
+    this.setState({data: data, loaded: true});
   }
 
   getInstances = () => {
-    console.log("getting homework instances");
+    // console.log("getting homework data");
     const {endpoint} = this.state;
     const {student} = this.props;
     const options = student ? {student: student.id} : {};
-    getData(endpoint, options, 'instances', '', 'placeholder', this, this.handleInstances);
+    getData(endpoint, options, 'data', '', 'placeholder', this, this.handleInstances);
   };
 
   getUserName(user_profile){
@@ -286,7 +189,7 @@ class HomeworkList extends React.Component{
     }
 
   render(){
-    const { loaded, placeholder, endpoint, instances} = this.state;
+    const { loaded, placeholder, endpoint, data} = this.state;
     const { student, overview } = this.props;
 
     if (!loaded)
@@ -301,71 +204,74 @@ class HomeworkList extends React.Component{
       // <td key={'homework'+index+"-type"}>
       //   <HomeworkTypeIcon type={el.type} handleClick = {() => {startExercise(el, index)}}/>
       // </td>
-    const elements = instances ? instances.results : [];
+    const elements = data ? data.results : [];
     const startExercise = (el, index) => {
     }
-    const instances_list = <div>
-                              <table className="table is-striped is-fullwidth is-hoverable">
-                                <thead><tr><th></th>
-                                {!student && <th></th>}
-                                <th></th><th></th><th></th><th></th>{!overview && <th></th>}</tr></thead>
-                                <tbody>
-                                  {elements.map((el, index) => {
-                                      return <tr key={'homework'+index}>
-                                              <td key={'homework'+index+"-num"}>{index+1}</td>
-                                              {!student && <td key={'homework'+index+"-student"}>{this.makeUserName(el.student__first_name, el.student__last_name, el.student__username)}</td>}
-                                              {student && <td key={'homework'+index+"-date"}>{dateToYMD(el.timestamp)}</td>}
-                                              {!student && <td key={'homework'+index+"-date"}>{dateToYMD(el.updated)}</td>}
-                                              <td key={'homework'+index+"-title"}>{el.lesson__title + (el.type ? " (L)" : "")}</td>
-
-                                              <td key={'homework'+index+"-status"}>
-                                                <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                              <td style={icon_td_style} key={'homework'+index+"-play"}>
-                                                <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                              {!overview && <td style={icon_td_style} key={'homework'+index+"-delete"}>
-                                                              <Icon active={true} active_class="essentials16-garbage-1"  handleClick = {() => this.props.onDelete(el.type, el.id)}/>
-                                                            </td>}
-                                            </tr>
-                                          })}
-                                </tbody>
-                              </table>
-                            </div>
-
     return (<React.Fragment>
-            {instances_list}
-         </React.Fragment>);
+              <div>
+                <table className="table is-striped is-fullwidth is-hoverable">
+                  <thead><tr><th></th>
+                  {!student && <th></th>}
+                  <th></th><th></th><th></th><th></th>{!overview && <th></th>}</tr></thead>
+                  <tbody>
+                    {elements.map((el, index) => {
+                        return <tr key={'homework'+index}>
+                                <td key={'homework'+index+"-num"}>{index+1}</td>
+                                {!student && <td key={'homework'+index+"-student"}>{this.getUserName(el.student)}</td>}
+                                {student && <td key={'homework'+index+"-date"}>{dateToYMD(el.timestamp)}</td>}
+                                {!student && <td key={'homework'+index+"-date"}>{dateToYMD(el.updated)}</td>}
+                                <td key={'homework'+index+"-title"}>{el.name}</td>
+
+                                <td key={'homework'+index+"-status"}>
+                                  <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
+                                </td>
+                                <td style={icon_td_style} key={'homework'+index+"-play"}>
+                                  <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startExercise(el, index)}}/>
+                                </td>
+                                {!overview && <td style={icon_td_style} key={'homework'+index+"-delete"}>
+                                                <Icon active={true} active_class="essentials16-garbage-1"  handleClick = {() => this.props.onDelete(el.type, el.id)}/>
+                                              </td>}
+                              </tr>
+                            })}
+                  </tbody>
+                </table>
+              </div>
+            </React.Fragment>);
   }
 }
 
 
 
-class LearningClassesList extends React.Component{
+class LessonsList extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      endpoint_teacher :   "api/teacher/learning-class/",
-      endpoint_student : "api/student/learning-class/",
-      learning_classes : [],
-      classes_loaded: false,
+      endpoint_teacher :   "api/teacher/lesson/",
+      endpoint_student : "api/student/lesson/",
+      data : [],
+      loaded: false,
       placeholder: "Ładowanie...",
     };
   }
 
-  handleClasses = () => {
-    const {learning_classes} = this.state;
-    if (learning_classes){
-      learning_classes.results = handleDate(learning_classes.results);
-      //console.log(exercise_instances);
-      this.setState({learning_classes: learning_classes, classes_loaded: true});
+  handleData = () => {
+    const {data} = this.state;
+    if (data){
+      if(data.count > 0)
+        {
+        data.results = handleDate(data.results);
+        this.setState({data: data, loaded: true});
+      }
+      else {
+        this.setState({loaded: true});
+      }
     }
     else {
-      this.setState({classes_loaded: true});
+      this.setState({loaded: true});
     }
   }
 
-  getLearningClasses = () => {
+  getLessons = () => {
     //console.log("force refresh");
     const {student, student_view, incoming, old} = this.props;
     const endpoint = student_view ? this.state.endpoint_student : this.state.endpoint_teacher;
@@ -377,7 +283,7 @@ class LearningClassesList extends React.Component{
     else if (old) {
       options['old'] = true;
     }
-    getData(endpoint, options, 'learning_classes', '', 'placeholder', this, this.handleClasses);
+    getData(endpoint, options, 'data', '', 'placeholder', this, this.handleData);
   };
 
   getUserName(user_profile){
@@ -387,7 +293,7 @@ class LearningClassesList extends React.Component{
   }
 
   componentDidMount() {
-    this.getLearningClasses();
+    this.getLessons();
   }
 
   componentDidUpdate(prevProps) {
@@ -395,26 +301,25 @@ class LearningClassesList extends React.Component{
     const student_old = prevProps.student;
     const refresh_old = prevProps.refresh;
     if (refresh !== refresh_old)
-        this.getLearningClasses();
+        this.getLessons();
     else if (student)
       if (!student_old){
-        this.getLearningClasses();
+        this.getLessons();
       }
       else if (student.id !== student_old.id)
       {
-        this.getLearningClasses();
+        this.getLessons();
       }
     }
 
   render(){
-    const { classes_loaded, placeholder, learning_classes} = this.state;
+    const { loaded, placeholder, data} = this.state;
     const { student, onEdit } = this.props;
-    const loaded = classes_loaded;
     //console.log("render classes list");
     if (!loaded)
       return <p>{placeholder}</p>;
 
-    if (!learning_classes)
+    if (!data)
       return <p>Nie masz żadnych zaplanowanych zajęć</p>;
 
     //const user_info = <h2 className="subtitle">{this.getUserName(student.user)}</h2>
@@ -424,50 +329,49 @@ class LearningClassesList extends React.Component{
         paddingLeft: '0.0em'
       };
 
-    const elements = learning_classes.results;
+    const elements = data ? data.results : [];
     const startClass = (el, index) => {this.props.onPlay(el.id)};
 
-    const classes_list = <div>
-                              <table className="table is-striped is-fullwidth is-hoverable">
-                                <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
-                                <tbody>
-                                  {elements.map((el, index) => {
-                                      return <tr key={el.id}>
-                                              <td key={"learning_class"+el.id+"-num"}>{index+1}</td>
-                                              {!student && <td key={"learning_class"+el.id+"-student_name"}>{el.student_name}</td>}
-                                              <td key={"learning_class"+el.id+"-date"}>
-                                                {onEdit && <a onClick={() => onEdit(el.id)}>{dateWithEnd(el.start, el.length)}</a>}
-                                                {!onEdit && dateWithEnd(el.start, el.length)}
-                                              </td>
-                                              <td key={"learning_class"+el.id+"-status"}>
-                                                <StatusIcon status={el.status} handleClick = {() => {startClass(el, index)}}/>
-                                              </td>
-                                              <td style={icon_td_style} key={"learning_class"+el.id+"-start"}>
-                                                <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startClass(el, index)}}/>
-                                              </td>
-                                            </tr>
-                                          })}
-                                </tbody>
-                              </table>
-                            </div>
     return (<React.Fragment>
-            {classes_list}
-         </React.Fragment>);
+              <div>
+                <table className="table is-striped is-fullwidth is-hoverable">
+                  <thead><tr><th></th><th></th><th></th><th></th><th></th></tr></thead>
+                  <tbody>
+                    {elements.map((el, index) => {
+                        return <tr key={el.id}>
+                                <td key={"learning_class"+el.id+"-num"}>{index+1}</td>
+                                {!student && <td key={"learning_class"+el.id+"-student_name"}>{el.student_name}</td>}
+                                <td key={"learning_class"+el.id+"-date"}>
+                                  {onEdit && <a onClick={() => onEdit(el.id)}>{dateWithEnd(el.start, el.length)}</a>}
+                                  {!onEdit && dateWithEnd(el.start, el.length)}
+                                </td>
+                                <td key={"learning_class"+el.id+"-status"}>
+                                  <StatusIcon status={el.status} handleClick = {() => {startClass(el, index)}}/>
+                                </td>
+                                <td style={icon_td_style} key={"learning_class"+el.id+"-start"}>
+                                  <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startClass(el, index)}}/>
+                                </td>
+                              </tr>
+                            })}
+                  </tbody>
+                </table>
+              </div>
+            </React.Fragment>);
   }
 }
 
 
-class LearningClassesCalendar extends React.Component{
+class LessonsCalendar extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      endpoint_teacher :   "api/teacher/learning-class/",
-      endpoint_student : "api/student/learning-class/",
-      learning_classes : [],
+      endpoint_teacher :   "api/teacher/lesson/",
+      endpoint_student : "api/student/lesson/",
+      data : [],
       start_date : new Date(),
       end_date : new Date(),
       sel_date : new Date(),
-      classes_loaded: false,
+      loaded: false,
       placeholder: "Ładowanie...",
     };
   }
@@ -481,26 +385,26 @@ class LearningClassesCalendar extends React.Component{
     start_date.setHours(0, 0, 0, 0);
     const end_date = addDays(sel_date, 8-day_of_week);
     end_date.setHours(0, 0, 0, 0);
-    console.log("Week start and end:");
-    console.log(start_date);
-    console.log(end_date);
+    // console.log("Week start and end:");
+    // console.log(start_date);
+    // console.log(end_date);
     this.setState({start_date: start_date, end_date: end_date}, callback);
   }
 
 
-  handleClasses = () => {
-    const {learning_classes} = this.state;
-    if (learning_classes){
-      learning_classes.results = handleDate(learning_classes.results);
+  handleData = () => {
+    const {data} = this.state;
+    if (data && data.count > 0){
+      data.results = handleDate(data.results);
       //console.log(exercise_instances);
-      this.setState({learning_classes: learning_classes, classes_loaded: true});
+      this.setState({data: data, loaded: true});
     }
     else {
-      this.setState({classes_loaded: true});
+      this.setState({loaded: true});
     }
   }
 
-  getLearningClasses = () => {
+  getLessons = () => {
     //console.log("force refresh");
     const {student, student_view} = this.props;
     const {start_date, end_date} = this.state;
@@ -512,7 +416,7 @@ class LearningClassesCalendar extends React.Component{
     if (end_date)
       options['end_date'] = end_date;
     options['limit'] = 50;
-    getData(endpoint, options, 'learning_classes', '', 'placeholder', this, this.handleClasses);
+    getData(endpoint, options, 'data', '', 'placeholder', this, this.handleData);
   };
 
   getUserName(user_profile){
@@ -522,7 +426,7 @@ class LearningClassesCalendar extends React.Component{
   }
 
   componentDidMount() {
-    this.calcDates(this.getLearningClasses);
+    this.calcDates(this.getLessons);
   }
 
   componentDidUpdate(prevProps) {
@@ -530,26 +434,25 @@ class LearningClassesCalendar extends React.Component{
     const student_old = prevProps.student;
     const refresh_old = prevProps.refresh;
     if (refresh !== refresh_old)
-        this.getLearningClasses();
+        this.getLessons();
     else if (student)
       if (!student_old){
-        this.getLearningClasses();
+        this.getLessons();
       }
       else if (student.id !== student_old.id)
       {
-        this.getLearningClasses();
+        this.getLessons();
       }
     }
 
   render(){
-    const { classes_loaded, placeholder, learning_classes, start_date, end_date} = this.state;
+    const { loaded, placeholder, data, start_date, end_date} = this.state;
     const { student, onEdit } = this.props;
-    const loaded = classes_loaded;
     //console.log("render classes list");
     if (!loaded)
       return <p>{placeholder}</p>;
 
-    if (!learning_classes)
+    if (!data)
       return <p>Nie masz żadnych zaplanowanych zajęć</p>;
 
     //const user_info = <h2 className="subtitle">{this.geitUserName(student.user)}</h2>
@@ -559,7 +462,7 @@ class LearningClassesCalendar extends React.Component{
         paddingLeft: '0.0em'
       };
 
-    const elements = learning_classes.results;
+    const elements = data ? data.results : [];
     const startClass = (el, index) => {this.props.onPlay(el.id)};
 
     let cal = {day_short: new Array(7), day: new Array(7), hours: {}} ;
@@ -600,29 +503,28 @@ class LearningClassesCalendar extends React.Component{
       }
     };
 
-    const classes_calendar = <div>
-                              <p>{dateToYMD(start_date)} - {dateToYMD(end_date)}</p>
-                              <table className="table is-striped is-fullwidth is-hoverable">
-                                <thead><tr>
-                                  {cal.day_short.map((el, index) => {
-                                    return <th key={"calendar_head_"+index}>{el}</th>
-                                  })}
-                                </tr></thead>
-                                <tbody>
-                                  {Object.entries(cal.hours).map((h, h_id) => {
-                                    return <tr key={"calendar_hour_"+h_id}>
-                                      <td>{dateToHm(h[1].tod)}</td>
-                                      {h[1].entries.map((entry, entry_id) => {
-                                        return <td key={"calendar_entry_"+h_id+"_"+entry_id}>{entry}</td>
-                                      })}
-                                    </tr>
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
     return (<React.Fragment>
-            {classes_calendar}
-         </React.Fragment>);
+              <div>
+                <p>{dateToYMD(start_date)} - {dateToYMD(end_date)}</p>
+                <table className="table is-striped is-fullwidth is-hoverable">
+                  <thead><tr>
+                    {cal.day_short.map((el, index) => {
+                      return <th key={"calendar_head_"+index}>{el}</th>
+                    })}
+                  </tr></thead>
+                  <tbody>
+                    {Object.entries(cal.hours).map((h, h_id) => {
+                      return <tr key={"calendar_hour_"+h_id}>
+                        <td>{dateToHm(h[1].tod)}</td>
+                        {h[1].entries.map((entry, entry_id) => {
+                          return <td key={"calendar_entry_"+h_id+"_"+entry_id}>{entry}</td>
+                        })}
+                      </tr>
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </React.Fragment>);
   }
 }
 
@@ -632,8 +534,6 @@ class TeachingOverview extends React.Component{
     super(props);
     this.state = {
       view: 0, // 0 - overview (add words), 1 - plan lesson, 2 - add exercise, 3 - blog
-      endpoint_exercise :   "api/teacher/exercise/",
-      exercise_instances : [],
       loaded_lesson: false,
       exercises_loaded: false,
       placeholder: "Ładowanie...",
@@ -642,73 +542,10 @@ class TeachingOverview extends React.Component{
     };
   }
 
-  forceRefresh(){
-      const {refresh} = this.state;
-      this.setState({refresh: !refresh});
-  }
-
   handleView = (view) => {
     this.setState({view: view});
   };
 
-  getLessons = (callback) => {
-    //console.log("force refresh");
-    const {endpoint_lesson, endpoint_exercise, refresh} = this.state;
-    const {student} = this.props;
-    getData(endpoint_lesson, {}, 'lesson_instances', 'loaded_lesson', 'placeholder', this, callback);
-  };
-
-  handleExercises = () => {
-    const {exercise_instances} = this.state;
-    console.log("exercise_instances");
-    console.log(exercise_instances);
-    if (exercise_instances){
-      exercise_instances.results = handleDate(exercise_instances.results);
-    }
-    //console.log(exercise_instances);
-    this.setState({exercise_instances: exercise_instances, exercises_loaded: true});
-  }
-
-  getExercises = (callback) => {
-    console.log("teacheing overview get exercises");
-    const {endpoint_exercise, refresh} = this.state;
-    const {student} = this.props;
-    getData(endpoint_exercise, {}, 'exercise_instances', 'loaded_exercise_fake', 'placeholder', this, callback);
-  };
-
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value});
-    //console.log(e.target.name);
-    this.forceRefresh();
-  };
-
-  assignContent = (content_type, endpoint, element, index, callback) => {
-    const {student} = this.props;
-
-    const method = "post";
-
-    const url = endpoint;
-    const csrftoken = getCookie('csrftoken');
-    let send_data = {'result': '', 'student': student.id};
-    send_data[content_type] = element.id;
-
-    //console.log(send_data);
-    const conf = {
-      method: method,
-      body: JSON.stringify(send_data),
-      headers: new Headers({'X-CSRFToken': csrftoken,
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                            })
-    };
-    fetch(url, conf)
-    .then(response => {
-      console.log(response)
-      if (response.status == 201) {
-        callback();
-      }
-    });
-  };
 
   getUserName(user_profile){
   const { first_name, last_name, username } = user_profile;
@@ -717,12 +554,10 @@ class TeachingOverview extends React.Component{
   }
 
   componentDidMount() {
-    console.log("teacheing overview mount");
-      this.getExercises(this.handleExercises);
   }
 
   render(){
-      const { placeholder, exercises_loaded, refresh } = this.state;
+      const { placeholder, refresh } = this.state;
       const loaded = true;
 
       if (!loaded)
@@ -764,20 +599,20 @@ class TeachingOverview extends React.Component{
                             </div>
 
     const calendar = <div>
-                            <div className="level">
-                              <div className="level-left">
-                                <h2 className="level-item subtitle">Kalendarz</h2>
-                              </div>
-                            </div>
-                            <LearningClassesCalendar refresh={refresh} onPlay = {(id) => {}}/>
-                          </div>;
+                      <div className="level">
+                        <div className="level-left">
+                          <h2 className="level-item subtitle">Kalendarz</h2>
+                        </div>
+                      </div>
+                      <LessonsCalendar refresh={refresh} onPlay = {(id) => {}}/>
+                    </div>;
     const next_classes = <div>
                             <div className="level">
                               <div className="level-left">
                                 <h2 className="level-item subtitle">Najbliższe zajęcia</h2>
                               </div>
                             </div>
-                            <LearningClassesList refresh={refresh} incoming={true} onPlay = {(id) => {}}/>
+                            <LessonsList refresh={refresh} incoming={true} onPlay = {(id) => {}}/>
                           </div>;
 
     const classes_list = <div>
@@ -786,10 +621,10 @@ class TeachingOverview extends React.Component{
                                 <h2 className="level-item subtitle">Poprzednie zajęcia</h2>
                               </div>
                             </div>
-                            <LearningClassesList refresh={refresh} old={true} onPlay = {(id) => {}}/>
+                            <LessonsList refresh={refresh} old={true} onPlay = {(id) => {}}/>
                           </div>;
 
-    const exercises_list = <div>
+    const homework_list = <div>
                             <div className="level">
                               <div className="level-left">
                                 <h2 className="level-item subtitle">Prace domowe:</h2>
@@ -814,7 +649,7 @@ class TeachingOverview extends React.Component{
             </div>
             <div className="tile is-vertical is-4">
               <Tile tag={next_classes}/>
-              <Tile tag={exercises_list}/>
+              <Tile tag={homework_list}/>
             </div>
           <Tile tag={blog_list}/>
           </div>
@@ -867,17 +702,17 @@ class AddContent extends React.Component{
                                         refresh={refresh}
                                         handleSelect={(el, index) => this.props.addExercise(el, index)}
                                         />
-    const lesson_add =  <ExerciseSetList select_list={true}
+    const exercise_set_add =  <ExerciseSetList select_list={true}
                                         query={query}
                                         refresh={refresh}
-                                        handleSelect={(el, index) => this.props.addLesson(el, index)}
+                                        handleSelect={(el, index) => this.props.addExerciseSet(el, index)}
                                         />
     return (<React.Fragment>
                           <div className="level">
                             <div className="level-item has-text-centered">
                                 <div className="buttons are-middle">
                                    <a className="button" onClick={() => this.handleView(0)}>Ćwiczenia</a>
-                                   <a className="button" onClick={() => this.handleView(1)}>Lekcje</a>
+                                   <a className="button" onClick={() => this.handleView(1)}>Zestawy</a>
                                 </div>
                               </div>
                             </div>
@@ -895,20 +730,11 @@ class TeachingStudentView extends React.Component{
     super(props);
     this.state = {
       view: 0, // 0 - overview (add words), 1 - plan lesson, 2 - add homework
-      content_type: 0, // 0 - exercise, 1 - lesson
-      learning_class_id: 0,
+      lesson_id: 0,
       endpoint_lesson :   "api/teacher/lesson/",
-      endpoint_exercise :   "api/teacher/exercise/",
-      endpoint_learning_class: "api/teacher/learning-class/",
-      lesson_instances : [],
-      exercise_instances : [],
-      learning_classes : [],
-      lessons_loaded: false,
-      exercises_loaded: false,
-      classes_loaded: false,
+      endpoint_homework :   "api/teacher/homework/",
       placeholder: "Ładowanie...",
       refresh: false,
-      query: "",
     };
   }
 
@@ -918,42 +744,8 @@ class TeachingStudentView extends React.Component{
       this.setState({refresh: !refresh});
   }
 
-  handleView = (view, learning_class_id, content_type) => {
-    this.setState({view: view, learning_class_id: learning_class_id, content_type: content_type});
-  };
-
-  handleExercises = () => {
-    const {exercise_instances} = this.state;
-    exercise_instances.results = handleDate(exercise_instances.results);
-    this.setState({exercise_instances: exercise_instances, exercises_loaded: true});
-  }
-
-
-  handleClasses = () => {
-    const {learning_classes} = this.state;
-    learning_classes.results = handleDate(learning_classes.results);
-    this.setState({learning_classes: learning_classes, classes_loaded: true});
-  }
-
-  getLessons = (callback) => {
-    //console.log("force refresh");
-    const {endpoint_lesson, endpoint_exercise, refresh} = this.state;
-    const {student} = this.props;
-    getData(endpoint_lesson, {student: student.id}, 'lesson_instances', 'lessons_loaded', 'placeholder', this, callback);
-  };
-
-  getExercises = () => {
-    //console.log("force refresh");
-    const {endpoint_exercise, refresh} = this.state;
-    const {student} = this.props;
-    getData(endpoint_exercise, {student: student.id}, 'exercise_instances', '', 'placeholder', this, this.handleExercises);
-  };
-
-  getClasses = () => {
-    console.log("getClasses");
-    const {endpoint_learning_class, refresh} = this.state;
-    const {student} = this.props;
-    getData(endpoint_learning_class, {student: student.id}, 'learning_classes', '', 'placeholder', this, this.handleClasses);
+  handleView = (view, lesson_id) => {
+    this.setState({view: view, lesson_id: lesson_id});
   };
 
   handleChange = e => {
@@ -962,15 +754,15 @@ class TeachingStudentView extends React.Component{
     this.forceRefresh();
   };
 
-  assignContent = (content_type, endpoint, element, index, callback) => {
+  assignHomework = (element, index, callback) => {
+    const {endpoint_homework } = this.state;
     const {student} = this.props;
 
     const method = "post";
 
-    const url = endpoint;
+    const url = endpoint_homework ;
     const csrftoken = getCookie('csrftoken');
-    let send_data = {'result': '', 'student': student.id};
-    send_data[content_type] = element.id;
+    let send_data = {'result': '', 'student': student.id, 'exercise': element.id};
 
     //console.log(send_data);
     const conf = {
@@ -1014,9 +806,6 @@ class TeachingStudentView extends React.Component{
   }
 
   componentDidMount() {
-    this.getLessons();
-    this.getExercises();
-    this.getClasses();
   }
 
   componentDidUpdate(prevProps) {
@@ -1024,26 +813,19 @@ class TeachingStudentView extends React.Component{
     const student_old = prevProps.student;
     if (student)
       if (!student_old){
-        this.getLessons();
-        this.getExercises();
         this.forceRefresh();
       }
       else if (student.id !== student_old.id)
       {
-        this.getLessons();
-        this.getExercises();
         this.forceRefresh();
       }
     }
 
   render(){
     //console.log("render student view");
-    const { lessons_loaded, exercises_loaded, classes_loaded, placeholder,
-       endpoint_lesson, endpoint_exercise, endpoint_learning_class,
-       lesson_instances, exercise_instances, learning_classes, query, refresh,
-      view, learning_class_id, content_type} = this.state;
+    const {placeholder, refresh, view, lesson_id} = this.state;
     const { student } = this.props;
-    const loaded = lessons_loaded && exercises_loaded && classes_loaded;
+    const loaded = True;
 
     if (!loaded)
       return <p>{placeholder}</p>;
@@ -1056,7 +838,7 @@ class TeachingStudentView extends React.Component{
       };
 
     const calendar = <p>Kalendarz</p>;
-    const classes_list = <div>
+    const lessons_list = <div>
                               <div className="level">
                                 <div className="level-left">
                                   <h2 className="level-item subtitle">Zajęcia</h2>
@@ -1065,10 +847,9 @@ class TeachingStudentView extends React.Component{
                                   <a className="level-item button is-info" onClick={() => this.handleView(1, 0)}>+</a>
                                 </div>
                               </div>
-                              <LearningClassesList student={student} refresh={refresh} student_view={false} onEdit={(id) => this.handleView(1, id)} />
+                              <LessonsList student={student} refresh={refresh} student_view={false} onEdit={(id) => this.handleView(1, id)} />
                             </div>
 
-    const elements = exercise_instances.results;
     const startExercise = (el, index) => {
     }
     const homework_list = <div>
@@ -1086,11 +867,11 @@ class TeachingStudentView extends React.Component{
                             </div>
 
   const words_list = <p>Lista słówek</p>;
-  const class_add = <LearningClass id={learning_class_id} student={student} endEdit={this.forceRefresh} view={1} student_view={false}/>;
+  const lesson_add = <Lesson id={lesson_id} student={student} endEdit={this.forceRefresh} view={1} student_view={false}/>;
 
   const add_content = <AddContent refresh={refresh}
-                                  addExercise={(el, index) => this.assignContent('exercise', endpoint_exercise, el, index, this.forceRefresh)}
-                                  addLesson={(el, index) => this.assignContent('lesson', endpoint_lesson, el, index, this.forceRefresh)} />
+                                  addExercise={(el, index) => this.assignContent(el, index, this.forceRefresh)}
+                                  addExerciseSet={(el, index) => this.assignContent(el, index, this.forceRefresh)} />
 
   let right_tile, middle_tile, left_tile;
 
@@ -1101,14 +882,14 @@ class TeachingStudentView extends React.Component{
                       <Tile tag={calendar}/>
                       <Tile tag={homework_list}/>
                     </div>;
-        middle_tile = <Tile tag={classes_list}/>;
-        right_tile = <Tile tag={class_add} width="4"/>;
+        middle_tile = <Tile tag={lessons_list}/>;
+        right_tile = <Tile tag={lesson_add} width="4"/>;
         break;
     case 2:
         left_tile = <div className="tile is-vertical">
                       <Tile tag={user_info}/>
                       <Tile tag={calendar}/>
-                      <Tile tag={classes_list}/>
+                      <Tile tag={lessons_list}/>
                     </div>;
         middle_tile = <Tile tag={homework_list}/>;
         right_tile = <Tile tag={add_content} width="4"/>;
@@ -1121,7 +902,7 @@ class TeachingStudentView extends React.Component{
                       </div>
                       <div className="tile">
                         <Tile tag={homework_list}/>
-                        <Tile tag={classes_list}/>
+                        <Tile tag={lessons_list}/>
                       </div>
                     </div>
 
@@ -1140,18 +921,16 @@ class TeachingStudentView extends React.Component{
   }
 }
 
-class LearningClass extends React.Component{
+class Lesson extends React.Component{
   // props:       view: 1, // 1 - form, 4 - play
   // props:       student_view: false/true
   constructor(props){
     super(props);
     this.state = {
-      endpoint_teacher: "api/teacher/learning-class/",
-      endpoint_student: "api/student/learning-class/",
-      endpoint_lesson :   "api/teacher/lesson/",
-      endpoint_exercise :   "api/teacher/exercise/",
-      data: {start: new Date(), length: 0, teacher: 0, student: 0, lessons: [],
-      exercises: [], status:0, result: '', activities: []},
+      endpoint_teacher: "api/teacher/lesson/",
+      endpoint_student: "api/student/lesson/",
+      endpoint_homework :   "api/teacher/homework/",
+      data: {start: new Date(), length: 0, teacher: 0, student: 0, prepared: False, taken: False, paid: False, rate: 0.0, exercises: [], status:0, result: ''},
       loaded: false,
       placeholder: "Ładowanie danych...",
       refresh: false,
@@ -1191,18 +970,17 @@ class LearningClass extends React.Component{
     this.setState({ data: data });
   }
 
-  addActivity = (activity, index, type) => {
+  addExercise = (el, index) => {
     //console.log(exercise)
     const {data} = this.state;
-    const new_activity = {lesson: type, id: activity.id, title: activity.title, type: activity.type, categories: activity.categories, level: activity.level}
-    data['activities'].push(new_activity);
+    data['exercises'].push(el);
     this.setState({ data: data});
   };
 
-  removeActivity = (index) => {
+  removeExercise = (index) => {
     //console.log(exercise)
     const {data} = this.state;
-    data['activities'].splice(index, 1);
+    data['exercises'].splice(index, 1);
     this.setState({ data: data});
   };
 
@@ -1221,36 +999,33 @@ class LearningClass extends React.Component{
       ev.target = ev.target.parentNode;
     var drop_index = ev.target.rowIndex-1;
     const {data} = this.state;
-    data.activities.splice(drop_index,0, data.activities.splice(drag_index, 1)[0]);
+    data.exercises.splice(drop_index,0, data.exercises.splice(drag_index, 1)[0]);
     this.setState({data: data});
   }
 
-  handleLearningClass = () => {
+  handleLesson = () => {
     let {data} = this.state;
     if(typeof(data) !== "undefined"){
       data = handleDate(data);
       this.setState({data: data , loaded: true});
     }
-
   }
 
-  getLearningClass = () => {
+  getLesson = () => {
     const {id, student_view} = this.props;
     const {refresh} = this.state;
     const endpoint = student_view ? this.state.endpoint_student : this.state.endpoint_teacher;
     if (id){
-      getData(endpoint+id, "", 'data', '', 'placeholder', this, this.handleLearningClass);
+      getData(endpoint+id, "", 'data', '', 'placeholder', this, this.handleLesson);
     }
     else {
       this.setState({loaded: true,
-                    data: {start: new Date(), length: 0, teacher: 0, student: 0, lessons: [],
-                           exercises: [], activities: []}
-                         });
+                    data: {start: new Date(), length: 0, teacher: 0, student: 0, prepared: False, taken: False, paid: False, rate: 0.0, exercises: [], status:0, result: ''}});
       };
   };
 
   componentDidMount() {
-    this.getLearningClass();
+    this.getLesson();
   }
 
   componentDidUpdate(prevProps) {
@@ -1258,8 +1033,7 @@ class LearningClass extends React.Component{
     const id_old = prevProps.id;
     if (id !== id_old)
       {
-        //console.log("update");
-        this.setState({loaded: false}, this.getLearningClass);
+        this.setState({loaded: false}, this.getLesson);
       }
     }
 
@@ -1268,28 +1042,15 @@ class LearningClass extends React.Component{
     const { student, id, student_view} = this.props;
     const { data, endpoint_teacher } = this.state;
     const endpoint = endpoint_teacher;
-    const { start, lenth, exercises, lessons, result, status, activities} = data;
-    // const formData = new FormData();
+    const { start, length, exercises, prepared, taken, paid, rate} = data;
+
     const method = id ? "put" : "post";
-    // formData.append('start', start);
-    // formData.append('length', length);
-    // formData.append('student', student.id);
+    const exercises_id = exercises.map((e) => {return e.id});
 
-    var lessons_id = []
-    var exercises_id = []
+    const send_data = {'student': student.id, 'start': start, 'length': length,
+    'prepared': prepared, 'taken': taken, 'paid': paid, 'rate': rate,
+    'exercises_id': exercises_id};
 
-    for (var i = 0; i < activities.length; i++) {
-      activities[i].order = i;
-      if (activities[i].lesson)
-        lessons_id.push({id: activities[i].id, order: i})
-      else
-        exercises_id.push({id: activities[i].id, order: i})
-    };
-
-    var send_data = data;
-    send_data['exercises'] = exercises_id;
-    send_data['lessons'] = lessons_id;
-    send_data['student'] = student.id;
     console.log(send_data);
     const url = id ? endpoint+id : endpoint;
     const csrftoken = getCookie('csrftoken');
@@ -1320,16 +1081,14 @@ class LearningClass extends React.Component{
             handleSubmit={this.handleSubmit}
             handleDelete={this.handleDelete}
             handleChange={this.handleChange}
-            addActivity={this.addActivity}
-            removeActivity={this.removeActivity}
+            addExercises={this.addExercise}
+            removeExercise={this.removeExercise}
             dateTimeChange={this.dateTimeChange}
             setLength={this.setLength}
           />);
       case 4:
         return (
-          <LearningClassPlay data={data} refresh={refresh} id={id}
-            setResult={this.props.setResult}
-          />);
+          <LessonPlay data={data} refresh={refresh} id={id}/>);
       default:
           return <p>Błąd</p>;
         };
@@ -1338,26 +1097,21 @@ class LearningClass extends React.Component{
 
 
 function LearningClassForm(props){
-  console.log("2");
   const {data, refresh, id} = props;
-  const {start, length, activities} = data;
+  const { start, length, exercises, prepared, taken, paid, rate} = data;
   const calendar_style = {
       border: 0
     };
 
   const add_content = <AddContent refresh={refresh}
-                                  addExercise={(el, index) => props.addActivity(el, index, 0)}
-                                  addLesson={(el, index) => props.addActivity(el, index, 1)} />
+                                  addExercise={(el, index) => props.addExercise(el, index)}
+                                  addLesson={(el, index) => props.addExercise(el, index)} />
 
   const button_class = {len30: "button",
                         len45: "button",
                         len60: "button",
                         len90: "button",
-                        len120: "button"}
-
-  function activity_type(type){
-    return type ? "lek." : "ćw.";
-  }
+                        len120: "button"};
 
   Object.keys(button_class).map((button, index) => {
       const class_length = parseInt(button.split("len").pop());
@@ -1368,91 +1122,110 @@ function LearningClassForm(props){
 
   return (
     <React.Fragment>
-      <form onSubmit={props.handleSubmit}>
-        <div className="level columns">
-            <div className="column is-8">
-              <div className="field is-horizontal">
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control is-expanded">
-                      <DateTimePicker
-                        style={calendar_style}
-                        name="start"
-                        autoFocus=""
-                        onChange={props.dateTimeChange}
-                        value={start}
-                        format="y-MM-dd HH:mm"
-                        required
-                    />
-                    </div>
+    <form onSubmit={props.handleSubmit}>
+      <div className="level columns">
+          <div className="column is-8">
+            <div className="field is-horizontal">
+              <div className="field-body">
+                <div className="field">
+                  <div className="control is-expanded">
+                    <DateTimePicker
+                      style={calendar_style}
+                      name="start"
+                      autoFocus=""
+                      onChange={props.dateTimeChange}
+                      value={start}
+                      format="y-MM-dd HH:mm"
+                      required
+                  />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="column is-3 is-offset-1">
-              <div className="field">
-                <div className="control is-expanded">
-                  {id > 0 && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {props.handleDelete}/>}
-                </div>
+          </div>
+          <div className="column is-3 is-offset-1">
+            <div className="field">
+              <div className="control is-expanded">
+                {id > 0 && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {props.handleDelete}/>}
               </div>
             </div>
-        </div>
-        <div className="buttons are-small">
-          <a className={button_class['len30']} onClick={() => props.setLength(30)}>30 min</a>
-          <a className={button_class['len45']} onClick={() => props.setLength(45)}>45 min</a>
-          <a className={button_class['len60']} onClick={() => props.setLength(60)}>60 min</a>
-          <a className={button_class['len90']} onClick={() => props.setLength(90)}>90 min</a>
-          <a className={button_class['len120']} onClick={() => props.setLength(120)}>120 min</a>
-        </div>
-        <div className="field">
-          <div className="control">
-            <input className="input is-primary" type="text" name="length" value={length} placeholder="Długość zajęć" onChange={props.handleChange}  required />
           </div>
+      </div>
+      <div class="field is-grouped">
+        <p class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="prepared" value={prepared} onChange={props.handleChange}/>
+            Przygotowana
+          </label>
+        </p>
+        <p class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="taken" value={taken} onChange={props.handleChange}/>
+            Zaliczona
+          </label>
+        </p>
+        <p class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="paid" value={paid} onChange={props.handleChange}/>
+            Zapłacona
+          </label>
+        </p>
+        <div className="control">
+          <input className="input is-primary" type="text" name="rate" value={rate} placeholder="Cena za godzinę" onChange={props.handleChange} />
         </div>
-        <table className="table is-narrower is-hoverable">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-//   {lesson: 1, id: lessons[i].id, title: lessons[i].title, type: '', categories: lessons[i].categories, level: lessons[i].level};
-              activities.map((el, index) => (
-                <tr key={index} style={{cursor: 'pointer'}} draggable="true" onDragStart={props.drag}
-                onDrop={props.drop} onDragOver={props.allowDrop}>
-                  <td>{activity_type(el.lesson)}</td>
-                  <td>{el.title}</td>
-                  <td>
-                    <div className="tags">
-                      {el.categories ? (el.categories.split(",").map((tag, tag_idx) =>
-                        <span key={index+"-category-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
-                      {el.level ? (el.level.split(",").map((tag, tag_idx) =>
-                       <span key={index+"-level-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
-                    </div>
-                  </td>
-                  <td><Icon active={true} active_class="essentials16-garbage-1" handleClick = {() => props.removeActivity(index)}/></td>
-
-                </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="level">
-            <div className="level-item has-text-centered">
-                <button type="submit" className="button is-info">Gotowe!</button>
-            </div>
+      </div>
+      <div className="buttons are-small">
+        <a className={button_class['len30']} onClick={() => props.setLength(30)}>30 min</a>
+        <a className={button_class['len45']} onClick={() => props.setLength(45)}>45 min</a>
+        <a className={button_class['len60']} onClick={() => props.setLength(60)}>60 min</a>
+        <a className={button_class['len90']} onClick={() => props.setLength(90)}>90 min</a>
+        <a className={button_class['len120']} onClick={() => props.setLength(120)}>120 min</a>
+      </div>
+      <div className="field">
+        <div className="control">
+          <input className="input is-primary" type="text" name="length" value={length} placeholder="Długość zajęć" onChange={props.handleChange}  required />
         </div>
-      </form>
+      </div>
+      <table className="table is-narrower is-hoverable">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            exercises.map((el, index) => (
+              <tr key={index} style={{cursor: 'pointer'}} draggable="true" onDragStart={props.drag}
+              onDrop={props.drop} onDragOver={props.allowDrop}>
+                <td>{el.title}</td>
+                <td>
+                  <div className="tags">
+                    {el.categories ? (el.categories.split(",").map((tag, tag_idx) =>
+                      <span key={index+"-category-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
+                    {el.level ? (el.level.split(",").map((tag, tag_idx) =>
+                     <span key={index+"-level-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
+                  </div>
+                </td>
+                <td><Icon active={true} active_class="essentials16-garbage-1" handleClick = {() => props.removeExercise(index)}/></td>
+              </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="level">
+          <div className="level-item has-text-centered">
+              <button type="submit" className="button is-info">Gotowe!</button>
+          </div>
+      </div>
+    </form>
         {add_content}
     </React.Fragment>
   );
-}
+};
 
 
-
-class LearningClassPlay extends React.Component {
+class LessonPlay extends React.Component{
   static propTypes = {
     data: PropTypes.object.isRequired
   };
@@ -1461,30 +1234,24 @@ class LearningClassPlay extends React.Component {
     super(props);
     this.state = {
       refresh: false,
-      activity: 0,
+      exercise: 0,
       results: [],
       status: [], // 0 - not started, 3 - complete ok, 2 - complete with faults, 1 - in progress
       finished: false,
       loaded: false,
       placeholder: "Ładowanie danych...",
       };
-
   }
 
   loadResults(){
     const { data } = this.props;
-    const { activities } = data;
+    const { exercises } = data;
     let results = [];
     let status = [];
-    for (var i = 0; i < activities.length; i++) {
-      results[i] = activities[i].result ;
-      if (activities[i].lesson){
-        status[i] = activities[i].ex_status ? activities[i].ex_status : [];
+    for (var i = 0; i < exercises.length; i++) {
+      results[i] = exercises[i].result ;
+      status[i] = exercises[i].status;
       }
-      else {
-        status[i] = activities[i].status;
-      }
-    }
     this.setState({ results: results, status: status}, this.checkComplete);
   }
 
@@ -1492,50 +1259,47 @@ class LearningClassPlay extends React.Component {
       this.loadResults();
   }
 
-checkComplete = (callback) => {
-  const { results, status} = this.state;
-  const { data } = this.props;
-  let { activity } = this.state;
-  let finished = false;
-  console.log("Check class complete");
-  //console.log(data.activities.length)
+  checkComplete = (callback) => {
+    const { results, status} = this.state;
+    const { data } = this.props;
+    let { exercise } = this.state;
+    let finished = false;
+    console.log("Check class complete");
 
-  while (overalStatus(status[activity]) >= 2 && !finished)
-    if (activity >= (data.activities.length-1))
+  while (overalStatus(status[exercise]) >= 2 && !finished)
+    if (exercise >= (data.exercises.length-1))
       finished = true;
     else
-      activity += 1;
+      exercise += 1;
 
-  this.setState({ finished: finished, activity: activity, loaded: true});
+  this.setState({ finished: finished, exercise: exercise, loaded: true});
 
   if(callback){
     callback();
   }
 };
 
-setResults = (activity_results, activity_status) => {
-  const {activity} = this.state;
+setResults = (ex_results, ex_status) => {
+  const {exercise} = this.state;
   let {results, status} = this.state;
-  results[activity] = activity_results;
-  status[activity] = activity_status;
-  const callback = () => this.props.setResult(results, status);
+  results[exercise] = ex_results;
+  status[exercise] = ex_status;
+  const callback = this.props.setResult ? () => this.props.setResult(results, status) : () => {};
   this.setState({ results: results, status: status}, () => this.checkComplete(callback));
 }
 
-setActivity = (activity) => {
-  this.setState({ activity: activity});
+setExercise = (exercise) => {
+  this.setState({ exercise: exercise});
 }
 
 handleRestart = () => {
-  this.setState({ finished: false, results: [], status: [], activity: 0});
+  this.setState({ finished: false, results: [], status: [], exercise: 0});
 }
 
-getActivityButtonClass(activity_no){
-  // console.log("Activity result class is:")
-  const {activity} = this.state;
-  // console.log(activity);
-  // console.log(activity_no);
-  const status = overalStatus(this.state.status[activity_no]);
+getExerciseButtonClass(ex_no){
+
+  const {exercise} = this.state;
+  const status = overalStatus(this.state.status[ex_no]);
 
   let button_class;
   switch(status) {
@@ -1546,7 +1310,7 @@ getActivityButtonClass(activity_no){
         button_class = "button is-primary";
         break;
     default:
-        button_class = (activity_no === activity) ? "button is-outlined is-primary" : "button is-outlined";
+        button_class = (ex_no === exercise) ? "button is-outlined is-primary" : "button is-outlined";
         break;
       };
 
@@ -1559,37 +1323,36 @@ render() {
   if(!loaded){
     return <p>{placeholder}</p>;
   }
-  const { results, status, activity, finished} = this.state;
+  const { results, status, exercise, finished} = this.state;
   const { data, onClickNext, onClickExit } = this.props;
-  const activities = data.activities;
-  console.log("render Learning Class:");
-  console.log(data)
-  console.log("current activity:");
-  console.log(activity);
-  console.log("results:");
-  console.log(results);
-  console.log("status");
-  console.log(status);
-  const activity_instance = activities[activity];
-  let activity_results = [];
-  if (activity < results.length){
-    activity_results = results[activity];
+  const exercises = data.aexercises;
+  // console.log("render Lesson Play:");
+  // console.log(data)
+  // console.log("current activity:");
+  // console.log(exercise);
+  // console.log("results:");
+  // console.log(results);
+  // console.log("status");
+  // console.log(status);
+  const exercise_instance = exercises[exercise];
+  let ex_results = [];
+  if (exercise < results.length){
+    ex_results = results[exercise];
   }
-  let activity_status = [];
-  if (activity < status.length){
-    activity_status = status[activity];
+  let ex_status = [];
+  if (exercise < status.length){
+    ex_status = status[exercise];
   }
 
-  const activity_render = <Exercise
+  const exercise_render = <Exercise
         detail_view={4}
-        detail_id={activity_instance.id}
-        results = {activity_results}
-        status = {activity_status}
+        detail_id={exercise_instance.id}
+        results = {ex_results}
+        status = {ex_status}
         setResult = {this.setResults}
       />
   // console.log(exercise);
   // console.log(results.length);
-
 
 
   return loaded ? (
@@ -1601,10 +1364,10 @@ render() {
               </div>
             </div>
             <div className="buttons are-small">
-              {activities.map((item, index) => <a key={"activity_select_no"+index} className={this.getActivityButtonClass(index)} onClick={() => this.setActivity(index)}>{index}</a>)}
+              {exercises.map((item, index) => <a key={"ex_select_no"+index} className={this.getExerciseButtonClass(index)} onClick={() => this.setExercise(index)}>{index}</a>)}
             </div>
 
-              {activity_render}
+              {exercise_render}
 
               {finished && <div className="level">
                             <div className="level-item">
@@ -1619,7 +1382,6 @@ render() {
   ) : <p>{placeholder}</p>;
 }
 }
-
 
 class SideMenu extends React.Component{
   constructor(props){
@@ -1663,7 +1425,7 @@ class SideMenu extends React.Component{
 export default Teaching;
 
 export {
-  LearningClassesList, LearningClass,
+  LessonsList, Lesson,
 }
 // <div className="column is-7 is-fullheight is-grey-lighter">
 //   {disp_detail_site}

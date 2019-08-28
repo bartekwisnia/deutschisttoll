@@ -154,17 +154,19 @@ class LessonTeacherRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         # print(request.data)
 
         if 'exercises' in list(request.data.keys()):
-            new_exercises_ids = [a['id'] for a in request.data['activities'] if not a['lesson']]
+            new_exercises_ids = request.data['exercises_id']
             new_exercises = Exercise.objects.filter(id__in=new_exercises_ids)
             # Clear deleted lessons
             ExerciseInLesson.objects.filter(learning_class=instance).exclude(exercise__in=new_exercises).delete()
             # Update or create new lessons
-            for a in request.data['activities']:
-                exercise_object = Exercise.objects.get(id=a['id'])
-                obj, created = ExerciseInLesson.objects.get_or_create(learning_class=instance, exercise=exercise_object,
-                                                                        defaults={'order': a['order']})
-                obj.order = a['order']
+            order = 0
+            for ex in request.data['exercises_id']:
+                exercise_object = Exercise.objects.get(id=ex)
+                obj, created = ExerciseInLesson.objects.get_or_create(lesson=instance, exercise=exercise_object,
+                                                                        defaults={'order': order})
+                obj.order = order
                 obj.save()
+                order += 1
 
         response = super(LessonTeacherRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
         return response
@@ -202,13 +204,13 @@ class LessonStudentRetrieveUpdate(generics.RetrieveUpdateAPIView):
         kwargs['partial'] = True
         obj = self.get_object()
         res = json.loads(request.data['result'])
-        stat = json.loads(request.data['act_status'])
+        stat = json.loads(request.data['ex_status'])
 
         for e in obj.exercises.all():
-            a = ExerciseInLesson.objects.get(exercise=e, learning_class=obj)
-            a.result = res[a.order]
-            a.status = stat[a.order]
-            a.save()
+            ex = ExerciseInLesson.objects.get(exercise=e, learning_class=obj)
+            ex.result = res[ex.order]
+            ex.status = stat[ex.order]
+            ex.save()
 
         return self.update(request, *args, **kwargs)
 

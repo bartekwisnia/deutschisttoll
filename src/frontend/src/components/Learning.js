@@ -6,7 +6,7 @@ import { Icon, StatusIcon, SearchBar, Tile, HomeworkTypeIcon } from './Component
 import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus } from "./Utils"
 import { ExerciseSetList } from "./ExerciseSet";
 import { ExercisePlay, Exercise } from "./Exercises";
-import { LearningClassesList, LearningClass } from "./Teaching";
+import { LessonsList, Lesson } from "./Teaching";
 
 
 class Learning extends React.Component{
@@ -15,13 +15,10 @@ class Learning extends React.Component{
     super(props);
     this.state = {
       view : 0, // 0 - review words, 1 - do class, 2 - do homework
-      homework_type : 0, // 0 - exercise, 1 - lesson
       id : 0,
-      colour: "is-primary",
       placeholder: "Ładowanie...",
-      homework_list_endpoint: "api/student/homework",
-      exercise_instance_endpoint: "api/student/exercise/",
-      learning_class_endpoint: "api/student/learning-class/",
+      homework_endpoint: "api/student/homework",
+      lessons_endpoint: "api/student/lesson/",
       homework_instance : [],
       homework_instance_loaded : false,
       homework_list : [],
@@ -29,13 +26,13 @@ class Learning extends React.Component{
     };
   }
 
-  handleView = (view, homework_type, id) => {
+  handleView = (view, id) => {
     //view - 0 - overview, 2 - do exercise, 3 - do class
     //id - id of  object
     if (view === 2){
       const parseResults = () => this.parseResults(this.getHomeworkList)
       const getInstance = () => this.getHomeworkInstance(parseResults);
-      this.setState({view: 2, homework_type: homework_type, id: id, homework_list_loaded: false, homework_instance_loaded : false}, getInstance);
+      this.setState({view: 2, id: id, homework_list_loaded: false, homework_instance_loaded : false}, getInstance);
     }
     else
       {
@@ -54,8 +51,8 @@ class Learning extends React.Component{
 
   getHomeworkInstance = (callback) => {
     // console.log("loading exercise instance");
-    const {exercise_instance_endpoint, homework_type, id} = this.state;
-    const endpoint = exercise_instance_endpoint;
+    const {homework_endpoint, id} = this.state;
+    const endpoint = homework_endpoint;
     const {student} = this.props;
     getData(endpoint+id, {}, 'homework_instance', 'homework_instance_loaded', 'placeholder', this, callback);
   };
@@ -63,19 +60,18 @@ class Learning extends React.Component{
   handleHomeworkList = () => {
     const {homework_list} = this.state;
     homework_list.results = handleDate(homework_list.results);
-    //console.log(exercise_instances);
     this.setState({homework_list: homework_list, homework_list_loaded: true});
   }
 
   getHomeworkList = () => {
-    const {homework_list_endpoint } = this.state;
-    getData(homework_list_endpoint,  {limit: 2}, 'homework_list', '', 'placeholder', this, this.handleHomeworkList);
+    const {homework_endpoint } = this.state;
+    getData(homework_endpoint,  {limit: 2}, 'homework_list', '', 'placeholder', this, this.handleHomeworkList);
   };
 
-  setClassResult = (result, status) => {
-    console.log("Set Class Result");
-    const { learning_class_endpoint, id } = this.state;
-    const endpoint = learning_class_endpoint;
+  setLessonResult = (result, status) => {
+    console.log("Set Lesson Result");
+    const { lesson_endpoint, id } = this.state;
+    const endpoint = lesson_endpoint;
     const method = "put";
     const url = endpoint+id;
     const csrftoken = getCookie('csrftoken');
@@ -101,8 +97,8 @@ class Learning extends React.Component{
   }
 
   setHomeworkResult = (result, status) => {
-    const {homework_instance, exercise_instance_endpoint, homework_type, id} = this.state;
-    const endpoint = exercise_instance_endpoint;
+    const {homework_instance, homework_endpoint, id} = this.state;
+    const endpoint = homework_endpoint;
     homework_instance.result = result;
     homework_instance.status = status;
     this.setState({homework_instance: homework_instance});
@@ -112,9 +108,6 @@ class Learning extends React.Component{
     //
     // console.log(typeof(status));
     let send_data ={};
-    if (typeof(status) === "object"){
-      send_data['ex_status'] = JSON.stringify(status);
-    }
     send_data['result'] = JSON.stringify(result);
     send_data['status'] = overalStatus(status);
     // console.log("Data to send:")
@@ -144,7 +137,7 @@ class Learning extends React.Component{
   }
 
   render(){
-    const {placeholder, homework_type, id, view, colour, homework_instance, homework_list, homework_list_loaded} = this.state;
+    const {placeholder, id, view, homework_instance, homework_list, homework_list_loaded} = this.state;
     const loaded = homework_list_loaded;
 
     if (!loaded)
@@ -163,7 +156,7 @@ class Learning extends React.Component{
           next_instance = null;
     }
 
-    const onClickNext = next_instance ? () => {this.handleView(2, next_instance.type, next_instance.id)} : null
+    const onClickNext = next_instance ? () => {this.handleView(2, next_instance.id)} : null
     switch(view) {
       case 0:
         return <React.Fragment>
@@ -205,12 +198,12 @@ class Learning extends React.Component{
                         <a className="level-item button is-light" onClick={() => this.handleView(0)}>Zamknij</a>
                       </div>
                     </div>
-                    <LearningClass
-                      key = {"learning_class_"+id+"_play"}
+                    <Lesson
+                      key = {"lesson_"+id+"_play"}
                       view={4}
                       id={id}
                       onClickExit = {() => this.handleView(0)}
-                      setResult = {this.setClassResult}
+                      setResult = {this.setLessonResult}
                       student_view={true}
                     />
                   </div>
@@ -228,23 +221,28 @@ class HomeworkList extends React.Component{
     super(props);
     this.state = {
       endpoint :   "/api/student/homework/",
-      instances : [],
+      data : [],
       loaded: false,
       placeholder: "Ładowanie...",
     };
   }
 
-  handleInstances = () => {
-    const {instances} = this.state;
-    instances.results = handleDate(instances.results);
-    //console.log(exercise_instances);
-    this.setState({instances: instances, loaded: true});
+  handleData = () => {
+    const {data} = this.state;
+    if (data && data.count > 0){
+      data.results = handleDate(data.results);
+      this.setState({data: data, loaded: true});
+    }
+    else {
+      this.setState({loaded: true});
+    }
+
   }
 
   getInstances = () => {
     //console.log("force refresh");
     const {endpoint} = this.state;
-    getData(endpoint,{limit: 10}, 'instances', '', 'placeholder', this, this.handleInstances);
+    getData(endpoint,{limit: 10}, 'data', '', 'placeholder', this, this.handleData);
   };
 
   getUserName(user_profile){
@@ -280,7 +278,7 @@ class HomeworkList extends React.Component{
     }
 
   render(){
-    const { loaded, placeholder, endpoint, instances} = this.state;
+    const { loaded, placeholder, endpoint, data} = this.state;
     const { student, onPlay } = this.props;
 
     if (!loaded)
@@ -292,41 +290,33 @@ class HomeworkList extends React.Component{
         paddingRight: '0.0em',
         paddingLeft: '0.0em'
       };
-    const elements = instances.results;
-
-    const startHomework = (el, index) => {
-
-    }
+    const elements = data ? data.results : [];
 
     const startExercise = (el, index) => {
     }
-    const instances_list = <div>
-                              <table className="table is-striped is-fullwidth is-hoverable">
-                                <thead><tr><th></th>
-                                <th></th><th></th><th></th><th></th></tr></thead>
-                                <tbody>
-                                  {elements.map((el, index) => {
-                                      return <tr key={'homework'+index}>
-                                              <td key={'homework'+index+"-num"}>{index+1}</td>
-                                              <td key={'homework'+index+"-date"}>{dateToYMD(el.timestamp)}</td>
-                                              <td key={'homework'+index+"-title"}>{el.lesson__title}</td>
-                                              <td key={'homework'+index+"-type"}>
-                                                <HomeworkTypeIcon type={el.type} handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                              <td key={'homework'+index+"-status"}>
-                                                <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
-                                              </td>
-                                              <td style={icon_td_style} key={'homework'+index+"-play"}>
-                                                <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => onPlay(el.type, el.id)}/>
-                                              </td>
-                                            </tr>
-                                          })}
-                                </tbody>
-                              </table>
-                            </div>
 
     return (<React.Fragment>
-            {instances_list}
+              <div>
+                <table className="table is-striped is-fullwidth is-hoverable">
+                  <thead><tr><th></th>
+                  <th></th><th></th><th></th></tr></thead>
+                  <tbody>
+                    {elements.map((el, index) => {
+                        return <tr key={'homework'+index}>
+                                <td key={'homework'+index+"-num"}>{index+1}</td>
+                                <td key={'homework'+index+"-date"}>{dateToYMD(el.timestamp)}</td>
+                                <td key={'homework'+index+"-title"}>{el.name}</td>
+                                <td key={'homework'+index+"-status"}>
+                                  <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
+                                </td>
+                                <td style={icon_td_style} key={'homework'+index+"-play"}>
+                                  <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => onPlay(el.id)}/>
+                                </td>
+                              </tr>
+                            })}
+                  </tbody>
+                </table>
+              </div>
          </React.Fragment>);
   }
 }
@@ -362,7 +352,7 @@ class LearningOverview extends React.Component{
                                 <h2 className="level-item subtitle">Najbliższe zajęcia</h2>
                               </div>
                             </div>
-                            <LearningClassesList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
+                            <LessonsList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
                           </div>;
     const classes_list = <div>
                             <div className="level">
@@ -370,7 +360,7 @@ class LearningOverview extends React.Component{
                                 <h2 className="level-item subtitle">Poprzednie zajęcia</h2>
                               </div>
                             </div>
-                            <LearningClassesList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
+                            <LessonsList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
                           </div>;
 
     const exercises_list = <div>
@@ -379,7 +369,7 @@ class LearningOverview extends React.Component{
                                 <h2 className="level-item subtitle">Prace domowe:</h2>
                               </div>
                             </div>
-                            <HomeworkList refresh={refresh} onPlay = {(homework_type, id) => this.props.handleView(2, homework_type, id)}/>
+                            <HomeworkList refresh={refresh} onPlay = {(id) => this.props.handleView(2, id)}/>
                           </div>
 
   const words_list = <p>Lista słówek</p>
@@ -405,8 +395,8 @@ class LearningOverview extends React.Component{
   const next_homework = next_instance ? <Exercise
           key = "next_exercise"
           detail_view={5}
-          detail_id={next_instance.lesson}
-          onClickPlay = {() => this.props.handleView(2, next_instance.type, next_instance.id)}/> : <React.Fragment></React.Fragment>;
+          detail_id={next_instance.exercise}
+          onClickPlay = {() => this.props.handleView(2, next_instance.id)}/> : <React.Fragment></React.Fragment>;
 
 
   const next_activity = <React.Fragment>
@@ -417,7 +407,7 @@ class LearningOverview extends React.Component{
                             {next_instance &&
                             <div className="level-right">
                               <div className="level-item">
-                                <StatusIcon status={next_instance.status}  handleClick = {() => this.props.handleView(2, next_instance.type, next_instance.id)}/>
+                                <StatusIcon status={next_instance.status}  handleClick = {() => this.props.handleView(2, next_instance.id)}/>
                               </div>
                             </div>
                             }
@@ -446,10 +436,9 @@ class SideMenu extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      exercise_endpoint :   "api/student/exercise",
-      exercise_instances : [],
-      exercise_loaded: false,
-      colour: "is-primary",
+      homework_endpoint :   "api/student/homework",
+      homework_instances : [],
+      homework_loaded: false,
       placeholder: "Ładowanie...",
     };
   }
@@ -461,17 +450,17 @@ class SideMenu extends React.Component{
   }
 
   componentDidMount() {
-    const {exercise_endpoint} = this.state;
-    getData(exercise_endpoint, '', 'exercise_instances', 'exercise_loaded', 'placeholder', this);
+    const {homework_endpoint} = this.state;
+    getData(homework_endpoint, '', 'homework_instances', 'homework_loaded', 'placeholder', this);
   }
 
   render(){
-    const { exercise_loaded, exercise_instances, placeholder } = this.state;
-    const loaded = exercise_loaded;
+    const { homework_loaded, homework_instances, placeholder } = this.state;
+    const loaded = homework_loaded;
     if (!loaded)
       return <p>placeholder</p>;
 
-    const exercises = exercise_instances.results;
+    const homeworks = homework_instances ? homework_instances.results : [];
     return (
       <React.Fragment>
         <aside className="menu">
@@ -489,9 +478,9 @@ class SideMenu extends React.Component{
             Praca domowa
           </p>
           <ul className="menu-list">
-            {exercises.map((el, index) => (
+            {homeworks.map((el, index) => (
               <li key={index}>
-                <a onClick={() => this.props.onClick(1,el.exercise)}>{el.name}</a>
+                <a onClick={() => this.props.onClick(1, el.exercise)}>{el.name}</a>
               </li>
             ))}
             <li><a>...</a></li>

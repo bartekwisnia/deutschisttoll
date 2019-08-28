@@ -29,7 +29,7 @@ class Content extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      material_type: 2, // 1 - courses, 2 - lessons, 3 - exercises
+      material_type: 3, // 1 - courses, 2 - sets, 3 - exercises
       detail_view: 0, // 0 - list, 1 - form, 2 - search list, 3 - preview, 4 - play
       detail_id: 0, // id of edited object
       query: "",
