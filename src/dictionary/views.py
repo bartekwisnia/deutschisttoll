@@ -19,7 +19,7 @@ class IsSafe(BasePermission):
             return True
         else:
             # Check permissions for write request
-            return False
+            return request.user.is_authenticated()
 
 
 class IsStudent(BasePermission):
@@ -65,7 +65,7 @@ class WordListCreate(generics.ListCreateAPIView):
 class WordRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Word.objects.all()
     serializer_class = WordSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def update(self, request, *args, **kwargs):
         print(request.data)
@@ -80,7 +80,7 @@ class WordRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class TranslationListCreate(generics.ListCreateAPIView):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -93,13 +93,13 @@ class TranslationListCreate(generics.ListCreateAPIView):
 class TranslationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Translation.objects.all()
     serializer_class = TranslationSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
 
 class WordLearningListCreate(generics.ListCreateAPIView):
     queryset = WordLearning.objects.all()
     serializer_class = WordLearningSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -116,13 +116,13 @@ class WordLearningListCreate(generics.ListCreateAPIView):
 class WordLearningRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = WordLearning.objects.all()
     serializer_class = WordLearningSerializer
-    permission_classes = (IsStudent|IsSafe,)
+    permission_classes = (IsSafe,)
 
 
 class WordIconListCreate(generics.ListCreateAPIView):
     queryset = WordIcon.objects.all()
     serializer_class = WordIconSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -135,4 +135,4 @@ class WordIconListCreate(generics.ListCreateAPIView):
 class WordIconRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = WordIcon.objects.all()
     serializer_class = WordIconSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)

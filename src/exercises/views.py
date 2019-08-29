@@ -58,7 +58,7 @@ class IsSafe(BasePermission):
             return True
         else:
             # Check permissions for write request
-            return False
+            return request.user.is_authenticated()
 
 
 class ExerciseListCreate(generics.ListCreateAPIView):
@@ -211,7 +211,7 @@ def exercise_set_config(request):
 class WordInExerciseListCreate(generics.ListCreateAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def get_queryset(self):
         return WordInExercise.objects.all()
@@ -236,7 +236,7 @@ class WordInExerciseListCreate(generics.ListCreateAPIView):
 class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def put(self, request, *args, **kwargs):
         kwargs['partial'] = True
