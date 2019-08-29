@@ -681,7 +681,7 @@ class ExerciseDict extends React.Component {
 
 function DescribePicture(props){
   const {picture_url, fileChange, preview, play, ...other} = props;
-  // <ExerciseDict {...other}/>
+
   if (preview)
     return (<React.Fragment>
           <div className="level">
@@ -729,7 +729,7 @@ function DescribePicture(props){
             </label>
           </div>
         </div>
-
+        <DictionaryForm {...other}/>
       </React.Fragment>);
 };
 
