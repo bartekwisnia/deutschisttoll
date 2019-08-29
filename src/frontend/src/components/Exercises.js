@@ -1303,6 +1303,16 @@ handleSubmit = e => {
       picture_url = '../../static/frontend/upload-symbol_318-30030.jpg';
       picture_name = "Nie wybrano zdjęcia";
     };
+    //
+    // <TypeSpecificContent exercise_type={type} words={words}
+    //                     picture_url={picture_url}
+    //                     fileChange={this.fileChange}
+    //                     dict={dict}
+    //                     handleChangeWord={this.handleChangeWord}
+    //                     deleteWord={this.deleteWord}
+    //                     last_dict_input={last_dict_input}
+    //                     onChange={this.dictChange}
+    //                     onClick={this.dictDelete}/>
     const type_choices = loaded ? model_config.type_choices : {};
     return loaded ? (
       <React.Fragment>
@@ -1357,15 +1367,7 @@ handleSubmit = e => {
                 </div>
               </div>
 
-              <TypeSpecificContent exercise_type={type} words={words}
-                                  picture_url={picture_url}
-                                  fileChange={this.fileChange}
-                                  dict={dict}
-                                  handleChangeWord={this.handleChangeWord}
-                                  deleteWord={this.deleteWord}
-                                  last_dict_input={last_dict_input}
-                                  onChange={this.dictChange}
-                                  onClick={this.dictDelete}/>
+
 
               <div className="field">
                 <div className="control">
