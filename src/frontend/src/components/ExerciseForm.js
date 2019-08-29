@@ -295,6 +295,7 @@ componentDidMount() {
       picture_url = '../../static/frontend/upload-symbol_318-30030.jpg';
       picture_name = "Nie wybrano zdjęcia";
     };
+    // <TypeSpecificContent exercise_type={type} picture_url={picture_url} fileChange={this.fileChange} dict={dict} last_dict_input={last_dict_input} dictChange={this.dictChange} dictDelete={this.dictDelete}/>
     const type_choices = loaded ? model_config.type_choices : {};
     return loaded ? (
       <div className="column is-5 is-fullheight">
@@ -344,7 +345,7 @@ componentDidMount() {
             </div>
           </div>
 
-          <TypeSpecificContent exercise_type={type} picture_url={picture_url} fileChange={this.fileChange} dict={dict} last_dict_input={last_dict_input} dictChange={this.dictChange} dictDelete={this.dictDelete}/>
+
 
           <div className="field">
             <div className="control">
