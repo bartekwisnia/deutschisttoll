@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from rest_framework import generics, exceptions
-from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -211,7 +211,7 @@ def exercise_set_config(request):
 class WordInExerciseListCreate(generics.ListCreateAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsSafe,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         return WordInExercise.objects.all()
@@ -236,7 +236,7 @@ class WordInExerciseListCreate(generics.ListCreateAPIView):
 class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsSafe,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def put(self, request, *args, **kwargs):
         kwargs['partial'] = True
