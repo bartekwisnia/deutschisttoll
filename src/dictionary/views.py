@@ -37,7 +37,7 @@ class IsStudent(BasePermission):
 class WordListCreate(generics.ListCreateAPIView):
     queryset = Word.objects.all()
     serializer_class = WordSerializer
-    permission_classes = (IsAuthenticated|IsSafe,)
+    permission_classes = (IsSafe,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')

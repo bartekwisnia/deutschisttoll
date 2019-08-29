@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8fbe508a-0719-471b-8d2c-0dfdcb58ae1c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dictionary/views.py" afterPath="$PROJECT_DIR$/src/dictionary/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exercises/views.py" afterPath="$PROJECT_DIR$/src/exercises/views.py" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,14 +34,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="780">
+              <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/blog/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-468">
+              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="47" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -67,7 +76,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="827">
@@ -196,8 +205,8 @@
         <option value="$PROJECT_DIR$/src/exercises/models.py" />
         <option value="$PROJECT_DIR$/src/dictionary/serializers.py" />
         <option value="$PROJECT_DIR$/src/LernenDe/settings/base.py" />
-        <option value="$PROJECT_DIR$/src/dictionary/views.py" />
         <option value="$PROJECT_DIR$/src/exercises/views.py" />
+        <option value="$PROJECT_DIR$/src/dictionary/views.py" />
       </list>
     </option>
   </component>
@@ -251,6 +260,12 @@
               <item name="LernenDe" type="b2602c69:ProjectViewProjectNode" />
               <item name="LernenDe" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LernenDe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LernenDe" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="LernenDe" type="b2602c69:ProjectViewProjectNode" />
@@ -811,13 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/blog/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LernenDe/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="805">
@@ -963,20 +971,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
+    <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="827">
+          <caret line="234" column="0" lean-forward="true" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
+    <entry file="file://$PROJECT_DIR$/src/blog/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="827">
-          <caret line="234" column="0" lean-forward="true" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
+        <state relative-caret-position="-468">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
