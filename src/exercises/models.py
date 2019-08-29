@@ -130,6 +130,7 @@ class Exercise(models.Model):
 class WordInExercise(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    translation = models.CharField(max_length=30, blank=True, null=True)
     comment = models.CharField(max_length=30, blank=True, null=True)
     highlight_start = models.IntegerField(default=0, blank=True)
     highlight_end = models.IntegerField(default=0, blank=True)

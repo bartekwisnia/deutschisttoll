@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import DataProvider from "./DataProvider";
 import { Exercise, ExerciseForm, ExercisePreview, ExercisePlay, MapExercise } from "./Exercises";
+import Word from "./Words";
 import { ExerciseSet, ExerciseSetForm, ExerciseSetPreview, MapExerciseSet } from "./ExerciseSet";
 import key from "weak-key";
 import { Icon, SearchBar } from './Components';
@@ -29,7 +30,7 @@ class Content extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      material_type: 3, // 1 - courses, 2 - sets, 3 - exercises
+      material_type: 3, // 1 - courses, 2 - sets, 3 - exercises, 4 - words
       detail_view: 0, // 0 - list, 1 - form, 2 - search list, 3 - preview, 4 - play
       detail_id: 0, // id of edited object
       query: "",
@@ -69,13 +70,25 @@ class Content extends React.Component{
     />;
 
     const exercises_site =
-        <Exercise
-         key = "exercise_site"
-         selectSite={(view, id) => this.selectSite(3, view, id)}
-         detail_view={detail_view}
-         detail_id={detail_id}
-         query={query}
-       />;
+        <div className="column is-7 is-offset-1">
+          <Exercise
+               key = "exercise_site"
+               selectSite={(view, id) => this.selectSite(3, view, id)}
+               detail_view={detail_view}
+               detail_id={detail_id}
+               query={query}
+             />
+        </div>
+     const words_site = <div className="column is-7 is-offset-1">
+       <Word
+            key = "exercise_site"
+            selectSite={(view, id) => this.selectSite(4, view, id)}
+            setID={(id) => this.selectSite(4, 1, id)}
+            view={detail_view}
+            id={detail_id}
+            query={query}
+          />
+        </div>
 
     let content_site = <p>Nothing to display</p>;
     switch(material_type) {
@@ -90,6 +103,9 @@ class Content extends React.Component{
           break;
       case 3:
           content_site = exercises_site;
+          break;
+      case 4:
+          content_site = words_site;
           break;
       default:
           content_site = exercises_site;
@@ -171,6 +187,12 @@ class SideMenu extends React.Component{
         <aside className="menu">
           {exercise_menu}
           {exercise_set_menu}
+          <p className="menu-label">
+            Słownik
+          </p>
+          <ul className="menu-list">
+            <li><a onClick={() => this.props.selectSite(4, 1, '')}>Nowe słówko</a></li>
+          </ul>
         </aside>
       </div>
     ) : <p>{placeholder}</p>;

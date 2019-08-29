@@ -162,6 +162,11 @@ function shuffleArray(array) {
     }
 }
 
+function quasiRandomColour(index) {
+  const colours = ["is-primary", "is-info", "is-danger", "is-success", "is-warning", "is-light", "is-dark"];
+  return colours[index % 7]
+}
+
 export {
-  getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus, addDays, shuffleArray
+  getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus, addDays, shuffleArray, quasiRandomColour
 }

@@ -24,10 +24,13 @@ class TranslationSerializer(serializers.ModelSerializer):
 
 
 class WordSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
     translations = TranslationSerializer(many=True, read_only=True)
     add_translation = serializers.CharField(write_only=True, required=False)
     icon_id = serializers.IntegerField(write_only=True, required=False)
-    icon = WordIconSerializer()
+    icon_picture = serializers.ImageField(write_only=True, required=False)
+    icon_description = serializers.CharField(write_only=True, required=False)
+    icon = WordIconSerializer(read_only=True)
 
     class Meta:
         model = Word
@@ -45,16 +48,23 @@ class WordSerializer(serializers.ModelSerializer):
             icon_id = validated_data.pop('icon_id')
         else:
             icon_id = None
-        icon_data = validated_data.pop('icon')
-        picture = icon_data['picture']
-        description = icon_data['description']
+        if "icon_picture" in list(validated_data.keys()):
+            icon_picture = validated_data.pop('icon_picture')
+        else:
+            icon_picture = None
+        if "icon_description" in list(validated_data.keys()):
+            icon_description = validated_data.pop('icon_description')
+        else:
+            icon_description = None
+
         try:
             validated_data['icon'] = WordIcon.objects.get(id=icon_id)
+            if icon_description:
+                validated_data['icon'].description = icon_description;
+                validated_data['icon'].save()
         except WordIcon.DoesNotExist:
-            if picture:
-                obj, created = WordIcon.objects.get_or_create(picture=picture, defaults={'description': description})
-                obj.description = description
-                obj.save()
+            if icon_picture:
+                obj = WordIcon.objects.create(picture=icon_picture, description=icon_description)
                 validated_data['icon'] = obj
             else:
                 validated_data['icon'] = None
@@ -73,16 +83,23 @@ class WordSerializer(serializers.ModelSerializer):
             icon_id = validated_data.pop('icon_id')
         else:
             icon_id = None
-        icon_data = validated_data.pop('icon')
-        picture = icon_data['picture']
-        description = icon_data['description']
+        if "icon_picture" in list(validated_data.keys()):
+            icon_picture = validated_data.pop('icon_picture')
+        else:
+            icon_picture = None
+        if "icon_description" in list(validated_data.keys()):
+            icon_description = validated_data.pop('icon_description')
+        else:
+            icon_description = None
+
         try:
             validated_data['icon'] = WordIcon.objects.get(id=icon_id)
+            if icon_description:
+                validated_data['icon'].description = icon_description;
+                validated_data['icon'].save()
         except WordIcon.DoesNotExist:
-            if picture:
-                obj, created = WordIcon.objects.get_or_create(picture=picture, defaults={'description': description})
-                obj.description = description
-                obj.save()
+            if icon_picture:
+                obj = WordIcon.objects.create(picture=icon_picture, description=icon_description)
                 validated_data['icon'] = obj
             else:
                 validated_data['icon'] = None

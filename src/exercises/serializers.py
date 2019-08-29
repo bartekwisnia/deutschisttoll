@@ -22,25 +22,36 @@ from dictionary.serializers import WordSerializer
 
 class WordInExerciseSerializer(serializers.ModelSerializer):
     word = serializers.PrimaryKeyRelatedField(queryset=Word.objects.all())
+    # word = WordSerializer(read_only=True)
     exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
 
     class Meta:
         model = WordInExercise
         fields = '__all__'
-        depth = 2
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(choices=Exercise.TYPES)
-    words = WordSerializer(many=True, read_only=True)
+    # words = WordSerializer(many=True, read_only=True)
+
+    words = serializers.SerializerMethodField(read_only=True)
+
     # type_choices = serializers.JSONField(source='get_types', read_only=True)
 
     class Meta:
         model = Exercise
         fields = '__all__'
+        # exclude = ('words',)
         # exclude = ('owner', )
         extra_kwargs = {'owner': {'read_only': True, 'required': False}}
         depth = 1
+
+    def get_words(self, obj):
+        words = WordInExercise.objects.filter(exercise=obj)
+        print(words)
+        for w in words:
+            print(w)
+        return WordInExerciseSerializer(words, many=True).data
 
 
 class ExerciseTagsSerializer(serializers.ModelSerializer):

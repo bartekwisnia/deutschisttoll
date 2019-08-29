@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
-from rest_framework import generics, exceptions
+from rest_framework import generics, exceptions, status
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
-
+from rest_framework.response import Response
+from django.db.utils import IntegrityError
+from django.core.exceptions import NON_FIELD_ERRORS
 from .models import WordLearning, Word, Translation, WordIcon
 from. serializers import WordLearningSerializer, WordSerializer, TranslationSerializer, WordIconSerializer
 # Create your views here.
@@ -32,11 +34,35 @@ class WordListCreate(generics.ListCreateAPIView):
             qs = qs.filter(text=query)
         return qs
 
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        try:
+            return super(WordListCreate, self).create(request, *args, **kwargs)
+        except exceptions.ValidationError:
+            obj = Word.objects.get(text=request.data["text"], preposition=request.data["preposition"])
+            serializer = WordSerializer(obj)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST, headers=headers)
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        print(response.data)
+        return response
+
 
 class WordRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Word.objects.all()
     serializer_class = WordSerializer
     permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        print(request.data)
+        try:
+            return super(WordRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
+        except exceptions.ValidationError:
+            obj = Word.objects.get(text=request.data["text"], preposition=request.data["preposition"])
+            serializer = WordSerializer(obj)
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TranslationListCreate(generics.ListCreateAPIView):
@@ -90,7 +116,7 @@ class WordIconListCreate(generics.ListCreateAPIView):
         query = self.request.GET.get('query')
         qs = WordIcon.objects.all()
         if query:
-            qs = qs.filter(description=query)
+            qs = qs.filter(description__icontains=query)
         return qs
 
 

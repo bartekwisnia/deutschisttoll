@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from rest_framework import generics, exceptions
@@ -12,6 +13,8 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 from .models import Exercise, ExerciseSet, exercise_get_config, exercise_set_get_config, WordInExercise
+
+from dictionary.models import Translation
 from .forms import ExerciseForm, ExerciseSetForm
 from. serializers import ExerciseSerializer, ExerciseSetSerializer, WordInExerciseSerializer
 
@@ -34,7 +37,7 @@ class IsOwner(BasePermission):
             return request.user == obj.owner
 
 
-class IsAuthenticatedOrPublic(BasePermission):
+class IsPublic(BasePermission):
     message = 'Only owner can change this object'
 
     def has_object_permission(self, request, view, obj):
@@ -43,13 +46,13 @@ class IsAuthenticatedOrPublic(BasePermission):
             return obj.public
         else:
             # Check permissions for write request
-            return IsAuthenticated.has_object_permission(request, view, obj)
+            return False
 
 
 class ExerciseListCreate(generics.ListCreateAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated | IsPublic,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -69,7 +72,7 @@ class ExerciseListCreate(generics.ListCreateAPIView):
 class ExerciseSearch(generics.ListAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated | IsPublic,)
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -82,7 +85,7 @@ class ExerciseSearch(generics.ListAPIView):
 class ExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
-    permission_classes = (IsAuthenticatedOrPublic, IsOwner)
+    permission_classes = (IsAuthenticated | IsPublic, IsOwner)
 
     def put(self, request, *args, **kwargs):
         print(request.data)
@@ -201,6 +204,19 @@ class WordInExerciseListCreate(generics.ListCreateAPIView):
     def get_queryset(self):
         return WordInExercise.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        try:
+            word = Word.objects.get(id=request.data['word'])
+            if request.data['translation']:
+                trans, created = Translation.objects.get_or_create(
+                    text=request.data['translation'],
+                    word=word
+                )
+        except ObjectDoesNotExist as e:
+            print(e)
+
+        return super(WordInExerciseListCreate, self).create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
         serializer.save()
 
@@ -211,6 +227,18 @@ class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView)
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, *args, **kwargs):
-        print(request.data)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            word = Word.objects.get(id=request.data['word'])
+            if request.data['translation']:
+                trans, created = Translation.objects.get_or_create(
+                    text=request.data['translation'],
+                    word=word
+                )
+        except ObjectDoesNotExist as e:
+            print(e)
+
+        return super(WordInExerciseListCreate, self).update(request, *args, **kwargs)

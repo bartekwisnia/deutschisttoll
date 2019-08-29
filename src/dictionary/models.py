@@ -24,6 +24,9 @@ class Word(models.Model):
     def __str__(self):
         return self.text
 
+    class Meta:
+        unique_together = ('text', 'preposition')
+
 
 class Translation(models.Model):
     text = models.CharField(max_length=30)
@@ -33,6 +36,9 @@ class Translation(models.Model):
 
     def __str__(self):
         return self.text
+
+    class Meta:
+        unique_together = ('text', 'word')
 
 
 class WordLearning(models.Model):
@@ -45,3 +51,6 @@ class WordLearning(models.Model):
 
     def __str__(self):
         return "{}:{}".format(self.student, self.word)
+
+    class Meta:
+        unique_together = ('student', 'word')

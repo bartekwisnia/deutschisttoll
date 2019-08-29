@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import DataProvider from "./DataProvider";
 import { Icon, SearchBar, ContentList1 } from './Components';
+import Word from './Words'
 import {ContentList} from './Content';
-import { getData, getCookie, shuffleArray } from "./Utils";
+import { getData, getCookie, shuffleArray, quasiRandomColour } from "./Utils";
 
 
 function MapExercise(results, model_config) {
@@ -187,18 +188,16 @@ class Exercise extends React.Component{
                                      />
                      </div>
       case 1:
-          return  <div className="column is-7 is-offset-1">
-                    <ExerciseForm
-                                      key={"lesson_form_"+detail_id}
-                                      endpoint={endpoint} id={detail_id}
-                                      loaded={true}
-                                      model_config={model_config}
-                                      object_delete={() => this.handleDelete(detail_id)}
-                                      endEdit={this.endEdit}
-                                      refresh={refresh}
-                                      handlePlay={() => this.props.selectSite(4, detail_id)}
-                                      />
-          </div>
+          return <ExerciseForm
+                      key={"lesson_form_"+detail_id}
+                      endpoint={endpoint} id={detail_id}
+                      loaded={true}
+                      model_config={model_config}
+                      object_delete={() => this.handleDelete(detail_id)}
+                      endEdit={this.endEdit}
+                      refresh={refresh}
+                      handlePlay={() => this.props.selectSite(4, detail_id)}
+                      />
 
       case 2:
           return      <div className="column is-4 is-offset-2">
@@ -733,6 +732,7 @@ function DescribePicture(props){
       </React.Fragment>);
 };
 
+
 class TranslateWords extends React.Component {
     constructor(props){
       super(props);
@@ -769,6 +769,225 @@ class TranslateWords extends React.Component {
 }
 
 
+class WordInExercise extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {el, index, ...other} = this.props;
+    console.log("render Word in Exercise");
+    console.log(el);
+    const word_id = el ? el.word : null;
+    const translation = el ? el.translation : '';
+    const comment = el ? el.comment : '';
+    const required = el ? true : false;
+    //              comment = models.CharField(max_length=30, blank=True, null=True)
+    // highlight_start = models.IntegerField(default=0, blank=True)
+    // highlight_end = models.IntegerField(default=0, blank=True)
+
+    return ( <React.Fragment>
+              <Word
+                   initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
+                   view={2} // subform
+                   id={word_id}
+                   required = {required}
+                 />
+          {el &&
+            <React.Fragment>
+            <div className="field is-horizontal">
+              <div className="field is-grouped">
+                 <p className="control">
+                   <input className="input is-info" type="text" name="translation" size="10" value={translation} placeholder="tłumaczenie" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+                 <p className="control">
+                   <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+              </div>
+              <div className="field is-grouped-right">
+                {<Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
+              </div>
+            </div>
+            </React.Fragment>
+            }
+            <hr/>
+             </React.Fragment>
+);
+  };
+}
+
+class ClickPreview extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, results, set_results} = this.props;
+    console.log("render click and learn preview")
+    console.log(words)
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    return (
+      <React.Fragment>
+        <div className="columns">
+          <div className="column is-3">
+          {words.map((el, index) => <React.Fragment>
+                                    <Word
+                                      view={3} // hero
+                                      id={el.word}
+                                      colour={quasiRandomColour(index)}
+                                      size=""
+                                      translation={el.translation}
+                                    />
+                                   <div className="level">
+                                   </div>
+                                  </React.Fragment>)}
+          </div>
+          <div className="column is-4 is-offset-1">
+            <div className="level">
+            </div>
+            <div className="level>">
+            </div>
+          </div>
+          <div className="column is-offset-1">
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+class ClickPlay extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+    handleCheck = (index) => {
+      const {results} = this.props;
+      results[index] = true;
+      this.props.setResults(results);
+    };
+
+  render () {
+    const {words, results, set_results} = this.props;
+    console.log("render click and learn play")
+    console.log(words)
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    if (words.length === results.length){
+      return <p>Brak słów</p>
+    }
+
+    const index = results.length
+    const cpy_words = [...words];
+    const done = cpy_words.splice(0, index);
+    const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
+    const word1colour = quasiRandomColour(index);
+    console.log(word1);
+
+    return (
+      <React.Fragment>
+        <div className="columns">
+          <div className="column is-3">
+          {done.map((el, index) => <React.Fragment>
+                                    <Word
+                                      view={3} // hero
+                                      id={el.word}
+                                      colour={quasiRandomColour(index)}
+                                      size=""
+                                      translation={el.translation}
+                                    />
+                                   <div className="level">
+                                   </div>
+                                  </React.Fragment>)}
+          </div>
+          <div className="column is-4 is-offset-1">
+            <div className="level">
+            </div>
+            {word1 && <a onClick={() => this.handleCheck(index)}>
+              <Word
+                 view={3} // hero
+                 id={word1.word}
+                 colour={word1colour}
+                 size="is-medium"
+               />
+            </a>}
+            <div className="level>">
+            </div>
+          </div>
+          <div className="column is-offset-1">
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+class DictionaryForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, ...other} = this.props;
+    console.log("render dictionary form")
+    console.log(words)
+    return (
+      <React.Fragment>
+        {words.map((el, index) => {
+          console.log("Word number "+index);
+          return <WordInExercise key={"Word number "+index} el={el} index={index} {...other} />
+        })}
+        <WordInExercise key={"New word"+words.length} {...other}/>
+      </React.Fragment>
+
+    );
+  };
+}
+
+
+class ClickAndLearn extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        game: 2,
+        };
+    };
+
+    changeGame = (index) => {
+      this.setState({ game: index });
+    };
+
+  render () {
+    const {game} = this.state;
+    const {preview, play, ...other} = this.props;
+    //console.log("TranslateWords results" + results);
+    if (play)
+      return (<ClickPlay {...other}/>);
+    if (preview)
+      return (<ClickPreview {...other}/>);
+    return (<DictionaryForm {...other}/>);
+  };
+}
+
+
+
 function TypeSpecificContent(props){
   const {exercise_type, ...other} = props;
   if (exercise_type === 'DES_PIC')
@@ -778,6 +997,10 @@ function TypeSpecificContent(props){
   if (exercise_type === 'SEL_TRANS')
     {
     return <TranslateWords {...other}/>
+  }
+  if (exercise_type === 'CLICK')
+    {
+    return <ClickAndLearn {...other}/>
   }
   return <div className="field"></div>
 }
@@ -792,13 +1015,13 @@ class ExerciseForm extends React.Component {
     super(props);
     this.state = {
       data: {title: "", type: "", categories: "", level: "", picture: "",
-      favourite: false, public: false},
-      dict: [],
+      favourite: false, public: false, words: []},
       imagePreviewUrl : "",
       loaded: false,
       last_dict_input: "",
       placeholder: "Ładowanie danych...",
-      refresh: false
+      refresh: false,
+      word_in_ex_endpoint: "api/word-in-exercise/"
       };
   }
 
@@ -818,6 +1041,41 @@ class ExerciseForm extends React.Component {
   handleChange = e => {
     const data = this.state.data;
     data[e.target.name] = e.target.value;
+    this.setState({ data: data });
+  };
+
+  handleChangeWord = (param, index) => {
+    const data = this.state.data;
+    const words = data.words;
+    console.log(param);
+    console.log(index);
+    if (param.length === undefined)
+      param = [param];
+    if (typeof(index) === 'number')
+      for (var i = 0; i < param.length; i++) {
+          words[index][param[i].atr] = param[i].val;
+          }
+    else {
+      const new_word ={id: 0, exercise: 0, word: 0, translation: '', comment: '', highlight_start: 0, highlight_end: 0};
+      for (var i = 0; i < param.length; i++) {
+          new_word[param[i].atr] = param[i].val;
+          }
+      words.push(new_word);
+    }
+    data.words = words;
+    this.setState({ data: data });
+  };
+
+  changeWordID = (id, index) => {
+    const data = this.state.data;
+    const words = data.words;
+    if (index)
+      words[index].word = id;
+    else {
+      const new_word ={exercise: this.props.id, word: id, translation: '', comment: '', highlight_start: 0, highlight_end: 0};
+      words.push(new_word);
+    }
+    data.words = words;
     this.setState({ data: data });
   };
 
@@ -904,49 +1162,120 @@ componentDidMount() {
   }
 }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const {id, endpoint} = this.props;
-    const { data, dict, refresh } = this.state;
-    const { title, type, categories, level, picture, favourite} = data;
-    const is_public = data['public']
-    const formData = new FormData();
-    const method = id ? "put" : "post";
-    formData.append('title', title);
-    formData.append('type', type);
-    formData.append('categories', categories);
-    formData.append('level', level);
-    formData.append('favourite', favourite);
-    formData.append('public', is_public);
 
-    if (typeof picture !== 'string'){
-      formData.append('picture', picture);
-    };
+saveWord = (word_in_ex) => {
+  const {word_in_ex_endpoint } = this.state;
+  const endpoint = word_in_ex_endpoint;
+  const formData = new FormData();
+  const {id, exercise, word, translation, comment, highlight_start, highlight_end } = word_in_ex;
+  const method = id ? "put" : "post";
 
-    let content = {}
+  formData.append('exercise', exercise);
+  formData.append('word', word);
+  formData.append('translation', translation);
+  formData.append('comment', comment);
+  formData.append('highlight_start', highlight_start);
+  formData.append('highlight_end', highlight_end);
 
-    if(dict)
-      content.words = {};
-      for (let i = 0; i < dict.length; i++) {
-          content.words[dict[i]['word']] = dict[i]['translation'];
-      };
-
-    if (content){
-      formData.append('content', JSON.stringify(content));
-      // console.log(JSON.stringify(content));
-    };
-
-    const url = id ? endpoint+id : endpoint;
-    const csrftoken = getCookie('csrftoken');
-    const conf = {
-      method: method,
-      body: formData,
-      headers: new Headers({'X-CSRFToken': csrftoken})
-    };
-    fetch(url, conf)
-    .then(response => console.log(response))
-    .then(() => {this.props.endEdit();});
+  const url = id ? endpoint+id : endpoint;
+  const csrftoken = getCookie('csrftoken');
+  const conf = {
+    method: method,
+    body: formData,
+    headers: new Headers({'X-CSRFToken': csrftoken})
   };
+  fetch(url, conf)
+  .then(response => {
+    console.log(response)
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  });
+};
+
+saveWords = (ex_id) => {
+  const { data, word_in_ex_endpoint } = this.state;
+  const { words } = data;
+
+  for (var i = 0; i < words.length; i++) {
+        const word = words[i];
+        console.log(word);
+        console.log(ex_id);
+        word['exercise'] = ex_id;
+        console.log(word);
+        this.saveWord(word);
+      }
+  }
+
+deleteWord = (index) => {
+    const {data, word_in_ex_endpoint} = this.state;
+    const endpoint = word_in_ex_endpoint;
+    const { words } = data;
+    const { id } = words[index];
+    if (id){
+      const csrftoken = getCookie('csrftoken');
+      const conf = {
+        method: "delete",
+        headers: new Headers({'X-CSRFToken': csrftoken})
+      };
+      if (confirm("Czy na pewno chcesz usunąć to słówko z ćwiczenia?"))
+        fetch(endpoint+id , conf)
+        .then(
+          response => {console.log(response)
+                       if (response.status === 204){
+                          words.splice(index, 1);
+                          data.words = words;
+                          this.setState({data: data})
+                        }
+                      }
+        )
+    }
+    else{
+      words.splice(index, 1);
+      data.words = words;
+      this.setState({data: data});
+    }
+
+  };
+
+handleSubmit = e => {
+  e.preventDefault();
+  const {id, endpoint} = this.props;
+  const { data, refresh } = this.state;
+  const { title, type, categories, level, picture, favourite} = data;
+  const is_public = data['public']
+  const formData = new FormData();
+  const method = id ? "put" : "post";
+  formData.append('title', title);
+  formData.append('type', type);
+  formData.append('categories', categories);
+  formData.append('level', level);
+  formData.append('favourite', favourite);
+  formData.append('public', is_public);
+
+  if (typeof picture !== 'string'){
+    formData.append('picture', picture);
+  };
+
+  const url = id ? endpoint+id : endpoint;
+  const csrftoken = getCookie('csrftoken');
+  const conf = {
+    method: method,
+    body: formData,
+    headers: new Headers({'X-CSRFToken': csrftoken})
+  };
+  fetch(url, conf)
+  .then(response => {
+    console.log(response)
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+    this.saveWords(data.id);
+    this.props.endEdit();
+  });
+};
 
   render() {
     console.log("render exercise form");
@@ -955,7 +1284,7 @@ componentDidMount() {
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
     });
-    const { title, type, categories, level, picture, favourite } = data;
+    const { title, type, categories, level, picture, favourite, words } = data;
     const is_public = data['public']
     let picture_url = "";
     let picture_name = "";
@@ -1028,7 +1357,15 @@ componentDidMount() {
                 </div>
               </div>
 
-              <TypeSpecificContent exercise_type={type} picture_url={picture_url} fileChange={this.fileChange} dict={dict} last_dict_input={last_dict_input} onChange={this.dictChange} onClick={this.dictDelete}/>
+              <TypeSpecificContent exercise_type={type} words={words}
+                                  picture_url={picture_url}
+                                  fileChange={this.fileChange}
+                                  dict={dict}
+                                  handleChangeWord={this.handleChangeWord}
+                                  deleteWord={this.deleteWord}
+                                  last_dict_input={last_dict_input}
+                                  onChange={this.dictChange}
+                                  onClick={this.dictDelete}/>
 
               <div className="field">
                 <div className="control">
@@ -1242,8 +1579,7 @@ class ExercisePlay extends React.Component {
     this.state = {
       endpoint: "api/exercise/",
       data: {title: "", type: "", categories: "", level: "", picture: "",
-      favourite: false, public: false},
-      dict: [],
+      favourite: false, public: false, words: []},
       results: [],
       status: 0, // 0 - not started, 3 - complete ok, 2 - complete with faults, 1 - in progress
       model_config: [],
@@ -1258,27 +1594,9 @@ class ExercisePlay extends React.Component {
   }
 
 
-  get_dict(data){
-    let dict = [];
-    if(data.content){
-      let content = JSON.parse(data.content);
-      let words = content.words
-      if(words){
-        Object.keys(words).map(
-          (key, index) => {
-            dict.push({'word': key, 'translation': words[key]});
-          }
-        );
-      }
-    }
-    return dict;
-  }
-
-
 loadData(callback){
   const {data} = this.props;
-  const dict = this.get_dict(data);
-  this.setState({ data: data, dict: dict, loaded: true }, callback);
+  this.setState({ data: data, loaded: true }, callback);
 }
 
 
@@ -1294,8 +1612,7 @@ getData(callback){
       return response.json();
     })
     .then(data => {
-      const dict = this.get_dict(data);
-      this.setState({ data: data, dict: dict, loaded: true }, callback);
+      this.setState({ data: data, loaded: true }, callback);
     }
     );
 }
@@ -1357,12 +1674,13 @@ componentDidUpdate(prevProps) {
 
 checkComplete = (callback) => {
   console.log("Check exercise complete");
-  const { dict, results } = this.state;
+  const { data, results } = this.state;
+  const { words } = data;
   let status = 0;
-  if (results.length > 0 && results.length < dict.length){
+  if (results.length > 0 && results.length < words.length){
     status = 1;
   }
-  else if (results.length === dict.length){
+  else if (results.length === words.length){
     status = 3;
     for (var i = 0; i < results.length; i++) {
         if (!results[i]){
@@ -1398,7 +1716,7 @@ handleRestart = () => {
       const {placeholder} = this.state;
       return <p>{placeholder}</p>;
     }
-    const { data, dict, status, last_dict_input, imagePreviewUrl, results,
+    const { data, status, last_dict_input, imagePreviewUrl, results,
       model_config} = this.state;
     const { id, in_lesson, onClickNext, onClickExit } = this.props;
     console.log("render exercise play");
@@ -1411,7 +1729,7 @@ handleRestart = () => {
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
     });
-    const { title, type, categories, level, picture, favourite } = data;
+    const { title, type, categories, level, picture, favourite, words } = data;
     const is_public = data['public']
     const finished = status >= 2;
     let picture_url = "";
@@ -1435,9 +1753,9 @@ handleRestart = () => {
     const type_choices = model_config.type_choices;
 
     const exercise_content = finished ?
-    <TypeSpecificContent exercise_type={type} picture_url={picture_url} dict={dict} preview={true} results={results}/>
+    <TypeSpecificContent exercise_type={type} picture_url={picture_url} words={words} preview={true} results={results}/>
     :
-    <TypeSpecificContent exercise_type={type} picture_url={picture_url} dict={dict} play={true} results={results} setResults={this.setResults}/> ;
+    <TypeSpecificContent exercise_type={type} picture_url={picture_url} words={words} play={true} results={results} setResults={this.setResults}/> ;
 
     return in_lesson ?
     <React.Fragment>
