@@ -1421,8 +1421,7 @@ class ExercisePreview extends React.Component {
     this.state = {
       endpoint: "api/exercise/",
       data: {title: "", type: "", categories: "", level: "", picture: "",
-      favourite: false, public: false},
-      dict: [],
+      favourite: false, public: false, words: []},
       imagePreviewUrl : "",
       loaded: false,
       config_loaded: false,
@@ -1444,19 +1443,7 @@ getData(){
       return response.json();
     })
     .then(data => {
-      let dict = [];
-      if(data.content){
-        let content = JSON.parse(data.content);
-        let words = content.words
-        if(words){
-          Object.keys(words).map(
-            (key, index) => {
-              dict.push({'word': key, 'translation': words[key]});
-            }
-          );
-        }
-      }
-      this.setState({ data: data, dict: dict, loaded: true });
+      this.setState({ data: data, loaded: true });
     }
     );
 }
@@ -1513,12 +1500,12 @@ componentDidUpdate(prevProps) {
       return <p>{placeholder}</p>;
     }
 
-    const { data, dict, last_dict_input, imagePreviewUrl, placeholder, model_config} = this.state;
+    const { data, last_dict_input, imagePreviewUrl, placeholder, model_config} = this.state;
     const { id} = this.props
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
     });
-    const { title, type, categories, level, picture, favourite } = data;
+    const { title, type, categories, level, picture, favourite, words } = data;
     const is_public = data['public']
     let picture_url = "";
     let picture_name = "";
@@ -1556,7 +1543,7 @@ componentDidUpdate(prevProps) {
                 </div>
               </div>
 
-              <TypeSpecificContent exercise_type={type} picture_url={picture_url} dict={dict} preview={true}/>
+              <TypeSpecificContent exercise_type={type} picture_url={picture_url} words={words} preview={true}/>
 
               <div className="level">
                 <div className="level-item">
@@ -1812,7 +1799,7 @@ class ExerciseFrontpage extends React.Component {
     super(props);
     this.state = {
       data: {title: "", type: "", categories: "", level: "", picture: "",
-      favourite: false, public: false},
+      favourite: false, public: false, words: []},
       loaded: false,
       placeholder: "Ładowanie danych...",
       refresh: false
@@ -1853,7 +1840,7 @@ componentDidMount() {
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
     });
-    const { title, type, categories, level, picture, favourite } = data;
+    const { title, type, categories, level, picture, favourite, words } = data;
     const type_choices = loaded ? model_config.type_choices : {};
     return loaded ? (
       <React.Fragment>
