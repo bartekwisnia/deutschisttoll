@@ -2,149 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8fbe508a-0719-471b-8d2c-0dfdcb58ae1c" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/DESCRIPTION.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/INSTALLER" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/LICENSE.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/METADATA" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/RECORD" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/WHEEL" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/metadata.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/djangorestframework-3.8.2.dist-info/top_level.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/jquery-3.3.1.min.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ach/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ach/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ar/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ar/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/be/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/be/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ca/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ca/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ca_ES/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ca_ES/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/cs/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/cs/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/da/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/da/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/de/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/de/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/el/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/el/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/el_GR/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/el_GR/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_AU/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_AU/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_CA/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_CA/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_US/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/en_US/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/es/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/es/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/et/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/et/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fa/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fa/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fa_IR/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fa_IR/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fi/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fi/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fr/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fr/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fr_CA/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/fr_CA/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/gl/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/gl/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/gl_ES/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/gl_ES/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/he_IL/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/he_IL/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/hu/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/hu/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/id/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/id/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/it/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/it/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ja/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ja/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ko_KR/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ko_KR/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/lv/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/lv/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/mk/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/mk/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nb/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nb/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nl/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nl/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nn/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/nn/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/no/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/no/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pl/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pl/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt_BR/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt_BR/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt_PT/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/pt_PT/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ro/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ro/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ru/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/ru/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sk/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sk/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sl/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sl/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sv/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/sv/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/tr/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/tr/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/tr_TR/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/tr_TR/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/uk/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/uk/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/vi/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/vi/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_CN/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_CN/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_Hans/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_Hans/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_Hant/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_Hant/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_TW/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/locale/zh_TW/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/db.sqlite3" afterPath="$PROJECT_DIR$/src/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/__init__.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authentication.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authentication.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/apps.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/apps.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/management/commands/drf_create_token.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/management/commands/drf_create_token.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/migrations/0001_initial.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/migrations/0001_initial.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/migrations/0002_auto_20160226_1747.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/migrations/0002_auto_20160226_1747.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/models.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/serializers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/authtoken/serializers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/compat.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/compat.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/decorators.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/decorators.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/documentation.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/documentation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/exceptions.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/exceptions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/fields.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/fields.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/filters.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/filters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/generics.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/generics.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/metadata.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/metadata.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/mixins.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/mixins.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/negotiation.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/negotiation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/pagination.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/pagination.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/parsers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/parsers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/permissions.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/permissions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/relations.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/relations.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/renderers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/renderers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/request.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/request.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/response.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/response.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/reverse.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/reverse.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/routers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/routers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/__init__.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/generators.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/generators.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/inspectors.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/inspectors.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/utils.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/utils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/views.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/schemas/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/serializers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/serializers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/settings.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/css/bootstrap-theme.min.css" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/css/bootstrap-theme.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/css/bootstrap.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/docs/css/base.css" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/docs/css/base.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/bootstrap.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/csrf.js" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/csrf.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/default.js" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/static/rest_framework/js/default.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/status.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/status.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/admin.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/admin.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/admin/list.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/admin/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/base.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/auth/session.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/auth/session.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/error.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/error.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/index.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/langs/shell.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/langs/shell.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/link.html" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templates/rest_framework/docs/link.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templatetags/rest_framework.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/templatetags/rest_framework.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/test.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/throttling.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/throttling.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/urlpatterns.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/urlpatterns.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/urls.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/breadcrumbs.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/breadcrumbs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/encoders.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/encoders.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/field_mapping.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/field_mapping.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/formatting.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/formatting.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/html.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/html.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/humanize_datetime.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/humanize_datetime.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/json.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/json.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/mediatypes.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/mediatypes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/representation.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/representation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/serializer_helpers.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/serializer_helpers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/urls.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/utils/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/validators.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/validators.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/versioning.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/versioning.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/views.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/rest_framework/viewsets.py" afterPath="$PROJECT_DIR$/Lib/site-packages/rest_framework/viewsets.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dictionary/models.py" afterPath="$PROJECT_DIR$/src/dictionary/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dictionary/serializers.py" afterPath="$PROJECT_DIR$/src/dictionary/serializers.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dictionary/views.py" afterPath="$PROJECT_DIR$/src/dictionary/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exercises/models.py" afterPath="$PROJECT_DIR$/src/exercises/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exercises/serializers.py" afterPath="$PROJECT_DIR$/src/exercises/serializers.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exercises/views.py" afterPath="$PROJECT_DIR$/src/exercises/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/frontend/src/components/Content.js" afterPath="$PROJECT_DIR$/src/frontend/src/components/Content.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/frontend/src/components/Exercises.js" afterPath="$PROJECT_DIR$/src/frontend/src/components/Exercises.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/frontend/src/components/Utils.js" afterPath="$PROJECT_DIR$/src/frontend/src/components/Utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/frontend/static/frontend/main.js" afterPath="$PROJECT_DIR$/src/frontend/static/frontend/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -166,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/LernenDe/settings/base.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1732">
-              <caret line="166" column="0" lean-forward="true" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+            <state relative-caret-position="2512">
+              <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -179,8 +38,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="45" />
+            <state relative-caret-position="468">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -208,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="992">
-              <caret line="210" column="14" lean-forward="false" selection-start-line="210" selection-start-column="14" selection-end-line="210" selection-end-column="14" />
+            <state relative-caret-position="827">
+              <caret line="234" column="0" lean-forward="true" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -336,9 +195,9 @@
         <option value="$PROJECT_DIR$/src/exercises/serializers.py" />
         <option value="$PROJECT_DIR$/src/exercises/models.py" />
         <option value="$PROJECT_DIR$/src/dictionary/serializers.py" />
+        <option value="$PROJECT_DIR$/src/LernenDe/settings/base.py" />
         <option value="$PROJECT_DIR$/src/dictionary/views.py" />
         <option value="$PROJECT_DIR$/src/exercises/views.py" />
-        <option value="$PROJECT_DIR$/src/LernenDe/settings/base.py" />
       </list>
     </option>
   </component>
@@ -1049,6 +908,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1023">
           <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#28#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1085,26 +947,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="992">
-          <caret line="210" column="14" lean-forward="false" selection-start-line="210" selection-start-column="14" selection-end-line="210" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LernenDe/settings/production.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1100">
@@ -1115,9 +957,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/LernenDe/settings/base.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1732">
-          <caret line="166" column="0" lean-forward="true" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+        <state relative-caret-position="2512">
+          <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dictionary/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/exercises/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="827">
+          <caret line="234" column="0" lean-forward="true" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -49,6 +49,18 @@ class IsPublic(BasePermission):
             return False
 
 
+class IsSafe(BasePermission):
+    message = 'Read only'
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            # Check permissions for read only request
+            return True
+        else:
+            # Check permissions for write request
+            return False
+
+
 class ExerciseListCreate(generics.ListCreateAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
@@ -199,7 +211,7 @@ def exercise_set_config(request):
 class WordInExerciseListCreate(generics.ListCreateAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated|IsSafe,)
 
     def get_queryset(self):
         return WordInExercise.objects.all()
@@ -224,7 +236,7 @@ class WordInExerciseListCreate(generics.ListCreateAPIView):
 class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = WordInExercise.objects.all()
     serializer_class = WordInExerciseSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated|IsSafe,)
 
     def put(self, request, *args, **kwargs):
         kwargs['partial'] = True
