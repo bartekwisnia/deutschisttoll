@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getData, getCookie } from "./Utils"
+import { HighlightedText } from './Components';
 
 function TranslationInput(props){
   const {number, translation, last, last_dict_input} = props;
@@ -76,7 +77,7 @@ function ConfirmButton(props){
 );
 }
 
-function WordButton(props){
+function WordButtonOld(props){
   const {version, ...other} = props;
   // version: 0 - form/delete, 1 - display (confirm), 2 - input (confirm), 3 - puzzle
   switch(version) {
@@ -132,6 +133,8 @@ class Word extends React.Component{
   const data = this.state.data;
   data[e.target.name] = e.target.value;
   if(e.target.name === 'text'){
+    if (this.props.setWord)
+      this.props.setWord(e.target.value);
     if( e.target.value.length >=3)
       this.findPicture(e.target.value)
   };
@@ -165,7 +168,9 @@ class Word extends React.Component{
   };
 
   handleWord = () => {
-    this.setState({loaded: true});
+    const {data} = this.state;
+    const setWord = this.props.setWord ? () => this.props.setWord(data.text) : () => {};
+    this.setState({loaded: true}, setWord);
   }
 
   getWord = () => {
@@ -275,6 +280,9 @@ class Word extends React.Component{
       case 3:
         return (
           <WordHero data={data} {...other}/>)
+      case 4:
+        return (
+          <WordButton data={data} {...other}/>)
       default:
           return <p>Błąd</p>;
         };
@@ -316,7 +324,7 @@ function WordForm(props){
             <p className="control">
               <input className="input is-primary" type="text" name="preposition" size="10" value={preposition} placeholder="przyimek" onChange={props.handleChange} />
             </p>
-            <p className="control">
+            <p className="control is-expanded">
               <input className="input is-primary" type="text" name="text" value={text} placeholder="Słowo po niemiecku" onChange={props.handleChange}  required />
             </p>
             <div className="field is-horizontal">
@@ -376,10 +384,10 @@ function WordSubForm(props){
   return (
     <React.Fragment>
           <div className="field is-grouped">
-            <p className="control is-expanded">
+            <p className="control">
               <input className="input is-primary" type="text" name="preposition" size="10" value={preposition} placeholder="przyimek" onChange={props.handleChange} />
             </p>
-            <p className="control">
+            <p className="control is-expanded">
               <input className="input is-primary" type="text" name="text" value={text} placeholder="Słowo po niemiecku" onChange={props.handleChange}  required={required} />
             </p>
             <p className="control">
@@ -425,17 +433,22 @@ function WordSubForm(props){
 }
 
 function WordHero(props){
-  const {data, translation, colour, size} = props;
-  const {text, preposition} = data;
+  const {data, translation} = props;
+  const {text } = data;
+  const text_as_array = text.split(" ");
+  const sentence = text_as_array.length > 1;
+  let preposition = sentence ? "" : data.preposition+" ";
+  if (preposition === 'pl ')
+    preposition = 'die ';
 
   return (
     <React.Fragment>
-      <div class={"hero" +" "+colour+" "+size}>
+      <div class={"hero" +" "+props.colour+" "+props.size}>
         <div class="hero-body">
           <div class="level">
             <p class="level-item has-text-centered">
               <h1 class="title">
-                {preposition + " " +text}
+                {preposition}<HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
               </h1>
             </p>
           </div>
@@ -454,5 +467,33 @@ function WordHero(props){
     </React.Fragment>
   )
 }
+
+
+function WordButton(props){
+  const {data, translation} = props;
+  const {text } = data;
+  const text_as_array = text.split(" ");
+  const sentence = text_as_array.length > 1;
+  const prepositions = ['der', 'die', 'das', 'pl'];
+  const prep_colours = ['is-info', 'is-danger', 'is-warning', 'is-primary', '']
+  const prep_index = prepositions.indexOf(data.preposition);
+
+  // props.colour ? props.colour :
+  const colour = (prep_index != -1 ? prep_colours[prep_index] : '')
+
+  let preposition = sentence ? "" : data.preposition;
+
+  if (preposition === 'pl')
+    preposition = 'die';
+
+  return (
+    <React.Fragment>
+    <p className={"button" +" "+colour+" "+props.size}>
+      {preposition} &nbsp; <HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
+    </p>
+    </React.Fragment>
+  )
+}
+
 
 export default Word;

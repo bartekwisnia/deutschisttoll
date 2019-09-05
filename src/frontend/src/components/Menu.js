@@ -72,7 +72,7 @@ getUserName(){
         <div className="navbar-menu">
           <div className="navbar-brand">
             <a className="navbar-item" onClick={() => this.props.selectSite(0)}>
-                <img src="../../../media/pictures/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
+                <img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
             </a>
           </div>
           {navbar_start}
@@ -112,7 +112,7 @@ class MenuPub extends React.Component{
         <div className="navbar-menu">
           <div className="navbar-brand">
             <a className="navbar-item" onClick={() => this.props.selectSite(0)}>
-              <img src="../../../media/pictures/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
+              <img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
             </a>
           </div>
           <div className="navbar-start">

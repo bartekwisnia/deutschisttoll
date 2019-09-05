@@ -16,12 +16,12 @@ class Contact extends React.Component{
     // console.log("render Blogs site");
 
       const logo = <figure class="image is-4by3">
-                          <img src="../../../media/pictures/logo/LogoBig4_3.png" alt="Deutsch ist toll!"/>
+                          <img src="../../../static/logo/LogoBig4_3.png" alt="Deutsch ist toll!"/>
                         </figure>
 
 
       const photo = <figure class="image is-3by4">
-                          <img src="../../../media/pictures/Kamila3_4.jpg" alt="Moja fotografia"/>
+                          <img src="../../../static/Kamila2_34.jpg" alt="Moja fotografia"/>
                         </figure>
 
 
@@ -138,7 +138,7 @@ class ContactSmallAbout extends React.Component{
       return  <div class="card">
                       <div class="card-image">
                         <figure class="image is-3by4">
-                          <img src="../../../media/pictures/Kamila3_4.jpg" alt="Moja fotografia"/>
+                          <img src="../../../static/Kamila2_34.jpg" alt="Moja fotografia"/>
                         </figure>
                       </div>
                       <div class="card-content">

@@ -253,4 +253,4 @@ class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView)
         except ObjectDoesNotExist as e:
             print(e)
 
-        return super(WordInExerciseListCreate, self).update(request, *args, **kwargs)
+        return super(WordInExerciseRetrieveUpdateDestroy, self).update(request, *args, **kwargs)

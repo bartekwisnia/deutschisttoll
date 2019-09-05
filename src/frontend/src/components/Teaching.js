@@ -378,7 +378,7 @@ class LessonsCalendar extends React.Component{
 
   calcDates = (callback) => {
     const {sel_date} = this.state;
-    const day_of_week = sel_date.getDay();
+    let day_of_week = sel_date.getDay();
     if (day_of_week === 0)
       day_of_week = 7;
     const start_date = addDays(sel_date, -1*(day_of_week-1));
@@ -825,7 +825,7 @@ class TeachingStudentView extends React.Component{
     //console.log("render student view");
     const {placeholder, refresh, view, lesson_id} = this.state;
     const { student } = this.props;
-    const loaded = True;
+    const loaded = true;
 
     if (!loaded)
       return <p>{placeholder}</p>;

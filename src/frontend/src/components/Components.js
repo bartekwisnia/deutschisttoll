@@ -252,6 +252,47 @@ class ContentList1 extends React.Component {
 }
 
 
+function HighlightedText(props){
+  const {text} = props;
+  const highlight_start = props.highlight_start !== undefined ? props.highlight_start : 0;
+  const highlight_end = props.highlight_end !== undefined ? props.highlight_end : 0;
+
+  const highlight = (highlight_start > 0 || highlight_end > 0) && text;
+  let highlighted_text = text.slice(0);
+  let highlighted_text_begin = '';
+  let highlighted_text_end = '';
+  console.log(highlighted_text);
+  console.log(highlighted_text_begin);
+  console.log(highlighted_text_end);
+  if (highlight){
+    if (highlight_start > 0) {
+      highlighted_text_begin = highlighted_text.slice(0, highlight_start-1);
+      highlighted_text = highlighted_text.slice(highlight_start-1);
+    }
+    console.log(highlighted_text);
+    console.log(highlighted_text_begin);
+    console.log(highlighted_text_end);
+    if (highlight_end > 0){
+      const end_position = highlight_start ? highlight_end-(highlight_start-1) : highlight_end;
+      highlighted_text_end = highlighted_text.slice(end_position);
+      highlighted_text = highlighted_text.slice(0, end_position);
+    }
+    console.log(highlighted_text);
+    console.log(highlighted_text_begin);
+    console.log(highlighted_text_end);
+  }
+
+
+  return (
+    <React.Fragment>
+      {highlighted_text_begin}
+      <span className="has-text-white">{highlighted_text}</span>
+      {highlighted_text_end}
+    </React.Fragment>
+  )
+}
+
+
 export {
   Icon,
   StatusIcon,
@@ -259,4 +300,5 @@ export {
   ContentList1,
   Tile,
   HomeworkTypeIcon,
+  HighlightedText,
 }

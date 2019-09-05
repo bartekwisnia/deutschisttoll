@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DataProvider from "./DataProvider";
-import { Icon, SearchBar, ContentList1 } from './Components';
+import { Icon, SearchBar, ContentList1, HighlightedText } from './Components';
 import Word from './Words'
 import {ContentList} from './Content';
 import { getData, getCookie, shuffleArray, quasiRandomColour } from "./Utils";
@@ -679,39 +679,177 @@ class ExerciseDict extends React.Component {
 }
 
 
+class DescribePicturePreview extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, results, set_results, picture_url} = this.props;
+    console.log("render describe picture play")
+    console.log(words)
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    const index = results.length
+    let groups = words.length > 0 ? [[words[0]]] : [];
+    for (var i = 1; i < words.length; i++) {
+        let group_found = false;
+        for (var j= 0; j < groups.length; j++) {
+          if(words[i].comment === groups[j][0].comment){
+            groups[j].push(words[i]);
+            group_found = true;
+            break;
+          }
+        }
+        if (!group_found){
+        groups.push([words[i]]);
+        }
+    }
+    console.log(groups);
+    const col_size = (11 / groups.length) - 1;
+
+    return (
+      <React.Fragment>
+        <div className="columns is-centered">
+          <div className="column is-2">
+            <div className="file has-name">
+              <label className="file-label">
+                <figure className="image" style={{minHeight: 100}}>
+                  <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
+                </figure>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="columns is-centered">
+        {groups.map((group, index) =>
+          <div className={"column is-"+col_size+" is-offset-1"}>
+            {group.map((el, index) => <div className='level'>
+                                      <Word
+                                        view={4} // button
+                                        id={el.word}
+                                        translation={el.translation}
+                                      />
+                                    </div>)}
+          </div>
+        )}
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+
+class DescribePicturePlay extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+    handleCheck = (index) => {
+      const {results} = this.props;
+      results[index] = true;
+      this.props.setResults(results);
+    };
+
+  render () {
+    const {words, results, set_results, picture_url} = this.props;
+    console.log("render describe picture preview")
+    console.log(words)
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    if (words.length === results.length){
+      return <p>Brak słów</p>
+    }
+
+    const index = results.length
+    const cpy_words = [...words];
+    const done = cpy_words.splice(0, index);
+    let groups = done.length > 0 ? [[done[0]]] : [];
+    for (var i = 1; i < done.length; i++) {
+        let group_found = false;
+        for (var j= 0; j < groups.length; j++) {
+          if(done[i].comment === groups[j][0].comment){
+            groups[j].push(done[i]);
+            group_found = true;
+            break;
+          }
+        }
+        if (!group_found){
+        groups.push([done[i]]);
+        }
+    }
+    console.log(groups);
+    const col_size = (11 / groups.length) - 1;
+
+    const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
+    console.log(word1);
+
+    return (
+      <React.Fragment>
+        <div className="columns is-vcentered">
+          <div className="column is-2 is-offset-3">
+            <div className="level">
+              <div className="level-item">
+                <div className="file has-name">
+                  <label className="file-label">
+                    <figure className="image" style={{minHeight: 200}}>
+                      <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
+                    </figure>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="column is-2 is-offset-2">
+                      <div className="level">
+              {word1 && <a onClick={() => this.handleCheck(index)}>
+                <Word
+                   view={4} // button
+                   id={word1.word}
+                 />
+              </a>}
+                        </div>
+          </div>
+        </div>
+        <div className="columns">
+        {groups.map((group, index) =>
+          <div className={"column is-"+col_size+" is-offset-1"}>
+            {group.map((el, index) => <div className='level'>
+                                      <Word
+                                        view={4} // button
+                                        id={el.word}
+                                        translation={el.translation}
+                                      />
+                                    </div>)}
+          </div>
+        )}
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+
+
 function DescribePicture(props){
   const {picture_url, fileChange, preview, play, ...other} = props;
 
   if (preview)
-    return (<React.Fragment>
-          <div className="level">
-            <div className="level-item">
-              <div className="file has-name">
-                <label className="file-label">
-                  <figure className="image" style={{minHeight: 200}}>
-                    <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
-                  </figure>
-                </label>
-              </div>
-            </div>
-          </div>
-          <ExerciseDict preview={true} {...other}/>
-        </React.Fragment>);
+    return (<DescribePicturePreview picture_url={picture_url} {...other}/>);
   if (play)
-    return (<React.Fragment>
-          <div className="level">
-            <div className="level-item">
-              <div className="file has-name">
-                <label className="file-label">
-                  <figure className="image" style={{minHeight: 200}}>
-                    <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
-                  </figure>
-                </label>
-              </div>
-            </div>
-          </div>
-          <ExerciseDict play={1} {...other}/>
-        </React.Fragment>);
+    return (<DescribePicturePlay picture_url={picture_url} {...other}/>);
   return (<React.Fragment>
         <div className="field">
           <div className="file has-name">
@@ -773,28 +911,42 @@ class TranslateWords extends React.Component {
 class WordInExercise extends React.Component {
     constructor(props){
       super(props);
-      this.state = {
-        };
+      this.state = {word: ''}
     };
+
+  setWord = (word) => {
+    console.log("set word:");
+    console.log(word);
+    this.setState({word: word});
+  }
 
   render () {
     const {el, index, ...other} = this.props;
+    const {word} = this.state;
     console.log("render Word in Exercise");
+    console.log(word);
     console.log(el);
     const word_id = el ? el.word : null;
     const translation = el ? el.translation : '';
     const comment = el ? el.comment : '';
     const required = el ? true : false;
-    //              comment = models.CharField(max_length=30, blank=True, null=True)
-    // highlight_start = models.IntegerField(default=0, blank=True)
-    // highlight_end = models.IntegerField(default=0, blank=True)
+    const highlight_start = el ? el.highlight_start : 0;
+    const highlight_end = el ? el.highlight_end : 0;
+    // <mark>highlighted text</mark>
+    const highlight = highlight_start > 0 || highlight_end > 0;
 
-    return ( <React.Fragment>
+    return (
+
+
+      <React.Fragment>
+        <div className="columns">
+          <div className="column is-11">
               <Word
                    initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
                    view={2} // subform
                    id={word_id}
                    required = {required}
+                   setWord = {this.setWord}
                  />
           {el &&
             <React.Fragment>
@@ -806,15 +958,30 @@ class WordInExercise extends React.Component {
                  <p className="control">
                    <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
                  </p>
-              </div>
-              <div className="field is-grouped-right">
-                {<Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
+                 <p className="control">
+                   <input className="input" type="text" name="highlight_start" size="2" value={highlight_start} placeholder="podświetlenie od znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+                 {highlight &&
+                  <p className="control">
+                    <p className="button is-static">
+                      <HighlightedText text={word} highlight_start={highlight_start} highlight_end={highlight_end}/>
+                    </p>
+                  </p>
+                 }
+                 <p className="control">
+                   <input className="input" type="text" name="highlight_end" size="2" value={highlight_end} placeholder="podświetlenie do znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
               </div>
             </div>
             </React.Fragment>
             }
-            <hr/>
-             </React.Fragment>
+          </div>
+          <div className="column">
+              {el && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
+          </div>
+        </div>
+        <hr/>
+      </React.Fragment>
 );
   };
 }
@@ -920,7 +1087,7 @@ class ClickPlay extends React.Component {
             </div>
             {word1 && <a onClick={() => this.handleCheck(index)}>
               <Word
-                 view={3} // hero
+                 view={4} // hero
                  id={word1.word}
                  colour={word1colour}
                  size="is-medium"
@@ -1022,7 +1189,8 @@ class ExerciseForm extends React.Component {
       last_dict_input: "",
       placeholder: "Ładowanie danych...",
       refresh: false,
-      word_in_ex_endpoint: "api/word-in-exercise/"
+      word_in_ex_endpoint: "api/word-in-exercise/",
+      copy: false,
       };
   }
 
@@ -1240,14 +1408,22 @@ deleteWord = (index) => {
 
   };
 
+makeCopy = () => {
+  const {data} = this.state;
+  const {words} = data;
+  words.map((el, index) => {el['id'] = 0})
+  data.words = words;
+  this.setState({data: data, copy: true});
+}
+
 handleSubmit = e => {
   e.preventDefault();
   const {id, endpoint} = this.props;
-  const { data, refresh } = this.state;
+  const { data, refresh, copy } = this.state;
   const { title, type, categories, level, picture, favourite} = data;
   const is_public = data['public']
   const formData = new FormData();
-  const method = id ? "put" : "post";
+  const method = (id && !copy) ? "put" : "post";
   formData.append('title', title);
   formData.append('type', type);
   formData.append('categories', categories);
@@ -1259,7 +1435,7 @@ handleSubmit = e => {
     formData.append('picture', picture);
   };
 
-  const url = id ? endpoint+id : endpoint;
+  const url = (id && !copy) ? endpoint+id : endpoint;
   const csrftoken = getCookie('csrftoken');
   const conf = {
     method: method,
@@ -1280,7 +1456,7 @@ handleSubmit = e => {
 
   render() {
     console.log("render exercise form");
-    const { data, dict, last_dict_input, imagePreviewUrl, placeholder} = this.state;
+    const { data, dict, last_dict_input, imagePreviewUrl, placeholder, copy} = this.state;
     const { id, loaded, model_config } = this.props;
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
@@ -1314,8 +1490,6 @@ handleSubmit = e => {
             <li className="is-active">{" "+title}</li>
           </ul>
         </nav>
-        <section className="columns">
-          <div className="column is-8">
             <form onSubmit={this.handleSubmit} className="box">
               <div className="field is-horizontal">
                 <div className="field-body">
@@ -1339,6 +1513,8 @@ handleSubmit = e => {
                       <Icon active={is_public} active_class="essentials32-worldwide" handleClick = {this.publicChange}/>
                       {id > 0 && <Icon active={true} active_class="essentials32-play-button-1"  handleClick = {() => this.props.handlePlay(id)}/>}
                       {id > 0 && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {this.handleDelete}/>}
+                      {id > 0 && !copy && <a className="button" onClick={this.makeCopy}>Stwórz kopię</a>}
+                      {copy && <span className="button">Kopia</span>}
                     </div>
                   </div>
                 </div>
@@ -1403,9 +1579,7 @@ handleSubmit = e => {
                 </button>
               </div>
             </form>
-          </div>
-        </section>
-      </React.Fragment>
+          </React.Fragment>
     ) : <p>{placeholder}</p>;
   }
 }

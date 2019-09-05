@@ -81,7 +81,7 @@ class Content extends React.Component{
         </div>
      const words_site = <div className="column is-7 is-offset-1">
        <Word
-            key = "exercise_site"
+            key = "words_site"
             selectSite={(view, id) => this.selectSite(4, view, id)}
             setID={(id) => this.selectSite(4, 1, id)}
             view={detail_view}
