@@ -716,7 +716,7 @@ class DescribePicturePreview extends React.Component {
     return (
       <React.Fragment>
         <div className="columns is-centered">
-          <div className="column is-2">
+          <div className="column is-4">
             <div className="file has-name">
               <label className="file-label">
                 <figure className="image" style={{minHeight: 100}}>
@@ -734,6 +734,8 @@ class DescribePicturePreview extends React.Component {
                                         view={4} // button
                                         id={el.word}
                                         translation={el.translation}
+                                        highlight_start={el.highlight_start}
+                                        highlight_end={el.highlight_end}
                                       />
                                     </div>)}
           </div>
@@ -798,9 +800,7 @@ class DescribePicturePlay extends React.Component {
     return (
       <React.Fragment>
         <div className="columns is-vcentered">
-          <div className="column is-2 is-offset-3">
-            <div className="level">
-              <div className="level-item">
+          <div className="column is-4">
                 <div className="file has-name">
                   <label className="file-label">
                     <figure className="image" style={{minHeight: 200}}>
@@ -808,18 +808,17 @@ class DescribePicturePlay extends React.Component {
                     </figure>
                   </label>
                 </div>
-              </div>
-            </div>
           </div>
           <div className="column is-2 is-offset-2">
-                      <div className="level">
               {word1 && <a onClick={() => this.handleCheck(index)}>
                 <Word
                    view={4} // button
                    id={word1.word}
+                   translation={word1.translation}
+                   highlight_start={word1.highlight_start}
+                   highlight_end={word1.highlight_end}
                  />
               </a>}
-                        </div>
           </div>
         </div>
         <div className="columns">
@@ -830,6 +829,8 @@ class DescribePicturePlay extends React.Component {
                                         view={4} // button
                                         id={el.word}
                                         translation={el.translation}
+                                        highlight_start={el.highlight_start}
+                                        highlight_end={el.highlight_end}
                                       />
                                     </div>)}
           </div>
@@ -1013,6 +1014,9 @@ class ClickPreview extends React.Component {
                                       colour={quasiRandomColour(index)}
                                       size=""
                                       translation={el.translation}
+                                      translation={el.translation}
+                                      highlight_start={el.highlight_start}
+                                      highlight_end={el.highlight_end}
                                     />
                                    <div className="level">
                                    </div>
@@ -1077,6 +1081,8 @@ class ClickPlay extends React.Component {
                                       colour={quasiRandomColour(index)}
                                       size=""
                                       translation={el.translation}
+                                      highlight_start={el.highlight_start}
+                                      highlight_end={el.highlight_end}
                                     />
                                    <div className="level">
                                    </div>
@@ -1087,10 +1093,13 @@ class ClickPlay extends React.Component {
             </div>
             {word1 && <a onClick={() => this.handleCheck(index)}>
               <Word
-                 view={4} // hero
+                 view={3} // hero
                  id={word1.word}
                  colour={word1colour}
                  size="is-medium"
+                 translation={word1.translation}
+                 highlight_start={word1.highlight_start}
+                 highlight_end={word1.highlight_end}
                />
             </a>}
             <div className="level>">
@@ -1927,11 +1936,6 @@ handleRestart = () => {
                 <h3 className="title is-5 has-text-centred">{title}</h3>
               </div>
             </div>
-            <div className="level">
-              <div className="level-item">
-                <h3 className="subtitle is-7 has-text-centred">{type_choices[type]}</h3>
-              </div>
-            </div>
             {exercise_content}
     </React.Fragment>
      :
@@ -1940,11 +1944,6 @@ handleRestart = () => {
           <div className="level">
             <div className="level-item">
               <h3 className="title is-5 has-text-centred">{title}</h3>
-            </div>
-          </div>
-          <div className="level">
-            <div className="level-item">
-              <h3 className="subtitle is-7 has-text-centred">{type_choices[type]}</h3>
             </div>
           </div>
           {exercise_content}

@@ -6,7 +6,7 @@ import { Icon, StatusIcon, SearchBar, Tile, HomeworkTypeIcon } from './Component
 import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus } from "./Utils"
 import { ExerciseSetList } from "./ExerciseSet";
 import { ExercisePlay, Exercise } from "./Exercises";
-import { LessonsList, Lesson } from "./Teaching";
+import { LessonsList, LessonsCalendar, Lesson } from "./Teaching";
 
 
 class Learning extends React.Component{
@@ -162,7 +162,7 @@ class Learning extends React.Component{
         return <React.Fragment>
                 <section className="section columns" style={{paddingTop: 20}}>
                   <div className="column is-8 is-offset-2">
-                    <LearningOverview handleView={this.handleView} next_instance={next_instance}/>;
+                    <LearningOverview handleView={this.handleView} next_instance={next_instance}/>
                   </div>
                 </section>
               </React.Fragment>
@@ -328,11 +328,17 @@ class LearningOverview extends React.Component{
     this.state = {
       refresh: false,
       query: "",
+      view: 0, // 0 - overview, 1 - lesson preview, 2 - lesson search
+      id: 0, // object ID
     };
   }
 
+  handleView = (view, id) => {
+    this.setState({view: view, id: id});
+  }
+
   render(){
-    const {refresh} = this.state;
+    const {refresh, view, id} = this.state;
     const {next_instance} = this.props;
     const loaded = true;
 
@@ -344,24 +350,33 @@ class LearningOverview extends React.Component{
         paddingLeft: '0.0em'
       };
 
-    const calendar = <p>Kalendarz</p>;
-
-    const next_classes = <div>
+    const next_lessons = <div>
                             <div className="level">
                               <div className="level-left">
                                 <h2 className="level-item subtitle">Najbliższe zajęcia</h2>
                               </div>
                             </div>
-                            <LessonsList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
+                            <LessonsList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)}/>
                           </div>;
-    const classes_list = <div>
+    const lessons_list = <div>
                             <div className="level">
                               <div className="level-left">
-                                <h2 className="level-item subtitle">Poprzednie zajęcia</h2>
+                                <h2 className="level-item subtitle">
+                                  <a onClick={() => this.handleView(2, 0)}>Poprzednie zajęcia</a>
+                                </h2>
                               </div>
                             </div>
-                            <LessonsList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, 0, id)}/>
+                            <LessonsList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)} search_view = {view === 2} />
                           </div>;
+
+    const calendar = <div>
+                      <div className="level">
+                        <div className="level-left">
+                          <h2 className="level-item subtitle">Kalendarz</h2>
+                        </div>
+                      </div>
+                      <LessonsCalendar refresh={refresh} student_view={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)}/>
+                    </div>;
 
     const exercises_list = <div>
                             <div className="level">
@@ -415,22 +430,56 @@ class LearningOverview extends React.Component{
                         {next_homework}
                         </React.Fragment>
 
-    return (<React.Fragment>
-          <div className="tile is-ancestor">
-            <div className="tile is-vertical is-4">
-                <Tile tag={next_activity} witdth="6"/>
-                <Tile tag={exercises_list}/>
-            </div>
-            <div className="tile is-vertical is-4">
-                <Tile tag={next_classes}/>
-                <Tile tag={classes_list}/>
-            </div>
-            <Tile tag={words_list}/>
-          </div>
-         </React.Fragment>)
+    const lesson_preview = <Lesson id={id} student_view={true} view={3}/>;
 
+    switch(view) {
+      case 1:
+        return (  <div className="tile is-ancestor">
+                    <div className="tile is-vertical is-4">
+                        <Tile tag={next_activity} witdth="6"/>
+                        <Tile tag={exercises_list}/>
+                        <Tile tag={words_list}/>
+                    </div>
+                    <div className="tile is-vertical is-4">
+                        <Tile tag={calendar}/>
+                        <Tile tag={next_lessons}/>
+                        <Tile tag={lessons_list}/>
+                    </div>
+                    <Tile tag={lesson_preview}/>
+                  </div>
+                )
+      case 2:
+        return (  <div className="tile is-ancestor">
+                    <div className="tile is-vertical is-4">
+                        <Tile tag={next_activity} witdth="6"/>
+                        <Tile tag={exercises_list}/>
+                        <Tile tag={words_list}/>
+                    </div>
+                    <div className="tile is-vertical is-4">
+                        <Tile tag={calendar}/>
+                        <Tile tag={next_lessons}/>
+                    </div>
+                    <Tile tag={lessons_list}/>
+                  </div>
+                )
+      default:
+          return (  <div className="tile is-ancestor">
+                      <div className="tile is-vertical is-4">
+                          <Tile tag={next_activity} witdth="6"/>
+                          <Tile tag={exercises_list}/>
+                      </div>
+                      <div className="tile is-vertical is-4">
+                          <Tile tag={calendar}/>
+                          <Tile tag={next_lessons}/>
+                          <Tile tag={lessons_list}/>
+                      </div>
+                      <Tile tag={words_list}/>
+                    </div>
+                  )
+        };
   }
 }
+
 
 class SideMenu extends React.Component{
   constructor(props){

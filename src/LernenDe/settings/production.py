@@ -128,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -160,7 +160,7 @@ REST_FRAMEWORK = {
 # Email
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'deutschisttoll.atthost24.pl'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'service.lernende@gmail.com'
-EMAIL_HOST_PASSWORD = 'Nokia3100'
+EMAIL_HOST_USER = 'kamila@deutschisttoll.waw.pl'
+EMAIL_HOST_PASSWORD = 'nokia3100'

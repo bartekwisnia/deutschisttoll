@@ -28,8 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
 
             name = validated_data['first_name'] if 'first_name' in validated_data else validated_data['username']
             email_text = """Cześć {}!
-Witaj na stronie LernenDe.pl. Twoje konto zostało automatycznie utworzone przez Twojego nauczyciela.
-Zaloguj się na sronie www.lernende.pl za pomocą danych:
+Witaj na stronie detuschisttoll.waw.pl. Twoje konto zostało automatycznie utworzone przez Twojego nauczyciela.
+Zaloguj się na sronie detuschisttoll.waw.pl za pomocą danych:
 użytkownik: {}
 hasło: {}
 """.format(name, validated_data['username'], validated_data['password'])
@@ -37,7 +37,7 @@ hasło: {}
             send_mail(
                 'Herzlich Wilkommen',
                 email_text,
-                'bartosz.wisniewski.1989@gmail.com',
+                'kamila@deutschisttoll.waw.pl',
                 (validated_data['email'],),
                 fail_silently=False,
             )

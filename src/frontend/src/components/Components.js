@@ -258,36 +258,36 @@ function HighlightedText(props){
   const highlight_end = props.highlight_end !== undefined ? props.highlight_end : 0;
 
   const highlight = (highlight_start > 0 || highlight_end > 0) && text;
+  const text_class = highlight ? "has-text-weight-bold" : "";
   let highlighted_text = text.slice(0);
   let highlighted_text_begin = '';
   let highlighted_text_end = '';
-  console.log(highlighted_text);
-  console.log(highlighted_text_begin);
-  console.log(highlighted_text_end);
+
+
   if (highlight){
     if (highlight_start > 0) {
       highlighted_text_begin = highlighted_text.slice(0, highlight_start-1);
       highlighted_text = highlighted_text.slice(highlight_start-1);
     }
-    console.log(highlighted_text);
-    console.log(highlighted_text_begin);
-    console.log(highlighted_text_end);
     if (highlight_end > 0){
       const end_position = highlight_start ? highlight_end-(highlight_start-1) : highlight_end;
       highlighted_text_end = highlighted_text.slice(end_position);
       highlighted_text = highlighted_text.slice(0, end_position);
     }
-    console.log(highlighted_text);
-    console.log(highlighted_text_begin);
-    console.log(highlighted_text_end);
+
   }
+
+  const space1 = highlight_start > 0 && (highlighted_text_begin.slice(-1) === ' ' || highlighted_text.slice(0,1) === ' ');
+  const space2 = highlight_end > 0 && (highlighted_text.slice(-1) === ' ' || highlighted_text_end.slice(0,1) === ' ');
 
 
   return (
     <React.Fragment>
-      {highlighted_text_begin}
-      <span className="has-text-white">{highlighted_text}</span>
-      {highlighted_text_end}
+      <span>{highlighted_text_begin}</span>
+      {space1 && <span>&nbsp;</span>}
+      <span className={text_class}>{highlighted_text}</span>
+      {space2 && <span>&nbsp;</span>}
+      <span>{highlighted_text_end}</span>
     </React.Fragment>
   )
 }

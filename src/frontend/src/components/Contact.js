@@ -65,8 +65,9 @@ class Contact extends React.Component{
                         <div class="content">
                           <p>
                           Jestem absolwentką wydziału neofilologii Uniwersytetu Warszawskiego. Od blisko 5 lat uczę języka niemieckiego prywatnie oraz dla szkół językowych.
+                          Spędziłam 4 lata pracując oraz ucząc się w Niemczech, wiedzę którą tam zdobyłam chętnie wykorzystuję na lekcjach.
                           Prowadzę zajęcia dla osób w każdym wieku i na każdym poziomie zaawansowania.
-                          Program dopasowuję indywidualnie do każdego ucznia.
+                          Program dopasowuję indywidualnie dla każdego ucznia.
                           Lekcje odbywają się na żywo lub online!
                           </p>
                           <p>Serdecznie zapraszam!<br/>Kamila</p>
@@ -151,8 +152,9 @@ class ContactSmallAbout extends React.Component{
                         <div class="content is-small">
                           <p>
                           Jestem absolwentką wydziału neofilologii Uniwersytetu Warszawskiego. Od blisko 5 lat uczę języka niemieckiego prywatnie oraz dla szkół językowych.
+                          Spędziłam 4 lata pracując oraz ucząc się w Niemczech, wiedzę którą tam zdobyłam chętnie wykorzystuję na lekcjach.
                           Prowadzę zajęcia dla osób w każdym wieku i na każdym poziomie zaawansowania.
-                          Program dopasowuję indywidualnie do każdego ucznia.
+                          Program dopasowuję indywidualnie dla każdego ucznia.
                           Lekcje odbywają się na żywo lub online!
                           </p>
                           <p>Serdecznie zapraszam!<br/>Kamila</p>

@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
-from .models import Homework, Lesson, ExerciseInLesson
+from .models import Homework, Lesson, ExerciseInLesson, Schedule
 from exercises.serializers import ExerciseSerializer
 from exercises.models import Exercise
 from user_profile.models import Profile
+from user_profile.serializers import ProfileSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -75,16 +76,15 @@ class HomeworkStudentSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     exercises = ExerciseSerializer(many=True, read_only=True)
-    exercises_id = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all(), source='exercises', many=True)
+    exercises_id = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all(), source='exercises', many=True, required=False)
+    student = UserSerializer(read_only=True)
+    student_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='student')
+    teacher = UserSerializer(read_only=True, required=False)
     id = serializers.ReadOnlyField()
 
     class Meta:
         model = Lesson
-        # fields = '__all__'
-        exclude = ('exercises',)
-        extra_kwargs = {'teacher': {'read_only': True, 'required': False},
-                        }
-        depth = 1
+        fields = '__all__'
 
     def validate_student(self, value):
         """
@@ -106,3 +106,23 @@ class LessonSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("You can only assign your own Exercises")
         return value
 
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    student = UserSerializer(read_only=True)
+    student_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='student')
+    teacher = UserSerializer(read_only=True, required=False)
+
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+
+    def validate_student(self, value):
+        """
+        Check that you assign scheduled lesson to your student
+        """
+        user_profile = User.objects.get(username=self.context['request'].user)
+        teacher_profile = Profile.objects.get(user=user_profile)
+        if value not in teacher_profile.students.all():
+            raise serializers.ValidationError("You can only assign scheduled lessons to your students")
+        return value

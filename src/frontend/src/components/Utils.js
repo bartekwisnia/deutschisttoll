@@ -98,6 +98,25 @@ function dateToYMDHm(date) {
     return ""
 }
 
+function getDayName(day) {
+    if (typeof(day) !== "undefined"){
+      let day_name = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota']
+      return day_name[day]
+    }
+    return ""
+}
+
+function dateToWHm(date) {
+    if (typeof(date) !== "undefined"){
+      var my_date = new Date(date);
+      var w = getDayName(my_date.getDay());
+      var h = my_date.getHours();
+      var min = my_date.getMinutes();
+      return '' + w + ' ' + (h<=9 ? '0' + h : h) + ':' + (min<=9 ? '0' + min : min);
+    }
+    return ""
+}
+
 function dateToHm(date) {
     if (typeof(date) !== "undefined"){
       var my_date = new Date(date);
@@ -168,5 +187,5 @@ function quasiRandomColour(index) {
 }
 
 export {
-  getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus, addDays, shuffleArray, quasiRandomColour
+  getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateToHm, dateWithEnd, overalStatus, addDays, shuffleArray, quasiRandomColour, dateToWHm
 }
