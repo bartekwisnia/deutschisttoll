@@ -77,6 +77,8 @@ class HomeworkStudentSerializer(serializers.ModelSerializer):
 class LessonSerializer(serializers.ModelSerializer):
     exercises = ExerciseSerializer(many=True, read_only=True)
     exercises_id = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all(), source='exercises', many=True, required=False)
+    exercises_status = serializers.SerializerMethodField(read_only=True)
+    exercises_result = serializers.SerializerMethodField(read_only=True)
     student = UserSerializer(read_only=True)
     student_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='student')
     teacher = UserSerializer(read_only=True, required=False)
@@ -85,6 +87,15 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+
+    def get_exercises_status(self, obj):
+        exercises_in_lesson = ExerciseInLesson.objects.filter(lesson=obj)
+        # print(exercises_in_lesson)
+        return exercises_in_lesson.values_list('status', flat=True)
+
+    def get_exercises_result(self, obj):
+        exercises_in_lesson = ExerciseInLesson.objects.filter(lesson=obj)
+        return exercises_in_lesson.values_list('result', flat=True)
 
     def validate_student(self, value):
         """

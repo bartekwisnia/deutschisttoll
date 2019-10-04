@@ -18,7 +18,8 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status
 
 from .models import Homework, Lesson, ExerciseInLesson, Schedule
-from exercises.models import ExerciseSet, Exercise
+from exercises.models import ExerciseSet, Exercise, WordInExercise
+from dictionary.models import WordLearning
 
 from .serializers import HomeworkTeacherSerializer, HomeworkStudentSerializer, LessonSerializer, ScheduleSerializer
 from user_profile.models import Profile
@@ -188,9 +189,6 @@ class LessonTeacherRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         new_exercises_ids = new_data.get('exercises_id')
         # print(request.data)
         if 'exercises_id' in list(request.data.keys()):
-            print("updating exercises")
-            for ex in new_exercises_ids:
-                print(ex)
             new_exercises = Exercise.objects.filter(id__in=new_exercises_ids)
             # Clear deleted lessons
             ExerciseInLesson.objects.filter(lesson=instance).exclude(exercise__in=new_exercises).delete()
@@ -203,7 +201,23 @@ class LessonTeacherRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
                 obj.order = order
                 obj.save()
                 order += 1
-        del new_data['exercises_id']
+            del new_data['exercises_id']
+
+        res = None
+        stat = None
+        if 'exercises_result' in list(request.data.keys()):
+            res = json.loads(request.data['exercises_result'])
+        if 'exercises_status' in list(request.data.keys()):
+            stat = json.loads(request.data['exercises_status'])
+
+        if res or stat:
+            for ex in ExerciseInLesson.objects.filter(lesson=instance):
+                if res and len(res) > ex.order:
+                    ex.result = res[ex.order]
+                if stat and len(stat) > ex.order:
+                    ex.status = stat[ex.order]
+                ex.save()
+
         response = super(LessonTeacherRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
         return response
 
@@ -219,6 +233,7 @@ class LessonStudentList(generics.ListAPIView):
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
         today = datetime.date.today()
+        # print(today)
         qs = Lesson.objects.filter(student=self.request.user)
         if incoming:
             qs = qs.filter(start__gte=today)
@@ -245,14 +260,24 @@ class LessonStudentRetrieveUpdate(generics.RetrieveUpdateAPIView):
         # print(request.data)
         kwargs['partial'] = True
         obj = self.get_object()
-        res = json.loads(request.data['result'])
-        stat = json.loads(request.data['ex_status'])
 
-        for e in obj.exercises.all():
-            ex = ExerciseInLesson.objects.get(exercise=e, learning_class=obj)
-            ex.result = res[ex.order]
-            ex.status = stat[ex.order]
-            ex.save()
+        res = None
+        stat = None
+        if 'exercises_result' in list(request.data.keys()):
+            res = json.loads(request.data['exercises_result'])
+        if 'exercises_status' in list(request.data.keys()):
+            stat = json.loads(request.data['exercises_status'])
+
+        if res or stat:
+            for ex in ExerciseInLesson.objects.filter(lesson=obj):
+                if res and len(res) > ex.order:
+                    ex.result = res[ex.order]
+                    if stat and len(stat) > ex.order:
+                        if stat[ex.order] == 3:  # update words in finished exercises
+                            ex.exercise.update_words(self.request.user, res[ex.order])
+                if stat and len(stat) > ex.order:
+                    ex.status = stat[ex.order]
+                ex.save()
 
         return self.update(request, *args, **kwargs)
 
@@ -271,7 +296,7 @@ class ScheduleTeacherListCreate(generics.ListCreateAPIView):
         return qs.order_by('-start')
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         new_schedule = serializer.save(teacher=self.request.user)
@@ -312,7 +337,7 @@ class MakeLesson(APIView):
         """
         Create a lesson from a schedule
         """
-        print(request.data)
+        # print(request.data)
         try:
             obj = Schedule.objects.get(id=self.kwargs['pk'])
             new_lesson = obj.make_lesson()

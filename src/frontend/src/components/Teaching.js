@@ -295,6 +295,20 @@ class LessonsList extends React.Component{
     this.setState({ end_date: datetime }, this.getLessons);
   };
 
+  setMonth = month => {
+    const first_day = new Date();
+    const last_day = new Date();
+    first_day.setDate(1);
+    first_day.setMonth(month);
+    first_day.setHours(0);
+    first_day.setMinutes(0);
+    last_day.setMonth(month + 1);
+    last_day.setDate(0);
+    last_day.setHours(23);
+    last_day.setMinutes(59);
+    this.setState({start_date: first_day, end_date: last_day }, this.getLessons);
+  };
+
   getLessons = () => {
     //console.log("force refresh");
     const {student, student_view, search_view, incoming, old} = this.props;
@@ -310,8 +324,9 @@ class LessonsList extends React.Component{
     }
 
     if(search_view){
-      options['start_date'] = start_date;
-      options['end_date'] = end_date;
+// YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."]
+      options['start_date'] = dateToYMD(start_date);
+      options['end_date'] = dateToYMD(end_date);
     }
 
     getData(endpoint, options, 'data', '', 'placeholder', this, this.handleData);
@@ -362,6 +377,28 @@ class LessonsList extends React.Component{
         paddingRight: '0.0em',
         paddingLeft: '0.0em'
       };
+      const today = new Date();
+      const this_month = today.getMonth();
+      const sel_month = start_date.getMonth();
+      console.log("this month:");
+      console.log(this_month);
+      const months_str = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
+
+
+      const months = this_month >=2 ? [this_month, this_month-1, this_month-2] : this_month === 1 ? [this_month, this_month-1, 11] : [this_month, 11, 10];
+
+
+      const button_class = {month0: "button",
+                            month1: "button",
+                            month2: "button",
+                          };
+
+      Object.keys(button_class).map((button, index) => {
+          const month_idx = parseInt(button.split("month").pop());
+          if (months[month_idx] === sel_month){
+              button_class[button] += " is-primary";
+            }
+      })
 
     const elements = data ? data.results : [];
     const startClass = (el, index) => {this.props.onPlay(el.id)};
@@ -369,6 +406,7 @@ class LessonsList extends React.Component{
     return (<React.Fragment>
               <div>
               {search_view &&
+                <React.Fragment>
                 <div className="field is-horizontal">
                   <div className="field-body">
                     <div className="field">
@@ -399,10 +437,16 @@ class LessonsList extends React.Component{
                     </div>
                   </div>
                 </div>
+                <div className="buttons are-small">
+                  <a className={button_class['month2']} onClick={() => this.setMonth(months[2])}>{months_str[months[2]]}</a>
+                  <a className={button_class['month1']} onClick={() => this.setMonth(months[1])}>{months_str[months[1]]}</a>
+                  <a className={button_class['month0']} onClick={() => this.setMonth(months[0])}>{months_str[months[0]]}</a>
+                </div>
+                </React.Fragment>
               }
 
                 <table className="table is-striped is-fullwidth is-hoverable">
-                  <thead><tr><th></th><th></th><th></th>{!student && <th></th>}<th></th><th></th><th></th></tr></thead>
+                  <thead><tr><th></th><th></th><th></th>{!student && !student_view && <th></th>}{!student_view && <th></th>}<th></th><th></th></tr></thead>
                   <tbody>
                     {elements.map((el, index) => {
                         return <tr key={el.id}>
@@ -411,20 +455,20 @@ class LessonsList extends React.Component{
                                   {onEdit && <a onClick={() => onEdit(el.id)}>{dateWithEnd(el.start, el.length)}</a>}
                                   {!onEdit && dateWithEnd(el.start, el.length)}
                                 </td>
-                                <td style={icon_td_style} key={"learning_class"+el.id+"-status"}>
-                                  <StatusIcon status={el.status} handleClick = {() => {startClass(el, index)}}/>
-                                </td>
                                 <td style={icon_td_style} key={"learning_class"+el.id+"-start"}>
                                   <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {startClass(el, index)}}/>
                                 </td>
-                                <td style={icon_td_style} key={"learning_class"+el.id+"-prepared"}>
-                                  <Icon active={el.prepared} active_class="essentials16-success" handleClick = {() => {onEdit(el.id)}}/>
+                                <td style={icon_td_style} key={"learning_class"+el.id+"-status"}>
+                                  <StatusIcon status={el.status} handleClick = {() => {startClass(el, index)}}/>
                                 </td>
+                                {!student_view && <td style={icon_td_style} key={"learning_class"+el.id+"-prepared"}>
+                                  <Icon active={el.prepared} active_class="business16-presentation-2" inactive_class="business16-presentation-12" handleClick = {() => {onEdit(el.id)}}/>
+                                </td>}
                                 <td style={icon_td_style} key={"learning_class"+el.id+"-taken"}>
-                                  <Icon active={el.taken} active_class="essentials16-success" handleClick = {() => {onEdit(el.id)}}/>
+                                  <Icon active={el.taken} active_class="essentials16-notebook-2" inactive_class="essentials16-note" handleClick = {() => {onEdit(el.id)}}/>
                                 </td>
                                 <td style={icon_td_style} key={"learning_class"+el.id+"-paid"}>
-                                  <Icon active={el.paid} active_class="essentials16-success" handleClick = {() => {onEdit(el.id)}}/>
+                                  <Icon active={el.paid} active_class="business16-notes" inactive_class="business16-coin" handleClick = {() => {onEdit(el.id)}}/>
                                 </td>
 
 
@@ -620,9 +664,9 @@ class LessonsCalendar extends React.Component{
 
     let options = student ? {student: student.id} : {};
     if (start_date)
-      options['start_date'] = start_date;
+      options['start_date'] = dateToYMD(start_date);
     if (end_date)
-      options['end_date'] = end_date;
+      options['end_date'] = dateToYMD(end_date);
     options['limit'] = 50;
     getData(endpoint, options, 'data', '', 'placeholder', this, this.handleData);
   };
@@ -707,7 +751,7 @@ class LessonsCalendar extends React.Component{
             cal.hours[tod_id].entries[j] = "";
           }
         }
-        cal.hours[tod_id].entries[day_of_week] = (student_view || student) ? "X" : this.getUserName(elements[i].student);
+        cal.hours[tod_id].entries[day_of_week] = {value: (student_view || student) ? "X" : this.getUserName(elements[i].student), id: elements[i].id};
       }
     };
 
@@ -728,11 +772,13 @@ class LessonsCalendar extends React.Component{
                     })}
                   </tr></thead>
                   <tbody>
-                    {Object.entries(cal.hours).map((h, h_id) => {
-                      return <tr key={"calendar_hour_"+h_id}>
+                    {Object.entries(cal.hours).map((h, h_idx) => {
+                      return <tr key={"calendar_hour_"+h_idx}>
                         <td>{dateToHm(h[1].tod)}</td>
-                        {h[1].entries.map((entry, entry_id) => {
-                          return <td key={"calendar_entry_"+h_id+"_"+entry_id}>{entry}</td>
+                        {h[1].entries.map((entry, entry_idx) => {
+                          return <td key={"calendar_entry_"+h_idx+"_"+entry_idx}>
+                            <a onClick = {() => {onEdit(entry.id)}}>{entry.value}</a>
+                          </td>
                         })}
                       </tr>
                     })}
@@ -819,7 +865,7 @@ class TeachingOverview extends React.Component{
                           <h2 className="level-item subtitle">Kalendarz</h2>
                         </div>
                       </div>
-                      <LessonsCalendar refresh={refresh} onPlay = {(id) => {}}/>
+                      <LessonsCalendar refresh={refresh} onPlay = {(id) => {}} onEdit={(id) => this.handleView(1, id)}/>
                     </div>;
     const next_classes = <div>
                             <div className="level">
@@ -946,7 +992,7 @@ class TeachingStudentView extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      view: 0, // 0 - overview (add words), 1 - plan lesson, 2 - add homework, 3 - plan schedule
+      view: 0, // 0 - overview (add words), 1 - plan lesson, 2 - add homework, 3 - plan schedule, 4 - play homework, 5 - play lesson
       id: 0,
       endpoint_lesson :   "api/teacher/lesson/",
       endpoint_homework :   "api/teacher/homework/",
@@ -1063,7 +1109,7 @@ class TeachingStudentView extends React.Component{
                             <a className="level-item button is-info" onClick={() => this.handleView(3, 0)}>+</a>
                           </div>
                         </div>
-                        <LessonsCalendar refresh={refresh} onPlay = {(id) => {}} student={student}/>
+                        <LessonsCalendar refresh={refresh} onPlay = {(id) => {}} student={student} onEdit={(id) => this.handleView(1, id)}/>
                       </div>;
     const lessons_list = <div>
                               <div className="level">
@@ -1074,7 +1120,7 @@ class TeachingStudentView extends React.Component{
                                   <a className="level-item button is-info" onClick={() => this.handleView(1, 0)}>+</a>
                                 </div>
                               </div>
-                              <LessonsList student={student} refresh={refresh} student_view={false} onEdit={(id) => this.handleView(1, id)} />
+                              <LessonsList student={student} refresh={refresh} student_view={false} onEdit={(id) => this.handleView(1, id)} onPlay={(id) => this.handleView(5, id)} search_view = {view === 1}/>
                             </div>
     const schedules_list = <div>
                               <div className="level">
@@ -1112,6 +1158,15 @@ class TeachingStudentView extends React.Component{
                                   addExercise={(el, index) => this.assignHomework(el, index, this.forceRefresh)}
                                   addExerciseSet={(el, index) => this.assignHomework(el, index, this.forceRefresh)} />
 
+
+  const lesson_play = <Lesson
+                            key = {"lesson_"+id+"_play"}
+                            view={4}
+                            id={id}
+                            onClickExit = {() => this.handleView(1, id)}
+                          />
+
+
   let right_tile, middle_tile, left_tile;
 
   switch(view) {
@@ -1143,6 +1198,13 @@ class TeachingStudentView extends React.Component{
                         <Tile tag={schedules_list}/>
                       </div>;
         right_tile = <Tile tag={schedule_form} width="4"/>;
+        break;
+      case 5:
+        left_tile = <div>
+                    </div>;
+        middle_tile = <div>
+                      </div>;
+        right_tile = <Tile tag={lesson_play}/>;
         break;
     default:
         left_tile = <div className="tile is-vertical">
@@ -1210,7 +1272,7 @@ class Lesson extends React.Component{
 
   handleChange = e => {
     const data = this.state.data;
-    data[e.target.name] = e.target.value;
+    data[e.target.name] = e.target.type === "checkbox" ? e.target.checked : e.target.value;
     this.setState({ data: data });
   };
 
@@ -1323,12 +1385,45 @@ class Lesson extends React.Component{
     .then(() => {this.props.endEdit();});
   };
 
+  setResult = (results, status) => {
+    const { id, student_view} = this.props;
+    const {data, endpoint_teacher, endpoint_student} = this.state;
+    const endpoint = student_view ? endpoint_student : endpoint_teacher;
+    data.exercises_result = results;
+    data.exercises_status = status;
+    this.setState({ data: data});
+
+    const method = "put";
+    const url = endpoint+id;
+    const csrftoken = getCookie('csrftoken');
+    let send_data ={};
+    send_data['exercises_result'] = JSON.stringify(results);
+    send_data['exercises_status'] = JSON.stringify(status);
+    send_data['status'] = overalStatus(status);
+    console.log("Data to send:")
+    console.log(send_data);
+
+    const conf = {
+      method: method,
+      body: JSON.stringify(send_data),
+      headers: new Headers({'X-CSRFToken': csrftoken,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            })
+    };
+    fetch(url, conf)
+    .then(response => {
+      console.log(response);
+    });
+  };
+
+
   render(){
     const { loaded, placeholder, data, refresh} = this.state;
     if(!loaded){
       return <p>{placeholder}</p>;
     }
-    const {id, view} = this.props;
+    const {id, view, onPlay, onClickExit} = this.props;
 
     switch(view) {
       case 1:
@@ -1341,13 +1436,14 @@ class Lesson extends React.Component{
             removeExercise={this.removeExercise}
             dateTimeChange={this.dateTimeChange}
             setLength={this.setLength}
+            onPlay={onPlay}
           />);
       case 3:
         return (
-          <LessonPreview data={data} refresh={refresh} id={id}/>);
+          <LessonPreview data={data} refresh={refresh} id={id} onPlay={onPlay}/>);
       case 4:
         return (
-          <LessonPlay data={data} refresh={refresh} id={id}/>);
+          <LessonPlay data={data} refresh={refresh} id={id} setResult={this.setResult} onClickExit={onClickExit}/>);
       default:
           return <p>Błąd</p>;
         };
@@ -1357,9 +1453,14 @@ class Lesson extends React.Component{
 
 function LessonForm(props){
   const {data, refresh, id} = props;
-  const { start, length, exercises, prepared, taken, paid, rate} = data;
+  const { start, length, exercises, exercises_result, exercises_status, prepared, taken, paid, rate} = data;
   const calendar_style = {
       border: 0
+    };
+
+  const icon_td_style = {
+      paddingRight: '0.0em',
+      paddingLeft: '0.0em'
     };
 
   const add_content = <AddContent refresh={refresh}
@@ -1377,6 +1478,7 @@ function LessonForm(props){
           button_class[button] += " is-primary";
         }
   })
+
 
   return (
     <React.Fragment>
@@ -1401,7 +1503,14 @@ function LessonForm(props){
               </div>
             </div>
           </div>
-          <div className="column is-3 is-offset-1">
+          <div className="column is-offset-1">
+            <div className="field">
+              <div className="control is-expanded">
+                {id > 0 && <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {props.onPlay(id)}}/>}
+              </div>
+            </div>
+          </div>
+          <div className="column is-offset-1">
             <div className="field">
               <div className="control is-expanded">
                 {id > 0 && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {props.handleDelete}/>}
@@ -1409,36 +1518,36 @@ function LessonForm(props){
             </div>
           </div>
       </div>
-      <div class="field is-grouped">
-        <p class="control">
-          <label class="checkbox">
-            <input type="checkbox" name="prepared" value={prepared} onChange={props.handleChange}/>
+      <div className="field is-grouped">
+        <p className="control">
+          <label className="checkbox">
+            <input type="checkbox" name="prepared" checked={prepared} onChange={props.handleChange}/>
             &nbsp;Przygotowana
           </label>
         </p>
-        <p class="control">
-          <label class="checkbox">
-            <input type="checkbox" name="taken" value={taken} onChange={props.handleChange}/>
+        <p className="control">
+          <label className="checkbox">
+            <input type="checkbox" name="taken" checked={taken} onChange={props.handleChange}/>
             &nbsp;Zaliczona
           </label>
         </p>
-        <p class="control">
-          <label class="checkbox">
-            <input type="checkbox" name="paid" value={paid} onChange={props.handleChange}/>
+        <p className="control">
+          <label className="checkbox">
+            <input type="checkbox" name="paid" checked={paid} onChange={props.handleChange}/>
             &nbsp;Zapłacona
           </label>
         </p>
       </div>
-      <div class="field">
+      <div className="field">
         <p className="control">
-          <label class="label">
+          <label className="label">
           Stawka
           </label>
           <input className="input is-primary" type="text" name="rate" value={rate} placeholder="Cena za godzinę" onChange={props.handleChange} />
         </p>
       </div>
       <div className="field">
-        <label class="label">
+        <label className="label">
         Czas trwania
         </label>
         <div className="buttons are-small">
@@ -1454,7 +1563,7 @@ function LessonForm(props){
       </div>
       {(exercises.length > 0) &&
         <React.Fragment>
-          <label class="label">
+          <label className="label">
           Ćwiczenia:
           </label>
           <table className="table is-narrower is-hoverable">
@@ -1463,6 +1572,7 @@ function LessonForm(props){
                 <th></th>
                 <th></th>
                 <th></th>
+                {exercises_status && <th></th>}
               </tr>
             </thead>
             <tbody>
@@ -1479,7 +1589,9 @@ function LessonForm(props){
                          <span key={index+"-level-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
                       </div>
                     </td>
-                    <td><Icon active={true} active_class="essentials16-garbage-1" handleClick = {() => props.removeExercise(index)}/></td>
+                    <td style={icon_td_style}><Icon active={true} active_class="essentials16-garbage-1" handleClick = {() => props.removeExercise(index)}/></td>
+                    {exercises_status[index] &&
+                    <td style={icon_td_style}><StatusIcon status={exercises_status[index]} handleClick = {() => {}}/></td>}
                   </tr>
               ))}
             </tbody>
@@ -1502,7 +1614,12 @@ function LessonForm(props){
 
 function LessonPreview(props){
   const {data, refresh, id} = props;
-  const { start, length, exercises, prepared, taken, paid, rate} = data;
+  const { start, length, exercises, exercises_result, exercises_status, prepared, taken, paid, rate} = data;
+
+  const icon_td_style = {
+      paddingRight: '0.0em',
+      paddingLeft: '0.0em'
+    };
 
   const button_class = {len30: "button",
                         len45: "button",
@@ -1523,40 +1640,45 @@ function LessonPreview(props){
         <div className="level-item">
           <h3 className="title is-5 has-text-centred">{dateWithEnd(start, length)}</h3>
         </div>
+        <div className="level-right">
+          <div className="level-item">
+              {id > 0 && <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => {props.onPlay(id)}}/>}
+          </div>
+        </div>
       </div>
       <div className="level">
         <div className="level-item">
-          <label class="checkbox">
-            <input type="checkbox" name="taken" value={taken} disabled/>
+          <label className="checkbox">
+            <input type="checkbox" name="taken" checked={taken} disabled/>
             &nbsp;Zaliczona
           </label>
         </div>
         <div className="level-item">
-          <label class="checkbox">
-            <input type="checkbox" name="paid" value={paid} disabled/>
+          <label className="checkbox">
+            <input type="checkbox" name="paid" checked={paid} disabled/>
             &nbsp;Zapłacona
           </label>
         </div>
       </div>
       <div className="level">
-          <label class="label">
+          <label className="label">
           Stawka:
           </label>
           <div className="control">
-            <input className="input is-primary" type="text" name="rate" value={rate} placeholder="Cena za godzinę" readonly/>
+            <input className="input is-primary" type="text" name="rate" value={rate} placeholder="Cena za godzinę" readOnly/>
           </div>
       </div>
       <div className="level">
-        <label class="label">
+        <label className="label">
         Czas trwania:
         </label>
         <div className="control">
-          <input className="input is-primary" type="text" name="length" value={length} placeholder="Długość zajęć" readonly/>
+          <input className="input is-primary" type="text" name="length" value={length} placeholder="Długość zajęć" readOnly/>
         </div>
       </div>
       {(exercises.length > 0) &&
         <React.Fragment>
-          <label class="label">
+          <label className="label">
           Ćwiczenia:
           </label>
           <table className="table is-narrower is-hoverable">
@@ -1565,6 +1687,7 @@ function LessonPreview(props){
                 <th></th>
                 <th></th>
                 <th></th>
+                {exercises_status && <th></th>}
               </tr>
             </thead>
             <tbody>
@@ -1580,6 +1703,8 @@ function LessonPreview(props){
                          <span key={index+"-level-"+tag_idx} className="tag is-info">{tag}</span>)) : ""}
                       </div>
                     </td>
+                    {exercises_status[index] &&
+                    <td style={icon_td_style}><StatusIcon status={exercises_status[index]} handleClick = {() => {}}/></td>}
                   </tr>
               ))}
             </tbody>
@@ -1611,13 +1736,13 @@ class LessonPlay extends React.Component{
 
   loadResults(){
     const { data } = this.props;
-    const { exercises } = data;
+    const { exercises, exercises_result, exercises_status } = data;
     let results = [];
     let status = [];
-    if (exercises) {
+    if (exercises && exercises_result && exercises_status && exercises.length === exercises_status.length  && exercises.length === exercises_result.length) {
       for (var i = 0; i < exercises.length; i++) {
-        results[i] = exercises[i].result ;
-        status[i] = exercises[i].status;
+        results[i] = exercises_result[i];
+        status[i] = exercises_status[i];
         }
     }
     this.setState({ results: results, status: status}, this.checkComplete);
@@ -1648,6 +1773,7 @@ class LessonPlay extends React.Component{
 };
 
 setResults = (ex_results, ex_status) => {
+  console.log("call setResults lesson play");
   const {exercise} = this.state;
   let {results, status} = this.state;
   results[exercise] = ex_results;
@@ -1722,6 +1848,11 @@ render() {
             <div className="level">
               <div className="level-item">
                 <h3 className="title is-5 has-text-centred">{dateWithEnd(data.start, data.length)}</h3>
+              </div>
+              <div className="level-right">
+                <div className="level-item">
+                  {onClickExit && <a className="button" onClick={onClickExit}>Zamknij</a>}
+                </div>
               </div>
             </div>
             <div className="buttons are-small">

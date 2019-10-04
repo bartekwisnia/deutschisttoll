@@ -98,6 +98,21 @@ function dateToYMDHm(date) {
     return ""
 }
 
+function dateToDjango(date) {
+  // YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]
+    if (typeof(date) !== "undefined"){
+      var my_date = new Date(date);
+      var d = my_date.getDate();
+      var m = my_date.getMonth() + 1; //Month from 0 to 11
+      var y = my_date.getFullYear();
+      var h = my_date.getHours();
+      var min = my_date.getMinutes();
+      return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d)
+      + ' ' + (h<=9 ? '0' + h : h) + ':' + (min<=9 ? '0' + min : min);
+    }
+    return ""
+}
+
 function getDayName(day) {
     if (typeof(day) !== "undefined"){
       let day_name = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota']

@@ -47,7 +47,7 @@ class WordListCreate(generics.ListCreateAPIView):
         return qs
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         try:
             return super(WordListCreate, self).create(request, *args, **kwargs)
         except exceptions.ValidationError:
@@ -58,7 +58,7 @@ class WordListCreate(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        print(response.data)
+        # print(response.data)
         return response
 
 
@@ -68,7 +68,7 @@ class WordRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def update(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         try:
             return super(WordRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
         except exceptions.ValidationError:
@@ -109,7 +109,7 @@ class WordLearningListCreate(generics.ListCreateAPIView):
         return qs
 
     def perform_create(self, serializer):
-        print(self.request.data)
+        # print(self.request.data)
         serializer.save(student=self.request.user)
 
 

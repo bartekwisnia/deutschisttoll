@@ -48,9 +48,9 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
     def get_words(self, obj):
         words = WordInExercise.objects.filter(exercise=obj)
-        print(words)
-        for w in words:
-            print(w)
+        # print(words)
+        # for w in words:
+        #     print(w)
         return WordInExerciseSerializer(words, many=True).data
 
 
@@ -100,13 +100,13 @@ class ExerciseSetSerializer(serializers.ModelSerializer):
         extra_kwargs = {'owner': {'read_only': True, 'required': False}}
 
     def create(self, validated_data):
-        print('serializer create: {}'.format(validated_data))
+        # print('serializer create: {}'.format(validated_data))
         (validated_data['categories'], validated_data['level']) = get_tags(validated_data['exercises'])
         return super(ExerciseSetSerializer, self).create(validated_data)
 
     def update(self, instance, validated_data):
         if 'exercises' in validated_data:
-            print('serializer update: {}'.format(validated_data))
+            # print('serializer update: {}'.format(validated_data))
             (validated_data['categories'], validated_data['level']) = get_tags(validated_data['exercises'])
         return super(ExerciseSetSerializer, self).update(instance, validated_data)
 

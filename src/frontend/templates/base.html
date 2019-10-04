@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>{% block head_title %}Deutsch ist toll!{% endblock head_title %}</title>
+    <title>{% block head_title %}Szkoła języka niemieckiego Deutsch ist toll! Warszawa Wilanów{% endblock head_title %}</title>
+    <meta name="description" content="Szkoła języka niemieckiego w Warszawie Wilanowie.
+    Zajęcia indywidualne, lekcje online, Skype, blog oraz interaktywne ćwiczenia">
     {% include 'snippets/css.html' %}
-
 </head>
 <body>
      {% block content %}
     Hello there!
     {% endblock content %}
-{% include 'snippets/js.html' %}
+ {% include 'snippets/js.html' %}
 </body>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+        Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>
+            from <a href="https://www.flaticon.com/"     title="Flaticon">www.flaticon.com</a>
+        </p>
+    </div>
+</footer>
 </html>
 
 

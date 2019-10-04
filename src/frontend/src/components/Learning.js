@@ -16,6 +16,8 @@ class Learning extends React.Component{
     this.state = {
       view : 0, // 0 - review words, 1 - do class, 2 - do homework
       id : 0,
+      overview: 0, // 0 - overview, 1 - lesson preview, 2 - lesson search
+      overview_id :0,
       placeholder: "Ładowanie...",
       homework_endpoint: "api/student/homework",
       lessons_endpoint: "api/student/lesson/",
@@ -26,7 +28,7 @@ class Learning extends React.Component{
     };
   }
 
-  handleView = (view, id) => {
+  handleView = (view, id, overview, overview_id) => {
     //view - 0 - overview, 2 - do exercise, 3 - do class
     //id - id of  object
     if (view === 2){
@@ -37,7 +39,7 @@ class Learning extends React.Component{
     else
       {
       const updateHomeworkList = this.getHomeworkList;
-      this.setState({view: view, id: id, homework_list_loaded: false, homework_instance_loaded : false}, updateHomeworkList);
+      this.setState({view: view, id: id, overview: overview, overview_id: overview_id, homework_list_loaded: false, homework_instance_loaded : false}, updateHomeworkList);
     }
   };
 
@@ -137,7 +139,8 @@ class Learning extends React.Component{
   }
 
   render(){
-    const {placeholder, id, view, homework_instance, homework_list, homework_list_loaded} = this.state;
+    const {placeholder, id, view, overview, overview_id, homework_instance,
+      homework_list, homework_list_loaded} = this.state;
     const loaded = homework_list_loaded;
 
     if (!loaded)
@@ -162,7 +165,7 @@ class Learning extends React.Component{
         return <React.Fragment>
                 <section className="section columns" style={{paddingTop: 20}}>
                   <div className="column is-8 is-offset-2">
-                    <LearningOverview handleView={this.handleView} next_instance={next_instance}/>
+                    <LearningOverview handleView={this.handleView} next_instance={next_instance} view={overview} id={overview_id}/>
                   </div>
                 </section>
               </React.Fragment>
@@ -195,14 +198,14 @@ class Learning extends React.Component{
                   <div className="column is-8 is-offset-2">
                     <div className="level">
                       <div className="level-right">
-                        <a className="level-item button is-light" onClick={() => this.handleView(0)}>Zamknij</a>
+                        <a className="level-item button is-light" onClick={() => this.handleView(0, 0, 1, id)}>Zamknij</a>
                       </div>
                     </div>
                     <Lesson
                       key = {"lesson_"+id+"_play"}
                       view={4}
                       id={id}
-                      onClickExit = {() => this.handleView(0)}
+                      onClickExit = {() => this.handleView(0, 0, 1, id)}
                       setResult = {this.setLessonResult}
                       student_view={true}
                     />
@@ -328,8 +331,8 @@ class LearningOverview extends React.Component{
     this.state = {
       refresh: false,
       query: "",
-      view: 0, // 0 - overview, 1 - lesson preview, 2 - lesson search
-      id: 0, // object ID
+      view: props.view, // 0 - overview, 1 - lesson preview, 2 - lesson search
+      id: props.id, // object ID
     };
   }
 
@@ -356,7 +359,7 @@ class LearningOverview extends React.Component{
                                 <h2 className="level-item subtitle">Najbliższe zajęcia</h2>
                               </div>
                             </div>
-                            <LessonsList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)}/>
+                            <LessonsList refresh={refresh} student_view={true} incoming={true} onPlay = {(id) => this.props.handleView(3, id)} onEdit = {(id) => this.handleView(1, id)}/>
                           </div>;
     const lessons_list = <div>
                             <div className="level">
@@ -366,7 +369,7 @@ class LearningOverview extends React.Component{
                                 </h2>
                               </div>
                             </div>
-                            <LessonsList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)} search_view = {view === 2} />
+                            <LessonsList refresh={refresh} student_view={true} old={true} onPlay = {(id) => this.props.handleView(3, id)} onEdit = {(id) => this.handleView(1, id)} search_view = {view === 2} />
                           </div>;
 
     const calendar = <div>
@@ -375,7 +378,7 @@ class LearningOverview extends React.Component{
                           <h2 className="level-item subtitle">Kalendarz</h2>
                         </div>
                       </div>
-                      <LessonsCalendar refresh={refresh} student_view={true} onPlay = {(id) => this.props.handleView(3, 0, id)} onEdit = {(id) => this.handleView(1, id)}/>
+                      <LessonsCalendar refresh={refresh} student_view={true} onPlay = {(id) => this.props.handleView(3, id)} onEdit = {(id) => this.handleView(1, id)}/>
                     </div>;
 
     const exercises_list = <div>
@@ -430,7 +433,7 @@ class LearningOverview extends React.Component{
                         {next_homework}
                         </React.Fragment>
 
-    const lesson_preview = <Lesson id={id} student_view={true} view={3}/>;
+    const lesson_preview = <Lesson id={id} student_view={true} view={3} onPlay = {(id) => this.props.handleView(3, id)}/>;
 
     switch(view) {
       case 1:

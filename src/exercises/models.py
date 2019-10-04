@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 from operator import __or__ as OR
 from functools import reduce
 
-from dictionary.models import Word
+from dictionary.models import Word, WordLearning
 
 User = get_user_model()
 # Create your models here.
@@ -125,6 +125,32 @@ class Exercise(models.Model):
 
     def get_categories(self):
         return self.categories.split(",")
+
+    def update_words(self, user, results):
+        print("update words")
+        words_set = self.words.all()
+        print(words_set)
+        print(results)
+        allowed_types = ('DES_PIC', 'SEL_TRANS', 'PUZ', 'CLICK', 'SORT')
+        if self.type in allowed_types:
+            if words_set:
+                word_idx = 0
+                for word in words_set:
+                    print("update word")
+                    print(word)
+                    obj, created = WordLearning.objects.get_or_create(student=user, word=word)
+                    if not created and len(results) > word_idx:
+                        print(obj.level)
+                        print(results[word_idx])
+                        if results[word_idx] and obj.level < 5:
+                            obj.level += 1
+                        elif obj.level > 0:
+                            obj.level -= 1
+                        print(obj.level)
+                        obj.save()
+                    else:
+                        print("new word or no result")
+                    word_idx += 1
 
 
 class WordInExercise(models.Model):

@@ -446,19 +446,19 @@ function WordHero(props){
       <div class={"hero" +" "+props.colour+" "+props.size}>
         <div class="hero-body">
           <div class="level">
-            <p class="level-item has-text-centered">
+            <div class="level-item has-text-centered">
               <h1 class="title">
                 {preposition}<HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
               </h1>
-            </p>
+            </div>
           </div>
           {translation &&
             <div class="level">
-              <p class="level-item has-text-centered">
+              <div class="level-item has-text-centered">
                 <h2 class="subtitle">
                   {translation}
                 </h2>
-              </p>
+              </div>
             </div>
           }
         </div>

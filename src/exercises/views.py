@@ -100,7 +100,7 @@ class ExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated | IsPublic, IsOwner)
 
     def put(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
@@ -157,7 +157,7 @@ class ExerciseSetListCreate(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         if request.data['public'] == '':
             request.data['public'] = False
         if request.data['favourite'] == '':
@@ -176,12 +176,12 @@ class ExerciseSetRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         return response
 
     def put(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         if 'public' in request.data and request.data['public'] == '':
             request.data['public'] = False
         if 'favourite' in request.data and request.data['favourite'] == '':
