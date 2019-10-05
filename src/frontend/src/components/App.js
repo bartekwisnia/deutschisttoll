@@ -102,6 +102,9 @@ class App extends React.Component{
     return (
       <React.Fragment>
         <Menu selectSite={this.selectSite} updateState={this.updateState} teacher={teacher} user_data={user_data}/>
+        <section className="image is-fullwidth">
+              <img src="../../../static/ColognePanorama.jpg" alt="Panorama Kolonii"/>
+        </section>
         {disp_site}
         <svg viewBox="0 0 8 8" className="icon"><use xlinkHref="#heart"></use></svg>
       </React.Fragment>

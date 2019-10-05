@@ -52,7 +52,10 @@ class AppPub extends React.Component{
 
     return loaded ? (
       <React.Fragment>
-        <MenuPub selectSite={this.selectSite}/>
+          <MenuPub selectSite={this.selectSite}/>
+          <section className="image is-fullwidth">
+                <img src="../../../static/ColognePanorama.jpg" alt="Panorama Kolonii"/>
+          </section>
         {disp_site}
       </React.Fragment>
     ) : <p>{placeholder}</p>;

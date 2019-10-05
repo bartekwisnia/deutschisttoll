@@ -57,11 +57,6 @@ getUserName(){
                               Dla samouków
                             </a>
                           </div>
-                          <div className="navbar-item">
-                            <a className="button is-danger" onClick={() => this.props.selectSite(13)}>
-                              Powtórz słownictwo
-                            </a>
-                          </div>
                         </div>
 
     const navbar_start = teacher ? teacher_menu : student_menu;

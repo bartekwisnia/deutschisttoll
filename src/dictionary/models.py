@@ -1,6 +1,9 @@
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
+from datetime import datetime, timedelta
 
 User = get_user_model()
 # Create your models here.
@@ -41,6 +44,31 @@ class Translation(models.Model):
         unique_together = ('text', 'word')
 
 
+class WordLearningQuerySet(models.query.QuerySet):
+    def words_to_learn(self):
+        d0 = datetime.today() - timedelta(days=1)
+        d1 = datetime.today() - timedelta(days=3)
+        d2 = datetime.today() - timedelta(days=7)
+        d3 = datetime.today() - timedelta(days=10)
+        d4 = datetime.today() - timedelta(days=14)
+        d5 = datetime.today() - timedelta(days=30)
+        qs = WordLearning.objects.filter((Q(updated__gte=d0) & Q(level=0)) |
+                                         (Q(updated__gte=d1) & Q(level=1)) |
+                                         (Q(updated__gte=d2) & Q(level=2)) |
+                                         (Q(updated__gte=d3) & Q(level=3)) |
+                                         (Q(updated__gte=d4) & Q(level=4)) |
+                                         (Q(updated__gte=d5) & Q(level=5))).order_by('level', '-updated')
+        return qs
+
+
+class WordLearningManager(models.Manager):
+    def get_queryset(self):
+        return WordLearningQuerySet(self.model, using=self._db)
+
+    def words_to_learn(self):
+        return self.get_queryset().words_to_learn()
+
+
 class WordLearning(models.Model):
     student = models.ForeignKey(User, related_name='student_words', on_delete=models.CASCADE)
     word = models.ForeignKey(Word, related_name='learned', on_delete=models.CASCADE)
@@ -48,6 +76,8 @@ class WordLearning(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    objects = WordLearningManager()
 
     def __str__(self):
         return "{}:{}".format(self.student, self.word)

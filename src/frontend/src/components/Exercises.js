@@ -679,6 +679,145 @@ class ExerciseDict extends React.Component {
 }
 
 
+// class TranslateWords extends React.Component {
+//     constructor(props){
+//       super(props);
+//       this.state = {
+//         game: 2,
+//         };
+//     };
+//
+//     changeGame = (index) => {
+//       this.setState({ game: index });
+//     };
+//
+//   render () {
+//     const {game} = this.state;
+//     const {preview, play, ...other} = this.props;
+//     //console.log("TranslateWords results" + results);
+//     if (preview)
+//       return (<ExerciseDict preview={true} {...other}/>);
+//     if (play)
+//       return (<React.Fragment>
+//                           <div className="level">
+//                               <div className="level-item">
+//                                 <div className="buttons are-small">
+//                                   <a className="button" onClick={() => this.changeGame(0)}>Podpowiedź</a>
+//                                   <a className="button" onClick={() => this.changeGame(2)}>Tłumaczenie na polski</a>
+//                                   <a className="button" onClick={() => this.changeGame(3)}>Rozsypanka</a>
+//                                 </div>
+//                               </div>
+//                             </div>
+//             <ExerciseDict play={game} preview={game ? false : true} {...other}/>
+//           </React.Fragment>);
+//     return (<ExerciseDict {...other}/>);
+//   };
+// }
+
+
+class WordInExercise extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {word: ''}
+    };
+
+  setWord = (word) => {
+    console.log("set word:");
+    console.log(word);
+    this.setState({word: word});
+  }
+
+  render () {
+    const {el, index, ...other} = this.props;
+    const {word} = this.state;
+    console.log("render Word in Exercise");
+    console.log(word);
+    console.log(el);
+    const word_id = el ? el.word : null;
+    const translation = el ? el.translation : '';
+    const comment = el ? el.comment : '';
+    const required = el ? true : false;
+    const highlight_start = el ? el.highlight_start : 0;
+    const highlight_end = el ? el.highlight_end : 0;
+    // <mark>highlighted text</mark>
+    const highlight = highlight_start > 0 || highlight_end > 0;
+
+    return (
+
+
+      <React.Fragment>
+        <div className="columns">
+          <div className="column is-11">
+              <Word
+                   initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
+                   view={2} // subform
+                   id={word_id}
+                   required = {required}
+                   setWord = {this.setWord}
+                 />
+          {el &&
+            <React.Fragment>
+            <div className="field is-horizontal">
+              <div className="field is-grouped">
+                 <p className="control">
+                   <input className="input is-info" type="text" name="translation" size="10" value={translation} placeholder="tłumaczenie" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+                 <p className="control">
+                   <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+                 <p className="control">
+                   <input className="input" type="text" name="highlight_start" size="2" value={highlight_start} placeholder="podświetlenie od znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+                 {highlight &&
+                  <p className="control">
+                    <p className="button is-static">
+                      <HighlightedText text={word} highlight_start={highlight_start} highlight_end={highlight_end}/>
+                    </p>
+                  </p>
+                 }
+                 <p className="control">
+                   <input className="input" type="text" name="highlight_end" size="2" value={highlight_end} placeholder="podświetlenie do znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                 </p>
+              </div>
+            </div>
+            </React.Fragment>
+            }
+          </div>
+          <div className="column">
+              {el && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
+          </div>
+        </div>
+        <hr/>
+      </React.Fragment>
+);
+  };
+}
+
+
+class DictionaryForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, ...other} = this.props;
+    console.log("render dictionary form")
+    console.log(words)
+    return (
+      <React.Fragment>
+        {words.map((el, index) => {
+          console.log("Word number "+index);
+          return <WordInExercise key={"Word number "+index} el={el} index={index} {...other} />
+        })}
+        <WordInExercise key={"New word"+words.length} {...other}/>
+      </React.Fragment>
+
+    );
+  };
+}
+
 class DescribePicturePreview extends React.Component {
     constructor(props){
       super(props);
@@ -745,7 +884,6 @@ class DescribePicturePreview extends React.Component {
     );
   };
 }
-
 
 
 class DescribePicturePlay extends React.Component {
@@ -842,8 +980,6 @@ class DescribePicturePlay extends React.Component {
 }
 
 
-
-
 function DescribePicture(props){
   const {picture_url, fileChange, preview, play, ...other} = props;
 
@@ -872,120 +1008,6 @@ function DescribePicture(props){
       </React.Fragment>);
 };
 
-
-class TranslateWords extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        game: 2,
-        };
-    };
-
-    changeGame = (index) => {
-      this.setState({ game: index });
-    };
-
-  render () {
-    const {game} = this.state;
-    const {preview, play, ...other} = this.props;
-    //console.log("TranslateWords results" + results);
-    if (preview)
-      return (<ExerciseDict preview={true} {...other}/>);
-    if (play)
-      return (<React.Fragment>
-                          <div className="level">
-                              <div className="level-item">
-                                <div className="buttons are-small">
-                                  <a className="button" onClick={() => this.changeGame(0)}>Podpowiedź</a>
-                                  <a className="button" onClick={() => this.changeGame(2)}>Tłumaczenie na polski</a>
-                                  <a className="button" onClick={() => this.changeGame(3)}>Rozsypanka</a>
-                                </div>
-                              </div>
-                            </div>
-            <ExerciseDict play={game} preview={game ? false : true} {...other}/>
-          </React.Fragment>);
-    return (<ExerciseDict {...other}/>);
-  };
-}
-
-
-class WordInExercise extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {word: ''}
-    };
-
-  setWord = (word) => {
-    console.log("set word:");
-    console.log(word);
-    this.setState({word: word});
-  }
-
-  render () {
-    const {el, index, ...other} = this.props;
-    const {word} = this.state;
-    console.log("render Word in Exercise");
-    console.log(word);
-    console.log(el);
-    const word_id = el ? el.word : null;
-    const translation = el ? el.translation : '';
-    const comment = el ? el.comment : '';
-    const required = el ? true : false;
-    const highlight_start = el ? el.highlight_start : 0;
-    const highlight_end = el ? el.highlight_end : 0;
-    // <mark>highlighted text</mark>
-    const highlight = highlight_start > 0 || highlight_end > 0;
-
-    return (
-
-
-      <React.Fragment>
-        <div className="columns">
-          <div className="column is-11">
-              <Word
-                   initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
-                   view={2} // subform
-                   id={word_id}
-                   required = {required}
-                   setWord = {this.setWord}
-                 />
-          {el &&
-            <React.Fragment>
-            <div className="field is-horizontal">
-              <div className="field is-grouped">
-                 <p className="control">
-                   <input className="input is-info" type="text" name="translation" size="10" value={translation} placeholder="tłumaczenie" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
-                 </p>
-                 <p className="control">
-                   <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
-                 </p>
-                 <p className="control">
-                   <input className="input" type="text" name="highlight_start" size="2" value={highlight_start} placeholder="podświetlenie od znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
-                 </p>
-                 {highlight &&
-                  <p className="control">
-                    <p className="button is-static">
-                      <HighlightedText text={word} highlight_start={highlight_start} highlight_end={highlight_end}/>
-                    </p>
-                  </p>
-                 }
-                 <p className="control">
-                   <input className="input" type="text" name="highlight_end" size="2" value={highlight_end} placeholder="podświetlenie do znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
-                 </p>
-              </div>
-            </div>
-            </React.Fragment>
-            }
-          </div>
-          <div className="column">
-              {el && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
-          </div>
-        </div>
-        <hr/>
-      </React.Fragment>
-);
-  };
-}
 
 class ClickPreview extends React.Component {
     constructor(props){
@@ -1114,31 +1136,6 @@ class ClickPlay extends React.Component {
 }
 
 
-class DictionaryForm extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        };
-    };
-
-  render () {
-    const {words, ...other} = this.props;
-    console.log("render dictionary form")
-    console.log(words)
-    return (
-      <React.Fragment>
-        {words.map((el, index) => {
-          console.log("Word number "+index);
-          return <WordInExercise key={"Word number "+index} el={el} index={index} {...other} />
-        })}
-        <WordInExercise key={"New word"+words.length} {...other}/>
-      </React.Fragment>
-
-    );
-  };
-}
-
-
 class ClickAndLearn extends React.Component {
     constructor(props){
       super(props);
@@ -1159,6 +1156,166 @@ class ClickAndLearn extends React.Component {
       return (<ClickPlay {...other}/>);
     if (preview)
       return (<ClickPreview {...other}/>);
+    return (<DictionaryForm {...other}/>);
+  };
+}
+
+
+class TranslateWordsPreview extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, results} = this.props;
+    console.log("render translate words preview")
+    console.log(words)
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    return (
+      <React.Fragment>
+          {words.map((el, index) => <React.Fragment>
+                                      <Word
+                                        view={0} // result
+                                        id={el.word}
+                                        result={results[index]}
+                                        size=""
+                                        translation={el.translation}
+                                        highlight_start={el.highlight_start}
+                                        highlight_end={el.highlight_end}
+                                      />
+                                   <div className="level">
+                                   </div>
+                                  </React.Fragment>)}
+      </React.Fragment>
+    );
+  };
+}
+
+
+class TranslateWordsPlay extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        inputs: [],
+        translations: [],
+        };
+    };
+
+    checkTranslation = (input, translations, index) => {
+      const {words} = this.props;
+      for (var i = 0; i < translations.length; i++) {
+        if(input === translations[i]){
+          return true;
+        }
+      }
+      if(input === words[index].translation){
+        return true;
+      }
+      return false;
+    };
+
+    handleCheck = (index) => {
+      const {results} = this.props;
+      const {inputs, translations} = this.state;
+      results[index] = this.checkTranslation(inputs[index], translations[index], index);
+      this.props.setResults(results);
+    };
+
+    handleChange = (e, pos_trans, index) => {
+      const {words} = this.props;
+      let {inputs, translations} = this.state;
+      inputs[index] = e.target.value;
+      translations[index] = pos_trans;
+      const callback = this.checkTranslation(e.target.value, pos_trans, index) ? () => this.handleCheck(index) : () => {};
+      this.setState({ inputs: inputs, translations: translations}, callback);
+    };
+
+    onKeyDown = (e, index) => {
+      if (e.keyCode === 13){
+        this.handleCheck(index);
+      }
+    }
+
+  render () {
+    const {words, results, set_results} = this.props;
+    const {inputs, translations} = this.state;
+    console.log("render translate words play")
+    console.log(words);
+    console.log(inputs);
+    console.log(translations);
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    if (words.length === results.length){
+      return <p>Brak słów</p>
+    }
+
+    const index = results.length
+    const cpy_words = [...words];
+    const done = cpy_words.splice(0, index);
+    const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
+    const word1colour = quasiRandomColour(index);
+    console.log(word1);
+
+    return (
+      <React.Fragment>
+        {word1 &&
+          <Word
+             view={5} // translation input
+             id={word1.word}
+             translation={inputs[index]}
+             highlight_start={word1.highlight_start}
+             highlight_end={word1.highlight_end}
+             handleChange={(e, pos_trans) => this.handleChange(e, pos_trans, index)}
+             onKeyDown={(e) => {this.onKeyDown(e, index)}}
+           />}
+          {done.map((el, index) => <React.Fragment>
+                                    <div className="level">
+                                    </div>
+                                    <Word
+                                      view={0} // result
+                                      id={el.word}
+                                      result={results[index]}
+                                      size=""
+                                      translation={el.translation}
+                                      highlight_start={el.highlight_start}
+                                      highlight_end={el.highlight_end}
+                                    />
+                                  </React.Fragment>)}
+      </React.Fragment>
+    );
+  };
+}
+
+
+class TranslateWords extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        game: 2,
+        };
+    };
+
+    changeGame = (index) => {
+      this.setState({ game: index });
+    };
+
+  render () {
+    const {game} = this.state;
+    const {preview, play, ...other} = this.props;
+    //console.log("TranslateWords results" + results);
+    if (play)
+      return (<TranslateWordsPlay {...other}/>);
+    if (preview)
+      return (<TranslateWordsPreview {...other}/>);
     return (<DictionaryForm {...other}/>);
   };
 }
@@ -1940,7 +2097,6 @@ handleRestart = () => {
     </React.Fragment>
      :
       <React.Fragment>
-        <div className="box">
           <div className="level">
             <div className="level-item">
               <h3 className="title is-5 has-text-centred">{title}</h3>
@@ -1957,7 +2113,6 @@ handleRestart = () => {
                         </div>
                       </div>
           }
-        </div>
       </React.Fragment>
   }
 }

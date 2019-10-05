@@ -15,7 +15,7 @@ class Contact extends React.Component{
   render(){
     // console.log("render Blogs site");
 
-      const logo = <figure class="image is-4by3">
+      const logo = <figure className="image is-4by3">
                           <img src="../../../static/logo/LogoBig4_3.png" alt="Deutsch ist toll!"/>
                         </figure>
 
@@ -54,15 +54,33 @@ class Contact extends React.Component{
                         </div>
                       </article>
 
-      const about = <div class="card">
-                      <div class="card-content">
-                        <div class="media">
-                          <div class="media-content">
-                            <p class="title is-4">Kamila Wiśniewska</p>
-                            <p class="subtitle is-6">lektorka i autorka strony</p>
-                          </div>
+      const about = <React.Fragment>
+                      <div className="level" style={{paddingTop: 20}}>
+                        <div className="level-item">
+                          <h1 className="title is-3 has-text-centered">
+                            Herzlich Willkommen!
+                          </h1>
                         </div>
-                        <div class="content">
+                      </div>
+                      <div className="columns" style={{paddingTop: 20}}>
+                        <div className="column is-4 is-offset-4">
+                          <figure class="image is-3by4">
+                              <img className="is-rounded" src="../../../static/Kamila2_34.jpg" alt="Moja fotografia"/>
+                          </figure>
+                        </div>
+                      </div>
+                      <div className="level" style={{paddingTop: 20, marginBottom: 5}}>
+                        <div className="level-item">
+                          <h1 class="title is-4">Kamila Wiśniewska</h1>
+
+                        </div>
+                      </div>
+                      <div className="level" style={{paddingTop: 0}}>
+                        <div className="level-item">
+                          <h2 class="subtitle is-6">lektorka i autorka strony</h2>
+                        </div>
+                      </div>
+                      <div class="content" style={{paddingLeft: 40, paddingRight: 40}}>
                           <p>
                           Jestem absolwentką wydziału neofilologii Uniwersytetu Warszawskiego. Od blisko 5 lat uczę języka niemieckiego prywatnie oraz dla szkół językowych.
                           Spędziłam 4 lata pracując oraz ucząc się w Niemczech, wiedzę którą tam zdobyłam chętnie wykorzystuję na lekcjach.
@@ -71,27 +89,26 @@ class Contact extends React.Component{
                           Lekcje odbywają się na żywo lub online!
                           </p>
                           <p>Serdecznie zapraszam!<br/>Kamila</p>
-                        </div>
                       </div>
-                    </div>
+                    </React.Fragment>
 
 
 
-      return  <section className="section columns" style={{paddingTop: 20}}>
+      return  <React.Fragment>
+      <section className="section columns" style={{paddingTop: 20}}>
       <div className="column is-8 is-offset-2">
-        <div className="tile is-ancestor">
-          <div className="tile is-vertical">
-            <div className="tile">
-                <div className="tile is-parent is-4">
-                  <div className="tile is-child">
-                    {logo}
-                  </div>
+        <div className="tile is-ancestor is-vertical">
+          <div className="tile">
+
+            <div className="tile is-6 has-background-yellow" style={{paddingTop: 100}}>
+              <div className="tile is-parent">
+                <div className="tile is-child">
+                  {logo}
                 </div>
-                <div className="tile is-parent is-3">
-                  <div className="tile is-child">
-                    {photo}
-                  </div>
-                </div>
+              </div>
+            </div>
+
+            <div classname="tile">
               <div className="tile is-parent">
                 <div className="tile is-child">
                   {about}
@@ -99,29 +116,33 @@ class Contact extends React.Component{
               </div>
             </div>
 
-            <div className="tile">
-              <div className="tile is-parent">
-                <div className="tile is-child">
-                  {address}
-                </div>
-              </div>
-              <div className="tile is-parent">
-                <div className="tile is-child">
-                  {phone}
-                </div>
-              </div>
-              <div className="tile is-parent">
-                <div className="tile is-child">
-                  {email}
-                </div>
-              </div>
-            </div>
-
           </div>
-        </div>
-      </div>
+        <div className="tile">
 
-              </section>
+          <div className="tile is-parent">
+            <div className="tile is-child">
+              {address}
+            </div>
+          </div>
+
+          <div className="tile is-parent">
+            <div className="tile is-child">
+              {phone}
+            </div>
+          </div>
+
+          <div className="tile is-parent">
+            <div className="tile is-child">
+              {email}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+  </React.Fragment>
   }
 }
 
@@ -136,20 +157,26 @@ class ContactSmallAbout extends React.Component{
   }
 
   render(){
-      return  <div class="card">
-                      <div class="card-image">
-                        <figure class="image is-3by4">
-                          <img src="../../../static/Kamila2_34.jpg" alt="Moja fotografia"/>
-                        </figure>
-                      </div>
-                      <div class="card-content">
-                        <div class="media">
-                          <div class="media-content">
-                            <p class="title is-4">Kamila Wiśniewska</p>
-                            <p class="subtitle is-6">lektorka i autorka strony</p>
-                          </div>
+      return  <React.Fragment>
+                      <div className="columns">
+                        <div className="column is-4 is-offset-4">
+                          <figure class="image is-3by4">
+                              <img className="is-rounded" src="../../../static/Kamila2_34.jpg" alt="Moja fotografia"/>
+                          </figure>
                         </div>
-                        <div class="content is-small">
+                      </div>
+                      <div className="level" style={{paddingTop: 20, marginBottom: 5}}>
+                        <div className="level-item">
+                          <h1 class="title is-4">Kamila Wiśniewska</h1>
+
+                        </div>
+                      </div>
+                      <div className="level" style={{paddingTop: 0}}>
+                        <div className="level-item">
+                          <h2 class="subtitle is-6">lektorka i autorka strony</h2>
+                        </div>
+                      </div>
+                      <div class="content" style={{paddingLeft: 5, paddingRight: 5}}>
                           <p>
                           Jestem absolwentką wydziału neofilologii Uniwersytetu Warszawskiego. Od blisko 5 lat uczę języka niemieckiego prywatnie oraz dla szkół językowych.
                           Spędziłam 4 lata pracując oraz ucząc się w Niemczech, wiedzę którą tam zdobyłam chętnie wykorzystuję na lekcjach.
@@ -158,9 +185,8 @@ class ContactSmallAbout extends React.Component{
                           Lekcje odbywają się na żywo lub online!
                           </p>
                           <p>Serdecznie zapraszam!<br/>Kamila</p>
-                        </div>
                       </div>
-                    </div>
+                    </React.Fragment>
   }
 }
 

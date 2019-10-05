@@ -3,10 +3,15 @@ from django.shortcuts import render
 from rest_framework import generics, exceptions, status
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 from django.db.utils import IntegrityError
 from django.core.exceptions import NON_FIELD_ERRORS
 from .models import WordLearning, Word, Translation, WordIcon
 from. serializers import WordLearningSerializer, WordSerializer, TranslationSerializer, WordIconSerializer
+from exercises.models import Exercise, WordInExercise
+from user_profile.serializers import UserSerializer
+import json
 # Create your views here.
 
 
@@ -102,15 +107,51 @@ class WordLearningListCreate(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        query = self.request.GET.get('query')
-        qs = WordLearning.objects.all().order_by('-updated')
-        if query:
-            qs = qs.filter(word__text=query)
-        return qs
+        student = self.request.GET.get('student')
+        if not student:
+            student = self.request.user
+        qs = WordLearning.objects.filter(student=student)
+        learn = self.request.GET.get('learn')
+        if learn:
+            qs = qs.words_to_learn()
+        return qs.order_by('level', '-updated', 'word__text')
 
     def perform_create(self, serializer):
         # print(self.request.data)
         serializer.save(student=self.request.user)
+
+
+class WordLearnExercise(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get(self, request, format=None):
+        words = WordLearning.objects.filter(student=self.request.user).words_to_learn()
+        words_list = []
+        for w in words:
+            words_list.append({"word": w.word.id, "translation": w.word.translations.all().first().text})
+        exercise = {'type': 'SEL_TRANS', 'title': 'Nauka słów', 'owner': UserSerializer(self.request.user).data, 'words': words_list}
+        return Response(exercise, status=status.HTTP_200_OK)
+
+    def put(self, request, format=None):
+        words = json.loads(request.data["words"])
+        print(words)
+        results = json.loads(request.data["result"])
+        print(results)
+        index = len(results) - 1
+        print(index)
+        word = words[index]['word']
+        print(word)
+        result = results[-1]
+        print(result)
+
+        obj, created = WordLearning.objects.get_or_create(student=self.request.user, word=word)
+        if not created:
+            if result and obj.level < 5:
+                obj.level += 1
+            elif obj.level > 0:
+                obj.level -= 1
+            obj.save()
+        return Response(obj.level, status=status.HTTP_200_OK)
 
 
 class WordLearningRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):

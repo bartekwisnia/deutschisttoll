@@ -7,6 +7,7 @@ import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateTo
 import { ExerciseSetList } from "./ExerciseSet";
 import { ExercisePlay, Exercise } from "./Exercises";
 import { LessonsList, LessonsCalendar, Lesson } from "./Teaching";
+import { WordLearnList, WordsLearn } from "./Words";
 
 
 class Learning extends React.Component{
@@ -212,6 +213,21 @@ class Learning extends React.Component{
                   </div>
                 </section>
               </React.Fragment>
+    case 4:
+          return <React.Fragment>
+                  <section className="section columns" style={{paddingTop: 20}}>
+                    <div className="column is-8 is-offset-2">
+                      <div className="level">
+                        <div className="level-right">
+                          <a className="level-item button is-light" onClick={() => this.handleView(0)}>Zamknij</a>
+                        </div>
+                      </div>
+                      <WordsLearn
+                        onClickExit = {() => this.handleView(0, 0, 0, 0)}
+                      />
+                    </div>
+                  </section>
+                </React.Fragment>
       default:
           return <p>Nothing to display</p>;
         };
@@ -384,13 +400,33 @@ class LearningOverview extends React.Component{
     const exercises_list = <div>
                             <div className="level">
                               <div className="level-left">
-                                <h2 className="level-item subtitle">Prace domowe:</h2>
+                                <h2 className="level-item subtitle">Prace domowe</h2>
                               </div>
                             </div>
                             <HomeworkList refresh={refresh} onPlay = {(id) => this.props.handleView(2, id)}/>
                           </div>
 
-  const words_list = <p>Lista słówek</p>
+  const words_to_train = <div>
+                          <div className="level">
+                            <div className="level-left">
+                              <h2 className="level-item subtitle">
+                                <a onClick={() => this.handleView(0, 0)}>Słówka do powtórzenia</a>
+                              </h2>
+                            </div>
+                            <div className="level-right">
+                              <Icon active={true} active_class="essentials32-play-button-1" handleClick = {() => this.props.handleView(4, 0, 0, 0)}/>
+                            </div>
+                          </div>
+                          <WordLearnList refresh={refresh} learn={true}/>
+                        </div>
+  const words_list = <div>
+                          <div className="level">
+                            <div className="level-left">
+                              <h2 className="level-item subtitle">Słownik</h2>
+                            </div>
+                          </div>
+                          <WordLearnList refresh={refresh}/>
+                        </div>
 
   let new_activity_title = "Gratuluję, jesteś na bieżąco!";
   if (next_instance){
@@ -441,7 +477,7 @@ class LearningOverview extends React.Component{
                     <div className="tile is-vertical is-4">
                         <Tile tag={next_activity} witdth="6"/>
                         <Tile tag={exercises_list}/>
-                        <Tile tag={words_list}/>
+                        <Tile tag={words_to_train}/>
                     </div>
                     <div className="tile is-vertical is-4">
                         <Tile tag={calendar}/>
@@ -456,7 +492,7 @@ class LearningOverview extends React.Component{
                     <div className="tile is-vertical is-4">
                         <Tile tag={next_activity} witdth="6"/>
                         <Tile tag={exercises_list}/>
-                        <Tile tag={words_list}/>
+                        <Tile tag={words_to_train}/>
                     </div>
                     <div className="tile is-vertical is-4">
                         <Tile tag={calendar}/>
@@ -476,7 +512,10 @@ class LearningOverview extends React.Component{
                           <Tile tag={next_lessons}/>
                           <Tile tag={lessons_list}/>
                       </div>
-                      <Tile tag={words_list}/>
+                      <div className="tile is-vertical is-4">
+                        <Tile tag={words_to_train}/>
+                        <Tile tag={words_list}/>
+                      </div>
                     </div>
                   )
         };

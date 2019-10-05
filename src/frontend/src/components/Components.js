@@ -99,7 +99,7 @@ class Tile extends React.Component {
     const parent_class = "tile is-parent" + width_class;
 
     return( <div className={parent_class}>
-              <div className="tile is-child box">
+              <div className="tile is-child">
                 {tag}
               </div>
             </div>

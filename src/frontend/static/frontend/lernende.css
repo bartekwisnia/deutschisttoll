@@ -3,6 +3,10 @@
     max-width: 400px;
 }
 
+.has-background-yellow {
+    background-color: rgb(252, 212, 3)
+}
+
 .img-icon {
     align-items: center;
     display: inline-flex;

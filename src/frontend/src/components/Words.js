@@ -2,6 +2,112 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getData, getCookie } from "./Utils"
 import { HighlightedText } from './Components';
+import { Exercise } from "./Exercises";
+
+
+class WordLearnList extends React.Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      endpoint :   "api/word-learn/",
+      data : [],
+      loaded: false,
+      placeholder: "Ładowanie...",
+      page : 0,
+
+    };
+  }
+
+  handleData = () => {
+      this.setState({loaded: true});
+  }
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value}, this.getLessons);
+  };
+
+  getWords = () => {
+    const {endpoint} = this.state;
+    const {learn, student} = this.props;
+    let options = learn ? {learn: true} : {};
+    if (student) {
+      options['student'] = student.id;
+    }
+    getData(endpoint, options, 'data', '', 'placeholder', this, this.handleData);
+  };
+
+  loadNext = () => {
+    const {data} = this.state;
+    const endpoint = data.next;
+    getData(endpoint, {}, 'data', '', 'placeholder', this, this.handleData);
+  }
+
+  getUserName(user_profile){
+  const { first_name, last_name, username } = user_profile;
+  return((first_name || last_name) ? first_name + " " + last_name : username);
+  // return("user");
+  }
+
+  componentDidMount() {
+    this.getWords();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {refresh} = this.props;
+    const refresh_old = prevProps.refresh;
+    if (refresh !== refresh_old)
+        this.getWords();
+    }
+
+  render(){
+    const { loaded, placeholder, data} = this.state;
+    const { learn } = this.props;
+    //console.log("render classes list");
+    if (!loaded)
+      return <p>{placeholder}</p>;
+
+    if (!data)
+      return <p>Nie nauczyłeś się jeszcze żadnych słów. Wykonaj jakieś ćwiczenie, aby dodać słowa do twojego słownika</p>;
+
+    const icon_td_style = {
+        paddingRight: '0.0em',
+        paddingLeft: '0.0em'
+      };
+
+    const elements = data ? data.results : [];
+
+    return (<React.Fragment>
+                <table className="table is-striped is-fullwidth is-hoverable">
+                  <thead><tr><th>Słowo</th><th>Tłumaczenie</th><th>Poziom</th></tr></thead>
+                  <tbody>
+                    {elements.map((el, index) => {
+                        return <tr key={el.id}>
+                                <td key={index+"-word"}>
+                                  {el.word.text.split(" ").length === 1 &&
+                                    <React.Fragment>
+                                      {el.word.preposition === 'pl' ? 'die' : el.word.preposition} &nbsp;
+                                    </React.Fragment>}
+                                  {el.word.text}
+                                </td>
+                                <td key={index+"-translation"}>
+                                  {el.word.translations[0].text}
+                                </td>
+                                <td key={index+"-level"}>
+                                  {el.level}
+                                </td>
+
+                              </tr>
+                            })}
+                  </tbody>
+                </table>
+                {data.next && <div className="has-text-centered">
+                  <a className="button is-info" onClick={this.loadNext}>Następna strona</a>
+                </div>}
+            </React.Fragment>);
+  }
+}
+
 
 function TranslationInput(props){
   const {number, translation, last, last_dict_input} = props;
@@ -283,8 +389,12 @@ class Word extends React.Component{
       case 4:
         return (
           <WordButton data={data} {...other}/>)
+      case 5:
+        return (
+          <WordInputPL data={data} {...other}/>)
       default:
-          return <p>Błąd</p>;
+        return (
+          <WordResult data={data} {...other}/>)
         };
   }
 }
@@ -432,6 +542,52 @@ function WordSubForm(props){
   )
 }
 
+
+function WordInputPL(props){
+  const {data, id, translation, icons, required} = props;
+  const {text, translations, icon} = data;
+  const text_as_array = text.split(" ");
+  const sentence = text_as_array.length > 1;
+  let preposition = sentence ? "" : data.preposition+" ";
+  if (preposition === 'pl ')
+    preposition = 'die ';
+
+  const picture = icon ? icon.picture: "";
+  const description = icon ? icon.description: "";
+
+  const picture_url = getPictureUrl(picture);
+  const icons_urls = icons ? icons.map((el, index) => {return getPictureUrl(el.picture)}) : [];
+  const translations_texts = translations ? translations.map((el, index) => {return el.text}) : [];
+
+  return (
+    <React.Fragment>
+          <div className="field is-grouped">
+            <p className="control">
+              {preposition}<HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
+            </p>
+            <div className="control">
+              <div className="file has-name">
+                <label className="file-label">
+                  <figure className="image is-32x32">
+                    <img src={picture_url} alt="Ikonka" className="exercise-picture"/>
+                  </figure>
+                </label>
+              </div>
+            </div>
+            <p className="control is-expanded">
+              <input className="input is-primary" type="text"
+                    name="translation_input"
+                    value={translation}
+                    placeholder="Słowo po niemiecku"
+                    onChange={(e) => props.handleChange(e, translations_texts)}
+                    onKeyDown={props.onKeyDown ? (e) => props.onKeyDown(e) : (e) => {}}/>
+            </p>
+          </div>
+    </React.Fragment>
+  )
+}
+
+
 function WordHero(props){
   const {data, translation} = props;
   const {text } = data;
@@ -443,19 +599,19 @@ function WordHero(props){
 
   return (
     <React.Fragment>
-      <div class={"hero" +" "+props.colour+" "+props.size}>
-        <div class="hero-body">
-          <div class="level">
-            <div class="level-item has-text-centered">
-              <h1 class="title">
+      <div className={"hero" +" "+props.colour+" "+props.size}>
+        <div className="hero-body">
+          <div className="level">
+            <div className="level-item has-text-centered">
+              <h1 className="title">
                 {preposition}<HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
               </h1>
             </div>
           </div>
           {translation &&
-            <div class="level">
-              <div class="level-item has-text-centered">
-                <h2 class="subtitle">
+            <div className="level">
+              <div className="level-item has-text-centered">
+                <h2 className="subtitle">
                   {translation}
                 </h2>
               </div>
@@ -496,4 +652,178 @@ function WordButton(props){
 }
 
 
+function WordResult(props){
+  const {data, translation, result, size} = props;
+  const {text } = data;
+  const text_as_array = text.split(" ");
+  const sentence = text_as_array.length > 1;
+  const prepositions = ['der', 'die', 'das', 'pl'];
+
+  const colour = typeof(result) === 'undefined' ? '' : (result ? 'is-primary' : 'is-danger')
+
+  let preposition = sentence ? "" : data.preposition;
+
+  if (preposition === 'pl')
+    preposition = 'die';
+
+  return (
+    <React.Fragment>
+    <div className="level">
+      <div className="level-item">
+        <p className={"button" +" "+colour+" "+size}>
+          {preposition} &nbsp; <HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
+        </p>
+      </div>
+      <div className="level-item">
+        <p className={"button" +" "+colour+" "+size}>
+          {translation}
+        </p>
+      </div>
+  </div>
+    </React.Fragment>
+  )
+}
+
+
+class WordsLearn extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      endpoint: "api/word-learn/exercise",
+      data: {},
+      results: [],
+      status: 0,
+      loaded: false,
+      placeholder: "Ładowanie danych...",
+      refresh: false,
+      };
+  }
+
+  getExercise = () => {
+    const {endpoint} = this.state;
+    getData(endpoint, "", 'data', 'loaded', 'placeholder', this,);
+  };
+
+  componentDidMount() {
+    this.getExercise();
+  }
+
+  setResult = (results, status) => {
+    const {data, endpoint} = this.state;
+    this.setState({ results: results, status: status});
+
+    const method = "put";
+    const url = endpoint;
+    const csrftoken = getCookie('csrftoken');
+    let send_data ={};
+    send_data['result'] = JSON.stringify(results);
+    send_data['status'] = JSON.stringify(status);
+    send_data['words'] = JSON.stringify(data.words);
+    console.log("Data to send:")
+    console.log(send_data);
+
+    const conf = {
+      method: method,
+      body: JSON.stringify(send_data),
+      headers: new Headers({'X-CSRFToken': csrftoken,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            })
+    };
+    fetch(url, conf)
+    .then(response => {
+      console.log(response);
+    });
+  };
+
+
+  render(){
+    const { loaded, placeholder, data, refresh} = this.state;
+    if(!loaded){
+      return <p>{placeholder}</p>;
+    }
+    const {onClickExit} = this.props;
+    return <WordsLearnPlay data={data} refresh={refresh} setResult={this.setResult} onClickExit={onClickExit}/>;
+  }
+}
+
+class WordsLearnPlay extends React.Component{
+  static propTypes = {
+    data: PropTypes.object.isRequired
+  };
+
+  constructor(props){
+    super(props);
+    this.state = {
+      refresh: false,
+      results: [],
+      status: 0, // 0 - not started, 3 - complete ok, 2 - complete with faults, 1 - in progress
+      finished: false,
+      loaded: true,
+      placeholder: "Ładowanie danych...",
+      };
+  }
+
+  componentDidMount() {
+  }
+
+  checkComplete = (callback) => {
+    const { results, status} = this.state;
+    const { data } = this.props;
+    let finished = false;
+    console.log("Check exercise complete");
+    if (status >= 2 && !finished){
+      finished = true;
+      this.setState({ finished: finished});
+    }
+
+  if(callback){
+    callback();
+  }
+};
+
+setResults = (ex_results, ex_status) => {
+  console.log("call setResults word learn play");
+  let {results, status} = this.state;
+  results = ex_results;
+  status = ex_status;
+  const callback = this.props.setResult ? () => this.props.setResult(results, status) : () => {};
+  this.setState({ results: results, status: status}, () => this.checkComplete(callback));
+}
+
+render() {
+  const { loaded, placeholder} = this.state;
+  if(!loaded){
+    return <p>{placeholder}</p>;
+  }
+  const { results, status, finished} = this.state;
+  const { data, onClickNext, onClickExit } = this.props;
+
+  return loaded ? (
+    <React.Fragment>
+          <div className="box">
+            <Exercise
+              detail_view={4}
+              results = {results}
+              status = {status}
+              data = {data}
+              setResult = {this.setResults} />
+            {finished && <div className="level">
+                          <div className="level-item">
+                            <a className="button" onClick={this.handleRestart}>Od początku</a>
+                            {onClickNext && <a className="button" onClick={onClickNext}>Następne</a>}
+                            {onClickExit && <a className="button" onClick={onClickExit}>Zamknij</a>}
+                          </div>
+                        </div>
+              }
+          </div>
+    </React.Fragment>
+  ) : <p>{placeholder}</p>;
+}
+}
+
 export default Word;
+
+export {
+  WordLearnList, WordsLearn
+}

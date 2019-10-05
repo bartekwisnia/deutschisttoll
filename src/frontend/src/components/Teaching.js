@@ -7,6 +7,7 @@ import { getData, getCookie, handleDate, dateToYMD, dateToYMDHm, calcEnd, dateTo
 import { ExerciseSetList } from "./ExerciseSet";
 import { Exercise, ExerciseList } from "./Exercises";
 import { Blog, BlogList } from "./Blog";
+import { WordLearnList, WordsLearn } from "./Words";
 import DateTimePicker from 'react-datetime-picker';
 //import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle'
 
@@ -1151,7 +1152,25 @@ class TeachingStudentView extends React.Component{
                               <HomeworkList student={student} refresh={refresh} onDelete={this.handleDelete}/>
                             </div>
 
-  const words_list = <p>Lista słówek</p>;
+  const words_to_train = <div>
+                          <div className="level">
+                            <div className="level-left">
+                              <h2 className="level-item subtitle">
+                                <a onClick={() => this.handleView(0)}>Słówka do powtórzenia</a>
+                              </h2>
+                            </div>
+                          </div>
+                          <WordLearnList student={student} refresh={refresh} learn={true}/>
+                        </div>
+  const words_list = <div>
+                          <div className="level">
+                            <div className="level-left">
+                              <h2 className="level-item subtitle">Słownik</h2>
+                            </div>
+                          </div>
+                          <WordLearnList student={student} refresh={refresh}/>
+                        </div>
+
   const lesson_add = <Lesson id={id} student={student} endEdit={this.forceRefresh} view={1} student_view={false}/>;
   const schedule_form = <Schedule id={id} student={student} endEdit={this.forceRefresh} view={1} student_view={false}/>;
   const add_content = <AddContent refresh={refresh}
@@ -1166,7 +1185,6 @@ class TeachingStudentView extends React.Component{
                             onClickExit = {() => this.handleView(1, id)}
                           />
 
-
   let right_tile, middle_tile, left_tile;
 
   switch(view) {
@@ -1175,6 +1193,7 @@ class TeachingStudentView extends React.Component{
                       <Tile tag={calendar}/>
                       <Tile tag={schedules_list}/>
                       <Tile tag={homework_list}/>
+                      <Tile tag={words_to_train}/>
                     </div>;
         middle_tile = <Tile tag={lessons_list}/>;
         right_tile = <Tile tag={lesson_add} width="4"/>;
@@ -1184,6 +1203,7 @@ class TeachingStudentView extends React.Component{
                       <Tile tag={calendar}/>
                       <Tile tag={schedules_list}/>
                       <Tile tag={lessons_list}/>
+                      <Tile tag={words_to_train}/>
                     </div>;
         middle_tile = <Tile tag={homework_list}/>;
         right_tile = <Tile tag={add_content} width="4"/>;
@@ -1192,6 +1212,7 @@ class TeachingStudentView extends React.Component{
         left_tile = <div className="tile is-vertical">
                       <Tile tag={homework_list}/>
                       <Tile tag={lessons_list}/>
+                      <Tile tag={words_to_train}/>
                     </div>;
         middle_tile = <div className="tile is-vertical">
                         <Tile tag={calendar}/>
@@ -1219,7 +1240,10 @@ class TeachingStudentView extends React.Component{
                     </div>
 
         middle_tile = <></>
-        right_tile = <Tile tag={words_list} width="4"/>
+        right_tile = <div className="tile is-vertical is-4">
+                        <Tile tag={words_to_train}/>
+                        <Tile tag={words_list}/>
+                     </div>
       };
 
     return (<React.Fragment>
