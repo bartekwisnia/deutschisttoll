@@ -33,5 +33,8 @@
     "react-date-picker": "^7.5.1",
     "react-datetime-picker": "^2.4.0",
     "svg-injector": "^1.1.3"
+  },
+  "resolutions": {
+    "image-webpack-loader/imagemin-pngquant": "5.0.1"
   }
 }
