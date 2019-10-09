@@ -115,7 +115,7 @@ class Exercise extends React.Component{
   handleChange = e => {
     // const refresh = this.state.refresh;
     this.setState({ [e.target.name]: e.target.value});
-    //console.log(e.target.name);
+    //// console.log(e.target.name);
     this.forceRefresh();
     // this.setState({ [e.target.name]: e.target.value, refresh: !refresh });
   };
@@ -125,7 +125,7 @@ class Exercise extends React.Component{
   };
 
   forceRefresh = () => {
-    //console.log("force refresh");
+    //// console.log("force refresh");
     const refresh = this.state.refresh;
     this.setState({ refresh: !refresh });
   };
@@ -147,7 +147,7 @@ class Exercise extends React.Component{
   }
 
   componentDidUpdate(prevProps) {
-    //console.log(this.props.query);
+    //// console.log(this.props.query);
       // Typical usage (don't forget to compare props):
       const query = this.props.query;
       if (this.props.query !== prevProps.query) {
@@ -156,13 +156,13 @@ class Exercise extends React.Component{
     }
 
   render(){
-    // console.log("render exercises site");
+    // // console.log("render exercises site");
     const {loaded, model_config, refresh, placeholder, query,
       colour, endpoint} = this.state;
-    //console.log(model_config);
+    //// console.log(model_config);
 
     const {detail_view, detail_id, ...other} = this.props;
-    // console.log(detail_view);
+    // // console.log(detail_view);
     if (!loaded)
       return <p>{placeholder}</p>;
 
@@ -558,7 +558,7 @@ class ExerciseDict extends React.Component {
     };
 
     handleCheck = (index) => {
-      //console.log("checking");
+      //// console.log("checking");
       const {inputs} = this.state;
       const {dict, results} = this.props;
       if (inputs[index].translation === dict[index].translation && inputs[index].word === dict[index].word){
@@ -610,8 +610,8 @@ class ExerciseDict extends React.Component {
       const {inputs} = this.state;
       let {puzzles} = this.state;
       const {dict} = this.props;
-      console.log("click");
-      console.log(value);
+      // console.log("click");
+      // console.log(value);
       if (dict[index].word.indexOf(' ') === -1){ // single word
           inputs[index].word += value;
       }
@@ -622,9 +622,9 @@ class ExerciseDict extends React.Component {
       }
       puzzles[index].word.splice(part, 1);
       inputs[index].translation = dict[index].translation;
-      console.log(index);
-      console.log(dict);
-      console.log(inputs);
+      // console.log(index);
+      // console.log(dict);
+      // console.log(inputs);
       if (inputs[index].word.length < dict[index].word.length)
         this.setState({ inputs: inputs, puzzles: puzzles }, this.handleCheckTrueOnly(index));
       else {
@@ -639,12 +639,12 @@ class ExerciseDict extends React.Component {
     }
 
     handleOnFocus = (e, index) => {
-      //console.log(index + " get focus");
+      //// console.log(index + " get focus");
       const focused = this.state.focused;
       if (index != focused){
-        //console.log("new component get focus");
+        //// console.log("new component get focus");
         if(typeof focused !=="undefined"){
-          //console.log(index + " lost focus");
+          //// console.log(index + " lost focus");
           this.handleCheck(focused);
         }
         this.setState({ focused: index });
@@ -694,7 +694,7 @@ class ExerciseDict extends React.Component {
 //   render () {
 //     const {game} = this.state;
 //     const {preview, play, ...other} = this.props;
-//     //console.log("TranslateWords results" + results);
+//     //// console.log("TranslateWords results" + results);
 //     if (preview)
 //       return (<ExerciseDict preview={true} {...other}/>);
 //     if (play)
@@ -714,6 +714,116 @@ class ExerciseDict extends React.Component {
 //   };
 // }
 
+class WordConjugationForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {word: ''}
+    };
+
+  setWord = (word) => {
+    // console.log("set word:");
+    // console.log(word);
+    this.setState({word: word});
+  }
+
+  setComment = (order, input) => {
+    // console.log("set Comment");
+    const {el, index} = this.props;
+    // console.log(el);
+    // console.log(index);
+    const comment = el ? el.comment : '';
+    // console.log(comment);
+    let conjugation = comment.split(",");
+    if (conjugation.length != 6){
+      conjugation = ['','','','','',''];
+    }
+    // console.log(conjugation);
+    conjugation[order] = input;
+    // console.log(conjugation);
+    conjugation = conjugation.join()
+    // console.log(conjugation);
+    this.props.handleChangeWord({atr: 'comment', val: conjugation}, index);
+  }
+
+  render () {
+    const {el, index, ...other} = this.props;
+    const {word} = this.state;
+    // console.log("render Word Conjugation Form");
+    // console.log(word);
+    // console.log(el);
+    const word_id = el ? el.word : null;
+    const translation = el ? el.translation : '';
+    const comment = el ? el.comment : '';
+    let conjugation = comment.split(",");
+    if (conjugation.length != 6){
+      conjugation = ['','','','','',''];
+    }
+    const required = el ? true : false;
+    const highlight_start = el ? el.highlight_start : 0;
+    const highlight_end = el ? el.highlight_end : 0;
+    // <mark>highlighted text</mark>
+    const highlight = highlight_start > 0 || highlight_end > 0;
+
+    return (
+      <React.Fragment>
+        <div className="columns">
+          <div className="column is-11">
+              <Word
+                   initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
+                   view={2} // subform
+                   id={word_id}
+                   required = {required}
+                   setWord = {this.setWord}
+                 />
+            {el && <React.Fragment>
+             <div className="field is-horizontal">
+               <div className="field is-grouped">
+                  <p className="control">
+                    <input className="input is-info" type="text" name="translation" size="10" value={translation} placeholder="tłumaczenie" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                  </p>
+                  <p className="control">
+                    <input className="input" type="text" name="highlight_start" size="2" value={highlight_start} placeholder="podświetlenie od znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                  </p>
+                  {highlight &&
+                   <p className="control">
+                     <p className="button is-static">
+                       <HighlightedText text={word} highlight_start={highlight_start} highlight_end={highlight_end}/>
+                     </p>
+                   </p>
+                  }
+                  <p className="control">
+                    <input className="input" type="text" name="highlight_end" size="2" value={highlight_end} placeholder="podświetlenie do znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                  </p>
+               </div>
+             </div>
+              <table className="table is-narrower is-hoverable">
+                <thead>
+                  <th>ich</th><th>du</th><th>er/sie/es</th><th>wir</th><th>ihr</th><th>sie/Sie</th>
+                </thead>
+                <tbody>
+                  <tr key={index}>
+                  {conjugation.map((el, index) => (
+                        <td>
+                          <p className="control">
+                            <input className="input is-info" type="text" name={"conjugation"+index} size="10" value={el} placeholder="odmiana" onChange={(e) => this.setComment(index, e.target.value)}/>
+                          </p>
+                        </td>))}
+                  </tr>
+                </tbody>
+              </table>
+              </React.Fragment>
+              }
+            </div>
+            <div className="column">
+                {el && <Icon active={true} active_class="essentials32-garbage-1"  handleClick = {() => this.props.deleteWord(index)}/>}
+            </div>
+          </div>
+        <hr/>
+      </React.Fragment>
+    );
+  };
+}
+
 
 class WordInExercise extends React.Component {
     constructor(props){
@@ -722,17 +832,17 @@ class WordInExercise extends React.Component {
     };
 
   setWord = (word) => {
-    console.log("set word:");
-    console.log(word);
+    // console.log("set word:");
+    // console.log(word);
     this.setState({word: word});
   }
 
   render () {
     const {el, index, ...other} = this.props;
     const {word} = this.state;
-    console.log("render Word in Exercise");
-    console.log(word);
-    console.log(el);
+    // console.log("render Word in Exercise");
+    // console.log(word);
+    // console.log(el);
     const word_id = el ? el.word : null;
     const translation = el ? el.translation : '';
     const comment = el ? el.comment : '';
@@ -793,6 +903,30 @@ class WordInExercise extends React.Component {
   };
 }
 
+class ConjugationForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, ...other} = this.props;
+    // console.log("render dictionary form")
+    // console.log(words)
+    return (
+      <React.Fragment>
+        {words.map((el, index) => {
+          // console.log("Word number "+index);
+          return <WordConjugationForm key={"Word number "+index} el={el} index={index} {...other} />
+        })}
+        <WordConjugationForm key={"New word"+words.length} {...other}/>
+      </React.Fragment>
+
+    );
+  };
+}
+
 
 class DictionaryForm extends React.Component {
     constructor(props){
@@ -803,12 +937,12 @@ class DictionaryForm extends React.Component {
 
   render () {
     const {words, ...other} = this.props;
-    console.log("render dictionary form")
-    console.log(words)
+    // console.log("render dictionary form")
+    // console.log(words)
     return (
       <React.Fragment>
         {words.map((el, index) => {
-          console.log("Word number "+index);
+          // console.log("Word number "+index);
           return <WordInExercise key={"Word number "+index} el={el} index={index} {...other} />
         })}
         <WordInExercise key={"New word"+words.length} {...other}/>
@@ -827,8 +961,8 @@ class DescribePicturePreview extends React.Component {
 
   render () {
     const {words, results, set_results, picture_url} = this.props;
-    console.log("render describe picture play")
-    console.log(words)
+    // console.log("render describe picture play")
+    // console.log(words)
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -849,7 +983,7 @@ class DescribePicturePreview extends React.Component {
         groups.push([words[i]]);
         }
     }
-    console.log(groups);
+    // console.log(groups);
     const col_size = (11 / groups.length) - 1;
 
     return (
@@ -901,8 +1035,8 @@ class DescribePicturePlay extends React.Component {
 
   render () {
     const {words, results, set_results, picture_url} = this.props;
-    console.log("render describe picture preview")
-    console.log(words)
+    // console.log("render describe picture preview")
+    // console.log(words)
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -929,11 +1063,11 @@ class DescribePicturePlay extends React.Component {
         groups.push([done[i]]);
         }
     }
-    console.log(groups);
+    // console.log(groups);
     const col_size = (11 / groups.length) - 1;
 
     const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
-    console.log(word1);
+    // console.log(word1);
 
     return (
       <React.Fragment>
@@ -1009,6 +1143,7 @@ function DescribePicture(props){
 };
 
 
+
 class ClickPreview extends React.Component {
     constructor(props){
       super(props);
@@ -1018,8 +1153,8 @@ class ClickPreview extends React.Component {
 
   render () {
     const {words, results, set_results} = this.props;
-    console.log("render click and learn preview")
-    console.log(words)
+    // console.log("render click and learn preview")
+    // console.log(words)
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -1074,8 +1209,8 @@ class ClickPlay extends React.Component {
 
   render () {
     const {words, results, set_results} = this.props;
-    console.log("render click and learn play")
-    console.log(words)
+    // console.log("render click and learn play")
+    // console.log(words)
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -1090,7 +1225,7 @@ class ClickPlay extends React.Component {
     const done = cpy_words.splice(0, index);
     const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
     const word1colour = quasiRandomColour(index);
-    console.log(word1);
+    // console.log(word1);
 
     return (
       <React.Fragment>
@@ -1151,12 +1286,299 @@ class ClickAndLearn extends React.Component {
   render () {
     const {game} = this.state;
     const {preview, play, ...other} = this.props;
-    //console.log("TranslateWords results" + results);
+    //// console.log("TranslateWords results" + results);
     if (play)
       return (<ClickPlay {...other}/>);
     if (preview)
       return (<ClickPreview {...other}/>);
     return (<DictionaryForm {...other}/>);
+  };
+}
+
+
+function ResultDisplay(props){
+  const {text, result} = props;
+  let button_class = "button is-static";
+
+  if (result == true) {
+    button_class = "button is-primary";
+  }
+  else if (result == false) {
+    button_class = "button is-danger";
+  };
+
+  return (<span className={button_class}>{text}</span>);
+}
+
+
+class ConjugationPreview extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  checkDone = (word_idx, person_idx) => {
+      const {results} = this.props;
+      if (!results)
+        return false;
+      if (results.length < word_idx)
+        return false;
+      if (typeof(results[word_idx]) === 'undefined')
+        return false;
+      if (results[word_idx].length < person_idx)
+        return false;
+      if (typeof(results[word_idx][person_idx]) === 'undefined')
+        return false;
+      return true;
+    }
+
+  render () {
+    const {words, results, set_results} = this.props;
+
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+
+    const persons = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
+    const conjugation = words.map((el, index) => {return el.comment.split(',')});
+
+    return (
+      <React.Fragment>
+      <div className="level">
+        <div className="level-item">
+        <table className="table is-narrower is-hoverable">
+          <thead>
+            <tr>
+              <th key={"persons-th"}></th>{words.map((el, index) => (
+                    <th key={"word"+index}>
+                      <Word
+                        view={4} // button
+                        id={el.word}
+                        size=""
+                        translation={el.translation}
+                        highlight_start={el.highlight_start}
+                        highlight_end={el.highlight_end}
+                      />
+              </th>))}
+            </tr>
+          </thead>
+          <tbody>
+          {persons.map((person, row_index) => (
+            <tr key={"person"+row_index}>
+                <td>
+                  <ResultDisplay text={person} result={this.checkDone(0, row_index) ? results[0][row_index] : undefined}/>
+                </td>
+                {conjugation.map((el, index) => (
+                      <td key={"word"+row_index+"-person"+index}>
+                        <ResultDisplay text={el[row_index]} result={this.checkDone(index+1, row_index) ? results[index][row_index] : undefined}/>
+                      </td>))}
+            </tr>
+          ))}
+          </tbody>
+        </table>
+      </div>
+      </div>
+      </React.Fragment>
+    );
+  };
+}
+
+class ConjugationPlay extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        selection: [],
+        };
+    };
+
+    handleCheck = (index) => {
+      const {results} = this.props;
+      results[index] = true;
+      this.props.setResults(results);
+    };
+
+    checkDone = (word_idx, person_idx) => {
+        const {results} = this.props;
+        if (!results)
+          return false;
+        if (results.length < word_idx)
+          return false;
+        if (typeof(results[word_idx]) === 'undefined')
+          return false;
+        if (results[word_idx].length < person_idx)
+          return false;
+        if (typeof(results[word_idx][person_idx]) === 'undefined')
+          return false;
+        return true;
+      }
+
+  checkResult = (word_idx, person_idx) => {
+    const {results} = this.props;
+    if (this.checkDone(word_idx, person_idx)){
+        return results[word_idx][person_idx];
+    }
+    else {
+      return undefined;
+    }
+  }
+
+  allowDrop = (ev) => {
+    ev.preventDefault();
+  }
+
+  drag = (ev, text, index) => {
+    // console.log(ev.target);
+    ev.dataTransfer.setData("text", text);
+    ev.dataTransfer.setData("idx", index);
+  }
+
+  drop = (ev, index, row_index) => {
+    ev.preventDefault();
+    // console.log(ev.target);
+    const {words, results, set_results} = this.props;
+    const {selection} = this.state;
+    // // console.log("drop");
+    var drag_text = ev.dataTransfer.getData("text");
+    var drag_index = ev.dataTransfer.getData("idx");
+    if (ev.target.tagName === "TD")
+      ev.target = ev.target.parentNode;
+    // // console.log(index);
+    // // console.log(row_index);
+
+
+    const persons = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
+    const conjugation = words.map((el, index) => {return el.comment.split(',')});
+    let result = false;
+    if (index===0){
+        result = drag_text === persons[row_index];
+    }
+    else {
+      result = drag_text === conjugation[index-1][row_index];
+    }
+    // console.log(results);
+    let length = results.length;
+    if (length <= index){
+      for(let i = 0; i < (index - length + 1); i++) {
+          const new_column = [];
+          results.push(new_column);
+        }
+    }
+    // console.log(results);
+    length = results[index].length;
+    if (length <= row_index){
+      for(let i = 0; i < (row_index - length + 1); i++) {
+          results[index].push(undefined);
+        }
+    }
+    // console.log(results);
+    if(result){
+      results[index][row_index] = result;
+      selection.splice(drag_index, 1);
+
+    }
+    this.setState({selection: selection}, () => this.props.setResults(results));
+  }
+
+  componentDidMount() {
+    const {words, results} = this.props;
+    const persons = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
+    const conjugation = words.length === 0 ? [] : words.map((el, index) => {return el.comment.split(',')});
+    let selection = [];
+
+    for(let i = 0; i < persons.length; i++) {
+        selection.push(persons[i]);
+      }
+
+    for(let j = 0; j < conjugation.length; j++) {
+        for(let i = 0; i < conjugation[j].length; i++) {
+            selection.push(conjugation[j][i]);
+        }
+    }
+    shuffleArray(selection);
+
+    this.setState({selection: selection});
+  }
+
+  render () {
+    const {words, results, set_results} = this.props;
+    const {selection} = this.state;
+
+    if (words.length === 0){
+      return <p>Brak słów</p>;
+    }
+
+    const persons = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
+    const conjugation = words.map((el, index) => {return el.comment.split(',')});
+
+    return (
+      <React.Fragment>
+        <div className="level">
+          <div className="level-item">
+            <table className="table is-narrower is-hoverable">
+              <thead>
+                <tr>
+                  <th key={"persons-th"}></th>
+                  {words.map((el, index) => (
+                        <th key={"word"+index}>
+                          <Word
+                            view={4} // button
+                            id={el.word}
+                            size=""
+                            translation={el.translation}
+                            highlight_start={el.highlight_start}
+                            highlight_end={el.highlight_end}
+                          />
+                  </th>))}
+                </tr>
+              </thead>
+              <tbody>
+              {persons.map((person, row_index) => (
+                <tr key={"person"+row_index}>
+                    <td onDrop={(ev) => this.drop(ev, 0, row_index)} onDragOver={this.allowDrop}>
+                      <ResultDisplay text={this.checkDone(0,row_index) ? person : (row_index%3)+1} result={this.checkResult(0, row_index)}/>
+                    </td>
+                    {conjugation.map((el, index) => (
+                          <td key={"word"+row_index+"-person"+index}  onDrop={(ev) => this.drop(ev, index+1, row_index)} onDragOver={this.allowDrop}>
+                            <ResultDisplay text={this.checkDone(index+1, row_index) ? el[row_index] : <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>} result={this.checkResult(index+1,row_index)}/>
+                          </td>))}
+                </tr>
+              ))}
+              </tbody>
+            </table>
+            </div>
+        </div>
+        <div className="buttons">
+          {selection.map((el, index) => (
+            <span className="button" key={"select-button"+index} style={{cursor: 'pointer'}} draggable="true" onDragStart={(ev) => this.drag(ev, el, index)}>
+              {el}
+            </span>
+                ))}
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+class Conjugation extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+    changeGame = (index) => {
+      this.setState({ game: index });
+    };
+
+  render () {
+    const {preview, play, ...other} = this.props;
+    if (play)
+      return (<ConjugationPlay {...other}/>);
+    if (preview)
+      return (<ConjugationPreview {...other}/>);
+    return (<ConjugationForm {...other}/>);
   };
 }
 
@@ -1170,8 +1592,8 @@ class TranslateWordsPreview extends React.Component {
 
   render () {
     const {words, results} = this.props;
-    console.log("render translate words preview")
-    console.log(words)
+    // console.log("render translate words preview")
+    // console.log(words)
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -1245,10 +1667,10 @@ class TranslateWordsPlay extends React.Component {
   render () {
     const {words, results, set_results} = this.props;
     const {inputs, translations} = this.state;
-    console.log("render translate words play")
-    console.log(words);
-    console.log(inputs);
-    console.log(translations);
+    // console.log("render translate words play")
+    // console.log(words);
+    // console.log(inputs);
+    // console.log(translations);
 
     if (words.length === 0){
       return <p>Brak słów</p>
@@ -1263,7 +1685,7 @@ class TranslateWordsPlay extends React.Component {
     const done = cpy_words.splice(0, index);
     const word1 = cpy_words.length > 0 ? cpy_words.splice(0, 1)[0] : null;
     const word1colour = quasiRandomColour(index);
-    console.log(word1);
+    // console.log(word1);
 
     return (
       <React.Fragment>
@@ -1311,7 +1733,7 @@ class TranslateWords extends React.Component {
   render () {
     const {game} = this.state;
     const {preview, play, ...other} = this.props;
-    //console.log("TranslateWords results" + results);
+    //// console.log("TranslateWords results" + results);
     if (play)
       return (<TranslateWordsPlay {...other}/>);
     if (preview)
@@ -1335,6 +1757,10 @@ function TypeSpecificContent(props){
   if (exercise_type === 'CLICK')
     {
     return <ClickAndLearn {...other}/>
+  }
+  if (exercise_type === 'CONJ')
+    {
+    return <Conjugation {...other}/>
   }
   return <div className="field"></div>
 }
@@ -1382,8 +1808,8 @@ class ExerciseForm extends React.Component {
   handleChangeWord = (param, index) => {
     const data = this.state.data;
     const words = data.words;
-    console.log(param);
-    console.log(index);
+    // console.log(param);
+    // console.log(index);
     if (param.length === undefined)
       param = [param];
     if (typeof(index) === 'number')
@@ -1478,14 +1904,14 @@ getData(){
           );
         }
       }
-      // console.log(dict);
+      // // console.log(dict);
       this.setState({ data: data, dict: dict, loaded: true });
     }
     );
 }
 
 componentDidMount() {
-  console.log("mount exercise form");
+  // console.log("mount exercise form");
   const {id, loaded, model_config} = this.props;
   if (id){
     this.getData();
@@ -1521,11 +1947,11 @@ saveWord = (word_in_ex) => {
   };
   fetch(url, conf)
   .then(response => {
-    console.log(response)
+    // console.log(response)
     return response.json();
   })
   .then((data) => {
-    console.log(data);
+    // console.log(data);
   });
 };
 
@@ -1535,10 +1961,10 @@ saveWords = (ex_id) => {
 
   for (var i = 0; i < words.length; i++) {
         const word = words[i];
-        console.log(word);
-        console.log(ex_id);
+        // console.log(word);
+        // console.log(ex_id);
         word['exercise'] = ex_id;
-        console.log(word);
+        // console.log(word);
         this.saveWord(word);
       }
   }
@@ -1557,7 +1983,7 @@ deleteWord = (index) => {
       if (confirm("Czy na pewno chcesz usunąć to słówko z ćwiczenia?"))
         fetch(endpoint+id , conf)
         .then(
-          response => {console.log(response)
+          response => {console.log(response);
                        if (response.status === 204){
                           words.splice(index, 1);
                           data.words = words;
@@ -1610,18 +2036,18 @@ handleSubmit = e => {
   };
   fetch(url, conf)
   .then(response => {
-    console.log(response)
+    // console.log(response)
     return response.json();
   })
   .then((data) => {
-    console.log(data);
+    // console.log(data);
     this.saveWords(data.id);
     this.props.endEdit();
   });
 };
 
   render() {
-    console.log("render exercise form");
+    // console.log("render exercise form");
     const { data, dict, last_dict_input, imagePreviewUrl, placeholder, copy} = this.state;
     const { id, loaded, model_config } = this.props;
     Object.keys(data).map(function(key, index) {
@@ -1752,9 +2178,6 @@ handleSubmit = e => {
 
 
 class ExercisePreview extends React.Component {
-  static propTypes = {
-    endpoint: PropTypes.string.isRequired
-  };
 
   constructor(props){
     super(props);
@@ -1865,7 +2288,7 @@ componentDidUpdate(prevProps) {
       picture_name = "Nie wybrano zdjęcia";
     };
     const type_choices = loaded ? model_config.type_choices : {};
-    //console.log(type_choices);
+    //// console.log(type_choices);
     return loaded ? (
       <React.Fragment>
               <div className="level">
@@ -1924,26 +2347,10 @@ class ExercisePlay extends React.Component {
 
 
 loadData(callback){
+  // console.log("load data");
   const {data} = this.props;
+  // console.log(data);
   this.setState({ data: data, loaded: true }, callback);
-}
-
-
-getData(callback){
-  const {endpoint} = this.state;
-  const {id} = this.props;
-  //console.log(endpoint+id);
-  fetch(endpoint+id)
-    .then(response => {
-      if (response.status !== 200) {
-        return this.setState({ placeholder: "Błąd w pobieraniu danych" });
-      }
-      return response.json();
-    })
-    .then(data => {
-      this.setState({ data: data, loaded: true }, callback);
-    }
-    );
 }
 
 getConfig(){
@@ -1960,23 +2367,26 @@ getConfig(){
 
 loadResults(){
   const {results, status} = this.props;
-  console.log("Load exercise results");
-  console.log(results);
-  console.log(status);
-  console.log(typeof(results));
-  console.log(typeof(status));
   if(typeof(results) === "object" && results !==null && typeof(status) === "number"){
-    console.log("Types are ok");
     this.setState({ results: results, status: status}, this.checkComplete);
   }
 }
 
+getExercise = (callback) => {
+  //// console.log("force refresh");
+  const {endpoint} = this.state;
+  const {id} = this.props;
+  getData(endpoint+id, {}, 'data', 'loaded', 'placeholder', this, callback);
+};
+
 componentDidMount() {
+  // console.log("Mount exercise play");
+  // console.log(this.props.data);
   if(this.props.data){
       this.loadData(this.loadResults);
   }
   else {
-        this.getData(this.loadResults);
+      this.getExercise(this.loadResults);
   }
 
   if (!this.props.model_config){
@@ -1996,28 +2406,63 @@ componentDidUpdate(prevProps) {
   }
   else {
     if (this.props.id !== prevProps.id) {
-        this.getData();
+        this.getExercise(this.loadResults);
       }
   }
 }
 
 checkComplete = (callback) => {
-  console.log("Check exercise complete");
+  // console.log("Check exercise complete");
   const { data, results } = this.state;
-  const { words } = data;
+  const { words, type } = data;
   let status = 0;
-  if (results.length > 0 && results.length < words.length){
-    status = 1;
-  }
-  else if (results.length === words.length){
-    status = 3;
-    for (var i = 0; i < results.length; i++) {
-        if (!results[i]){
-          status = 2;
-          break;
+  if(type==="CONJ"){
+    if (results.length > 0 && results.length < words.length+1){
+      status = 1;
+    }
+    else if (results.length === words.length+1){
+      status = 3
+      for (var i = 0; i < results.length; i++) {
+          if (results[i].length < 6){
+            status = 1;
+            break;
+          }
+          else {
+            for (var j = 0; j < 6; j++) {
+                if (typeof(results[i][j]) === 'undefined'){
+                  status = 1;
+                  break;
+                }
+            }
+          }
+      }
+      if (status === 3){
+        for (var i = 0; i < results.length; i++) {
+          for (var j = 0; j < 6; j++) {
+              if (!results[i][j]){
+                status = 2;
+                break;
+              }
+          }
         }
+      }
     }
   }
+  else{
+    if (results.length > 0 && results.length < words.length){
+      status = 1;
+    }
+    else if (results.length === words.length){
+      status = 3;
+      for (var i = 0; i < results.length; i++) {
+          if (!results[i]){
+            status = 2;
+            break;
+          }
+      }
+    }
+  }
+
   this.setState({ status: status});
 
   if(callback){
@@ -2047,13 +2492,13 @@ handleRestart = () => {
     }
     const { data, status, last_dict_input, imagePreviewUrl, results,
       model_config} = this.state;
-    const { id, in_lesson, onClickNext, onClickExit } = this.props;
-    console.log("render exercise play");
-    console.log(data);
-    console.log("exercise results:");
-    console.log(results);
-    console.log("exercise status:");
-    console.log(status);
+    const { id, in_lesson, blog, onClickNext, onClickExit } = this.props;
+    // console.log("render exercise play");
+    // console.log(data);
+    // console.log("exercise results:");
+    // console.log(results);
+    // console.log("exercise status:");
+    // console.log(status);
 
     Object.keys(data).map(function(key, index) {
       data[key] = data[key] ? data[key] : "";
@@ -2088,20 +2533,20 @@ handleRestart = () => {
 
     return in_lesson ?
     <React.Fragment>
-            <div className="level">
+            {!blog && <div className="level">
               <div className="level-item">
                 <h3 className="title is-5 has-text-centred">{title}</h3>
               </div>
-            </div>
+            </div>}
             {exercise_content}
     </React.Fragment>
      :
       <React.Fragment>
-          <div className="level">
+          {!blog && <div className="level">
             <div className="level-item">
               <h3 className="title is-5 has-text-centred">{title}</h3>
             </div>
-          </div>
+          </div>}
           {exercise_content}
           {finished && <div className="level">
                         <div className="level-item">

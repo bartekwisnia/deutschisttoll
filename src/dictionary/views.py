@@ -52,7 +52,7 @@ class WordListCreate(generics.ListCreateAPIView):
         return qs
 
     def create(self, request, *args, **kwargs):
-        # print(request.data)
+        print(request.data)
         try:
             return super(WordListCreate, self).create(request, *args, **kwargs)
         except exceptions.ValidationError:
@@ -89,9 +89,12 @@ class TranslationListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get('query')
+        word = self.request.GET.get('word')
         qs = Translation.objects.all().order_by('text')
         if query:
             qs = qs.filter(text=query)
+        if word:
+            qs = qs.filter(word=word)
         return qs
 
 

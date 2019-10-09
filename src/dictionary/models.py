@@ -19,7 +19,7 @@ class WordIcon(models.Model):
 
 class Word(models.Model):
     text = models.CharField(max_length=30)
-    preposition = models.CharField(max_length=5)
+    preposition = models.CharField(max_length=5, blank=True, null=True)
     icon = models.ForeignKey(WordIcon, related_name='words', on_delete=models.SET_NULL, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -52,12 +52,12 @@ class WordLearningQuerySet(models.query.QuerySet):
         d3 = datetime.today() - timedelta(days=10)
         d4 = datetime.today() - timedelta(days=14)
         d5 = datetime.today() - timedelta(days=30)
-        qs = WordLearning.objects.filter((Q(updated__gte=d0) & Q(level=0)) |
-                                         (Q(updated__gte=d1) & Q(level=1)) |
-                                         (Q(updated__gte=d2) & Q(level=2)) |
-                                         (Q(updated__gte=d3) & Q(level=3)) |
-                                         (Q(updated__gte=d4) & Q(level=4)) |
-                                         (Q(updated__gte=d5) & Q(level=5))).order_by('level', '-updated')
+        qs = WordLearning.objects.filter((Q(updated__lte=d0) & Q(level=0)) |
+                                         (Q(updated__lte=d1) & Q(level=1)) |
+                                         (Q(updated__lte=d2) & Q(level=2)) |
+                                         (Q(updated__lte=d3) & Q(level=3)) |
+                                         (Q(updated__lte=d4) & Q(level=4)) |
+                                         (Q(updated__lte=d5) & Q(level=5))).order_by('level', '-updated')
         return qs
 
 

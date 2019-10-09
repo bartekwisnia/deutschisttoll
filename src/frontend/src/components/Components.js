@@ -16,10 +16,11 @@ class Icon extends Component {
   };
 
   render() {
-    const {active, active_class, inactive_class} = this.props;
-    const icon_class = active ? active_class: (inactive_class ? inactive_class : active_class + " icon-inactive")
+    const {active, active_class, inactive_class, className} = this.props;
+    const icon_class = active ? active_class: (inactive_class ? inactive_class : active_class + " icon-inactive");
+    const span_class = className ? "img-icon" + " " + className : "img-icon";
     return (
-      <span className="img-icon">
+      <span className={span_class}>
         <i className={icon_class} style={{cursor: 'pointer'}} onClick={this.props.handleClick} onMouseOver={this.handleIconMouseOver} onMouseLeave={this.handleIconMouseLeave}></i>
       </span>
     );
@@ -94,12 +95,13 @@ class SearchBar extends Component {
 class Tile extends React.Component {
 
   render() {
-    const {tag, width} = this.props;
+    const {tag, width, colour_class} = this.props;
     const width_class = width ? " is-" + width : "";
     const parent_class = "tile is-parent" + width_class;
+    const child_class = colour_class ? "tile is-child notification " + colour_class : "tile is-child notification";
 
     return( <div className={parent_class}>
-              <div className="tile is-child">
+              <div className={child_class}>
                 {tag}
               </div>
             </div>
@@ -153,7 +155,7 @@ class ContentList1 extends React.Component {
   }
 
   render() {
-    //console.log(this.props);
+    //// console.log(this.props);
     const loaded = this.props.data ? true : this.state.loaded;
     if(!loaded){
       const {placeholder} = this.state;

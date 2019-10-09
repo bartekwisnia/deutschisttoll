@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter} from "react-router-dom";
 import Content from "./Content";
 import Teaching from "./Teaching";
 import Students from "./Students";
@@ -13,17 +14,13 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      site : 0,
       user : null,
       loaded: false,
       placeholder: "Ładowanie...",
       user_data: [],
-      teacher: true
+      teacher: true,
+      redirect: false,
     };
-  }
-
-  selectSite = (i) => {
-    this.setState({site: i});
   }
 
   updateState = (state_var, value) => {
@@ -34,80 +31,75 @@ class App extends React.Component{
 
   initWebsite= () => {
     const {teacher} = this.state.user_data;
-    const start_site = teacher ? 1 : 11;
-    this.setState({teacher: teacher, site: start_site});
+    this.setState({teacher: teacher, loaded: true});
   }
 
-  endEditProfile = () => {
-    getData('/api/my_profile/','', 'user_data', 'loaded', 'placeholder', this, this.initWebsite);
+  redirectHome = (history) => {
+     history.push('/');
+  }
+
+  endEditProfile = (history) => {
+    getData('/api/my_profile/','', 'user_data', 'loaded', 'placeholder', this, () => this.redirectHome(history));
   }
 
   componentDidMount() {
-    getData('/api/my_profile/','', 'user_data', 'loaded', 'placeholder', this, this.initWebsite);
+    getData('/api/my_profile/','', 'user_data', '', 'placeholder', this, this.initWebsite);
   }
 
   render(){
-    const endpoints = ["api/project/", "api/ta/"]
-
     const { loaded, placeholder} = this.state;
     if (!loaded)
       return <p>{placeholder}</p>;
 
-    const { user_data, teacher } = this.state;
-    const start_site = teacher ? 1 : 11;
-    const sel_site = this.state.site ? this.state.site : start_site;
+    const { user_data, teacher, redirect } = this.state;
     const refresh_text = this.state.refresh ?
       'Refresh True' :
       'Refresh False';
-    const content = <Content/>;
-    const teaching = <Teaching selectSite={this.selectSite}/>;
-    const students = <Students/>;
-    const class_learning = <Learning/>;
-    const blog = <Blog teacher={teacher} user_data={user_data}/>;
-    const self_learning = <p>W przygotowaniu</p>;
-    const repeat = <p>W przygotowaniu</p>;
-    const user_profile = <UserProfile endEdit={this.endEditProfile}/>;
+    const start = teacher ? '/teaching' : '/learning';
+    const content = teacher ? ({ match }) => <Content match={match}/> : <Redirect to={start} />;
+    const teaching = teacher ? ({ match }) => <Teaching match={match}/> : <Redirect to={start} />;
+    const students = teacher ? ({ match }) => <Students match={match}/> : <Redirect to={start} />;
+    const learning = !teacher ? ({ match }) => <Learning match={match}/> : <Redirect to={start} />;
+    const blog = ({ match }) => <Blog match={match} teacher={teacher} user_data={user_data}/>;
+    const self_learning = !teacher ?({ match }) => <p>W przygotowaniu</p> : <Redirect to={start} />;
+    const repeat = !teacher ?({ match }) => <p>W przygotowaniu</p> : <Redirect to={start} />;
+    const user_edit = withRouter(({ history, match }) => <UserProfile endEdit={()=>this.endEditProfile(history)} match={match}/>);
 
-    let disp_site = <p>Nothing to display</p>;
-
-    switch(sel_site) {
-      case 1:
-          disp_site = teaching;
-          break;
-      case 2:
-          disp_site = content;
-          break;
-      case 3:
-          disp_site = students;
-          break;
-      case 4:
-          disp_site = blog;
-          break;
-      case 11:
-          disp_site = class_learning;
-          break;
-      case 12:
-          disp_site = self_learning;
-          break;
-      case 13:
-          disp_site = repeat;
-          break;
-      case 99:
-          disp_site = user_profile;
-          break;
-      default:
-          disp_site = <p>Nic do wyswietlenie</p>;
-        };
 
     return (
-      <React.Fragment>
+      <Router>
+        <div>
         <Menu selectSite={this.selectSite} updateState={this.updateState} teacher={teacher} user_data={user_data}/>
-        <section className="image is-fullwidth">
-              <img src="../../../static/ColognePanorama.jpg" alt="Panorama Kolonii"/>
-        </section>
-        {disp_site}
+
+        <Switch>
+          <Route path="/teaching">
+            {teaching}
+          </Route>
+          <Route path="/content">
+            {content}
+          </Route>
+          <Route path="/students">
+            {students}
+          </Route>
+          <Route path="/blog">
+            {blog}
+          </Route>
+          <Route path="/learning">
+            {learning}
+          </Route>
+          <Route path="/self-learning">
+            {self_learning}
+          </Route>
+          <Route path="/user">
+            {user_edit}
+          </Route>
+          <Route path="/">
+            <Redirect to={start} />
+          </Route>
+        </Switch>
         <svg viewBox="0 0 8 8" className="icon"><use xlinkHref="#heart"></use></svg>
-      </React.Fragment>
+        </div>
+      </Router>
     );
 
   }

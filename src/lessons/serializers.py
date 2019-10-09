@@ -12,7 +12,9 @@ User = get_user_model()
 
 class HomeworkTeacherSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
-    student_name = serializers.SerializerMethodField()
+    student_name = serializers.SerializerMethodField(read_only=True)
+    student = UserSerializer(read_only=True)
+    student_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='student')
 
     def get_name(self, obj):
         return obj.exercise.title

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import DataProvider from "./DataProvider";
 import { Exercise, ExerciseForm, ExercisePreview, ExercisePlay, MapExercise } from "./Exercises";
 import Word from "./Words";
+import { Translations} from "./Words";
 import { ExerciseSet, ExerciseSetForm, ExerciseSetPreview, MapExerciseSet } from "./ExerciseSet";
 import key from "weak-key";
 import { Icon, SearchBar } from './Components';
@@ -42,9 +43,9 @@ class Content extends React.Component{
     //type - 1 courses, 2 lessons, 3 exercises
     //view - 0 - list, 1 - form, 2 - search list, 3 - preview, 4 - play
     //id - id of edited object
-    console.log(type);
-    console.log(view);
-    console.log(id);
+    // console.log(type);
+    // console.log(view);
+    // console.log(id);
     const _id = (view==0) ? 0 : id;
     const _query = (view==0) ? query : "";
     this.setState({detail_id: _id, detail_view: view, material_type: type, query: _query});
@@ -90,6 +91,12 @@ class Content extends React.Component{
           />
         </div>
 
+    const translations_site = <div className="column is-7 is-offset-1">
+      <Translations
+           key = "words_site"
+         />
+       </div>
+
     let content_site = <p>Nothing to display</p>;
     switch(material_type) {
       case 0:
@@ -107,16 +114,19 @@ class Content extends React.Component{
       case 4:
           content_site = words_site;
           break;
+      case 5:
+          content_site = translations_site;
+          break;
       default:
           content_site = exercises_site;
         };
 
     return <React.Fragment>
-            <section className={"hero " + colour}>
+            <section className={"hero hero-bg-img is-primary"}>
               <div className="hero-body">
-                <div className="containter">
+                <div className="container">
                   <h1 className="title">Moje materiały</h1>
-                  <h2 className="subtitle is-5">przeglądaj, edytuj, twórz</h2>
+                  <div className="button is-static">przeglądaj, edytuj, twórz</div>
                 </div>
               </div>
             </section>
@@ -192,6 +202,9 @@ class SideMenu extends React.Component{
           </p>
           <ul className="menu-list">
             <li><a onClick={() => this.props.selectSite(4, 1, '')}>Nowe słówko</a></li>
+          </ul>
+          <ul className="menu-list">
+            <li><a onClick={() => this.props.selectSite(5, 0, '')}>Tłumaczenia</a></li>
           </ul>
         </aside>
       </div>

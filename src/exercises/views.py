@@ -12,11 +12,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
-from .models import Exercise, ExerciseSet, exercise_get_config, exercise_set_get_config, WordInExercise
+from .models import Exercise, ExerciseSet, exercise_get_config, exercise_set_get_config, WordInExercise, Sentence
 
 from dictionary.models import Translation
 from .forms import ExerciseForm, ExerciseSetForm
-from. serializers import ExerciseSerializer, ExerciseSetSerializer, WordInExerciseSerializer
+from. serializers import ExerciseSerializer, ExerciseSetSerializer, WordInExerciseSerializer, SentenceSerializer
 
 from dictionary.models import Word
 
@@ -254,3 +254,23 @@ class WordInExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView)
             print(e)
 
         return super(WordInExerciseRetrieveUpdateDestroy, self).update(request, *args, **kwargs)
+
+
+class SentenceListCreate(generics.ListCreateAPIView):
+    queryset = Sentence.objects.all()
+    serializer_class = SentenceSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        qs = Sentence.objects.all()
+        return qs
+
+
+class SentenceRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Sentence.objects.all()
+    serializer_class = SentenceSerializer
+    permission_classes = (IsAuthenticated, IsOwner)
+
+    def put(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)

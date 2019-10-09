@@ -98,8 +98,11 @@ class Exercise(models.Model):
     PUZZLES = 'PUZ'
     CLICK = 'CLICK'
     SORT = 'SORT'
+    SELECT_OPTION = 'SEL_OPT'
+    CONJUGATION = 'CONJ'
     TYPES = ((DESCRIBE_PICTURE, "Opisz zdjęcie"), (TRANSLATION, "Tłumaczenie"), (PUZZLES, "Puzzle"),
-             (CLICK, "Naciśnij i zapamiętaj"), (SORT, "Sortowanie"))
+             (CLICK, "Naciśnij i zapamiętaj"), (SORT, "Sortowanie"), (SELECT_OPTION, "Wybierz opcję"),
+             (CONJUGATION, "Odmiana czasownika"))
 
     title = models.CharField(max_length=30)
     type = models.CharField(max_length=30, choices=TYPES, default=DESCRIBE_PICTURE)
@@ -153,11 +156,27 @@ class Exercise(models.Model):
                     word_idx += 1
 
 
+class Sentence(models.Model):
+    sentence = models.CharField(max_length=100)
+    translation = models.CharField(max_length=100, default='')
+    gap = models.IntegerField(default=0, blank=True)
+    exercise = models.ForeignKey(Exercise, related_name='sentences', on_delete=models.CASCADE)
+    correct = models.CharField(max_length=100)
+    false1 = models.CharField(max_length=100)
+    false2 = models.CharField(max_length=100)
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.sentence
+
+
 class WordInExercise(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     translation = models.CharField(max_length=30, blank=True, null=True)
-    comment = models.CharField(max_length=30, blank=True, null=True)
+    comment = models.CharField(max_length=100, blank=True, null=True)
     highlight_start = models.IntegerField(default=0, blank=True)
     highlight_end = models.IntegerField(default=0, blank=True)
 

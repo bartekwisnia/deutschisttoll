@@ -41,7 +41,7 @@ class UserProfile extends React.Component{
     };
     fetch(url, conf)
     .then(response => console.log(response))
-    .then(() =>{this.props.endEdit();});
+    .then(this.props.endEdit());
   };
 
   getUserName(user_profile){
@@ -61,16 +61,24 @@ class UserProfile extends React.Component{
 
   render(){
     const { loaded, placeholder} = this.state;
-    console.log("My profile render")
+    // console.log("My profile render")
     if (!loaded)
       return <p>{placeholder}</p>;
 
     const { data} = this.state;
-    console.log("My profile loaded");
-    console.log(data);
+    // console.log("My profile loaded");
+    // console.log(data);
     const {user} = data;
 
     return (<React.Fragment>
+            <section className={"hero hero-bg-img is-primary"}>
+              <div className="hero-body">
+                <div className="container">
+                  <h1 className="title">Mój profil</h1>
+                  <div className="button is-static">Edytuj dane, zmień hasło</div>
+                </div>
+              </div>
+            </section>
             <div className="column is-8 is-offset-2">
               <form onSubmit={this.handleSubmit} className="box">
                 <div className="column is-6 is-offset-3">

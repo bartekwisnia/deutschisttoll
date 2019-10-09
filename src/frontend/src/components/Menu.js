@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import DataProvider from "./DataProvider";
@@ -24,38 +25,32 @@ getUserName(){
 
     const teacher_menu = <div className="navbar-start">
                           <div className="navbar-item">
-                            <a className="button is-primary" onClick={() => this.props.selectSite(1)}>
-                              Zaplanuj zajęcia
-                            </a>
-                          </div>
-
-                          <div className="navbar-item">
-                            <a className="button is-info" onClick={() => this.props.selectSite(2)}>
-                              Przygotuj materiały
-                            </a>
+                            <Link to="/teaching" className="button is-primary">Zaplanuj zajęcia</Link>
                           </div>
                           <div className="navbar-item">
-                            <a className="button is-danger" onClick={() => this.props.selectSite(3)}>
-                              Uczniowie
-                            </a>
+                            <Link to="/content" className="button is-info">Przygotuj materiały</Link>
                           </div>
                           <div className="navbar-item">
-                            <a className="button is-success" onClick={() => this.props.selectSite(4)}>
-                              Blog
-                            </a>
+                            <Link to="/students" className="button is-danger">Uczniowie</Link>
+                          </div>
+                          <div className="navbar-item">
+                            <Link to="/blog" className="button is-success">Blog</Link>
                           </div>
                         </div>
 
     const student_menu = <div className="navbar-start">
                           <div className="navbar-item">
-                            <a className="button is-primary" onClick={() => this.props.selectSite(11)}>
+                            <Link to="/learning" className="button is-primary">
                               Zajęcia z nauczycielem
-                            </a>
+                            </Link>
                           </div>
                           <div className="navbar-item">
-                            <a className="button is-info" onClick={() => this.props.selectSite(12)}>
+                            <Link to="/self-learning" className="button is-info">
                               Dla samouków
-                            </a>
+                            </Link>
+                          </div>
+                          <div className="navbar-item">
+                            <Link to="/blog" className="button is-success">Blog</Link>
                           </div>
                         </div>
 
@@ -66,9 +61,9 @@ getUserName(){
         <div className="container">
         <div className="navbar-menu">
           <div className="navbar-brand">
-            <a className="navbar-item" onClick={() => this.props.selectSite(0)}>
-                <img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
-            </a>
+            <div className="navbar-item">
+              <Link to="/"><img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/></Link>
+            </div>
           </div>
           {navbar_start}
           <div className="navbar-end">
@@ -76,9 +71,9 @@ getUserName(){
               {teacher_button}
             </div>
             <div className="navbar-item">
-              <a className="button" onClick={() => this.props.selectSite(99)}>
+              <Link to="/user" className="button">
                 {this.getUserName()}
-              </a>
+              </Link>
             </div>
             <div className="navbar-item">
               <a className="button is-dark" href="/logout">
@@ -94,7 +89,6 @@ getUserName(){
   }
 }
 
-
 class MenuPub extends React.Component{
   // static propTypes = {
   //   endpoint: PropTypes.string.isRequired
@@ -104,33 +98,28 @@ class MenuPub extends React.Component{
     return(
       <nav className="navbar is-transparent is-spaced">
         <div className="container">
-        <div className="navbar-menu">
-          <div className="navbar-brand">
-            <a className="navbar-item" onClick={() => this.props.selectSite(0)}>
-              <img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/>
-            </a>
-          </div>
-          <div className="navbar-start">
-            <div className="navbar-item">
-              <a className="button is-success" onClick={() => this.props.selectSite(2)}>
-                Blog
-              </a>
+          <div className="navbar-menu">
+            <div className="navbar-brand">
+              <div className="navbar-item">
+                <Link to="/"><img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/></Link>
+              </div>
             </div>
-            <div className="navbar-item">
-              <a className="button is-danger" onClick={() => this.props.selectSite(1)}>
-                Kontakt
-              </a>
+            <div className="navbar-start">
+              <div className="navbar-item">
+                <Link className="button is-primary" to="/blog">Blog</Link>
+              </div>
+              <div className="navbar-item">
+                <Link className="button is-warning" to="/kontakt">Kontakt</Link>
+              </div>
             </div>
-          </div>
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <a className="button is-dark" href="/login">
-                Zaloguj
-              </a>
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <a className="button is-dark" href="/login">
+                  Zaloguj
+                </a>
+              </div>
             </div>
           </div>
-
-        </div>
         </div>
       </nav>
     );

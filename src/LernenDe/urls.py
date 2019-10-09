@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
@@ -26,14 +26,16 @@ from user_profile.views import RegisterView, change_password
 
 urlpatterns = [
     path('exercise/', include('exercises.urls', namespace='exercises-namespace')),
-    path('api/', include('exercises.urls_api')),
-    path('api/', include('lessons.urls_api')),
-    path('api/', include('dictionary.urls_api')),
-    path('api/', include('blog.urls_api')),
-    path('api/', include('user_profile.urls_api')),
     #
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('', include('frontend.urls')),
+    path('blog/', include('frontend.urls')),
+    path('kontakt/', include('frontend.urls')),
+    re_path(r'^teaching/[0-9]*', include('frontend.urls')),
+    path('content/', include('frontend.urls')),
+    path('students/', include('frontend.urls')),
+    path('learning/', include('frontend.urls')),
+    path('self-learning/', include('frontend.urls')),
     #
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),

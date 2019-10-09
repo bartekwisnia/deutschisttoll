@@ -20,10 +20,10 @@ class Learning extends React.Component{
       overview: 0, // 0 - overview, 1 - lesson preview, 2 - lesson search
       overview_id :0,
       placeholder: "Ładowanie...",
-      homework_endpoint: "api/student/homework",
+      homework_endpoint: "api/student/homework/",
       lessons_endpoint: "api/student/lesson/",
       homework_instance : [],
-      homework_instance_loaded : false,
+      homework_instance_loaded : true,
       homework_list : [],
       homework_list_loaded: false,
     };
@@ -40,7 +40,7 @@ class Learning extends React.Component{
     else
       {
       const updateHomeworkList = this.getHomeworkList;
-      this.setState({view: view, id: id, overview: overview, overview_id: overview_id, homework_list_loaded: false, homework_instance_loaded : false}, updateHomeworkList);
+      this.setState({view: view, id: id, overview: overview, overview_id: overview_id, homework_list_loaded: false, homework_instance_loaded : true}, updateHomeworkList);
     }
   };
 
@@ -72,7 +72,7 @@ class Learning extends React.Component{
   };
 
   setLessonResult = (result, status) => {
-    console.log("Set Lesson Result");
+    // console.log("Set Lesson Result");
     const { lesson_endpoint, id } = this.state;
     const endpoint = lesson_endpoint;
     const method = "put";
@@ -81,36 +81,6 @@ class Learning extends React.Component{
 
     let send_data ={};
     send_data['act_status'] = JSON.stringify(status);
-    send_data['result'] = JSON.stringify(result);
-    send_data['status'] = overalStatus(status);
-    console.log("Data to send:")
-    console.log(send_data);
-    const conf = {
-      method: method,
-      body: JSON.stringify(send_data),
-      headers: new Headers({'X-CSRFToken': csrftoken,
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                            })
-    };
-    fetch(url, conf)
-    .then(response => {
-      console.log(response);
-    });
-  }
-
-  setHomeworkResult = (result, status) => {
-    const {homework_instance, homework_endpoint, id} = this.state;
-    const endpoint = homework_endpoint;
-    homework_instance.result = result;
-    homework_instance.status = status;
-    this.setState({homework_instance: homework_instance});
-    const method = "put";
-    const url = endpoint+id;
-    const csrftoken = getCookie('csrftoken');
-    //
-    // console.log(typeof(status));
-    let send_data ={};
     send_data['result'] = JSON.stringify(result);
     send_data['status'] = overalStatus(status);
     // console.log("Data to send:")
@@ -125,7 +95,37 @@ class Learning extends React.Component{
     };
     fetch(url, conf)
     .then(response => {
-      console.log(response);
+      // console.log(response);
+    });
+  }
+
+  setHomeworkResult = (result, status) => {
+    const {homework_instance, homework_endpoint, id} = this.state;
+    const endpoint = homework_endpoint;
+    homework_instance.result = result;
+    homework_instance.status = status;
+    this.setState({homework_instance: homework_instance});
+    const method = "put";
+    const url = endpoint+id;
+    const csrftoken = getCookie('csrftoken');
+    //
+    // // console.log(typeof(status));
+    let send_data ={};
+    send_data['result'] = JSON.stringify(result);
+    send_data['status'] = overalStatus(status);
+    // // console.log("Data to send:")
+    // // console.log(send_data);
+    const conf = {
+      method: method,
+      body: JSON.stringify(send_data),
+      headers: new Headers({'X-CSRFToken': csrftoken,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            })
+    };
+    fetch(url, conf)
+    .then(response => {
+      // console.log(response);
     });
   };
 
@@ -141,65 +141,63 @@ class Learning extends React.Component{
 
   render(){
     const {placeholder, id, view, overview, overview_id, homework_instance,
-      homework_list, homework_list_loaded} = this.state;
-    const loaded = homework_list_loaded;
+      homework_list, homework_list_loaded, homework_instance_loaded} = this.state;
+    const loaded = homework_list_loaded && homework_instance_loaded;
 
     if (!loaded)
       return <p>{placeholder}</p>;
-    let next_instance = null
-    if (homework_list.results.length >= 2)
-    {
-        next_instance = (id === homework_list.results[0].id) ? homework_list.results[1] : homework_list.results[0];
-        if (next_instance.status >= 3)
-          next_instance = null;
-    }
-    else if (homework_list.results.length === 1)
-    {
-        next_instance = (id === homework_list.results[0].id) ? null : homework_list.results[0];
-        if (next_instance.status >= 3)
-          next_instance = null;
-    }
+    let next_instance = undefined;
 
-    const onClickNext = next_instance ? () => {this.handleView(2, next_instance.id)} : null
+    if (homework_list.results.length >= 2)
+        next_instance = (id === homework_list.results[0].id) ? homework_list.results[1] : homework_list.results[0];
+    else if (homework_list.results.length === 1)
+      next_instance = id === homework_list.results[0].id ? undefined : homework_list.results[0];
+
+    if(next_instance && next_instance.status >= 3)
+        next_instance = undefined;
+
+    // console.log(next_instance);
+    // console.log(typeof(next_instance));
+    const onClickNext = typeof(next_instance) !== "undefined" ? () => {this.handleView(2, next_instance.id)} : undefined;
+    let layout = <p>Nothing to display</p>;
     switch(view) {
       case 0:
-        return <React.Fragment>
+        layout = <React.Fragment>
                 <section className="section columns" style={{paddingTop: 20}}>
                   <div className="column is-8 is-offset-2">
                     <LearningOverview handleView={this.handleView} next_instance={next_instance} view={overview} id={overview_id}/>
                   </div>
                 </section>
               </React.Fragment>
+              break;
       case 2:
-        const homework = <Exercise
-            key = {"exercise_instance"+homework_instance.id+"play"}
-            detail_view={4}
-            detail_id={homework_instance.exercise}
-            onClickNext = {onClickNext}
-            onClickExit = {() => this.handleView(0)}
-            results = {homework_instance.result}
-            status = {homework_instance.status}
-            setResult = {this.setHomeworkResult}
-          />
-          return <React.Fragment>
-                  <section className="section columns" style={{paddingTop: 20}}>
-                    <div className="column is-8 is-offset-2">
-                      <div className="level">
-                        <div className="level-right">
-                          <a className="level-item button is-light" onClick={() => this.handleView(0)}>Zamknij</a>
-                        </div>
-                      </div>
-                      {homework}
-                    </div>
-                  </section>
-                </React.Fragment>
-    case 3:
-        return <React.Fragment>
-                <section className="section columns" style={{paddingTop: 20}}>
-                  <div className="column is-8 is-offset-2">
+        layout = <section className="section columns" style={{paddingTop: 20}}>
+                  <div className="column is-8 is-offset-2 notification">
                     <div className="level">
                       <div className="level-right">
-                        <a className="level-item button is-light" onClick={() => this.handleView(0, 0, 1, id)}>Zamknij</a>
+                        <a className="level-item button" onClick={() => this.handleView(0)}>Zamknij</a>
+                      </div>
+                    </div>
+                    <Exercise
+                        key = {"exercise_instance"+homework_instance.id+"play"}
+                        detail_view={4}
+                        detail_id={homework_instance.exercise}
+                        onClickNext = {onClickNext}
+                        onClickExit = {() => this.handleView(0)}
+                        results = {homework_instance.result}
+                        status = {homework_instance.status}
+                        setResult = {this.setHomeworkResult}
+                      />
+                    </div>
+                  </section>;
+          break;
+    case 3:
+        layout =
+                <section className="section columns" style={{paddingTop: 20}}>
+                  <div className="column is-8 is-offset-2 notification">
+                    <div className="level">
+                      <div className="level-right">
+                        <a className="level-item button" onClick={() => this.handleView(0, 0, 1, id)}>Zamknij</a>
                       </div>
                     </div>
                     <Lesson
@@ -212,14 +210,14 @@ class Learning extends React.Component{
                     />
                   </div>
                 </section>
-              </React.Fragment>
+          break;
     case 4:
-          return <React.Fragment>
+          layout = <React.Fragment>
                   <section className="section columns" style={{paddingTop: 20}}>
-                    <div className="column is-8 is-offset-2">
+                    <div className="column is-8 is-offset-2 notification">
                       <div className="level">
                         <div className="level-right">
-                          <a className="level-item button is-light" onClick={() => this.handleView(0)}>Zamknij</a>
+                          <a className="level-item button" onClick={() => this.handleView(0)}>Zamknij</a>
                         </div>
                       </div>
                       <WordsLearn
@@ -228,9 +226,30 @@ class Learning extends React.Component{
                     </div>
                   </section>
                 </React.Fragment>
+            break;
       default:
-          return <p>Nothing to display</p>;
+          layout = <p>Nothing to display</p>;
+          break;
         };
+// <h2 className="subtitle is-5 has-text-weight-bold">Lekcje, praca domowa, powtarzanie słownictwa</h2>
+      return <React.Fragment>
+            <section className={"hero hero-bg-img is-primary"}>
+              <div className="hero-head">
+                <div className="container">
+                </div>
+              </div>
+              <div className="hero-body">
+                <div className="container">
+                    <h1 className="title has-text-weight-bold" style={{marginBottom: "0.5rem"}}>Moja strona</h1>
+                    <div className="button is-static">Lekcje, praca domowa, powtarzanie słownictwa
+                    </div>
+
+                </div>
+              </div>
+            </section>
+              {layout}
+            </React.Fragment>
+
   }
 }
 
@@ -259,7 +278,7 @@ class HomeworkList extends React.Component{
   }
 
   getInstances = () => {
-    //console.log("force refresh");
+    //// console.log("force refresh");
     const {endpoint} = this.state;
     getData(endpoint,{limit: 10}, 'data', '', 'placeholder', this, this.handleData);
   };
@@ -317,19 +336,14 @@ class HomeworkList extends React.Component{
     return (<React.Fragment>
               <div>
                 <table className="table is-striped is-fullwidth is-hoverable">
-                  <thead><tr><th></th>
-                  <th></th><th></th><th></th></tr></thead>
                   <tbody>
                     {elements.map((el, index) => {
                         return <tr key={'homework'+index}>
-                                <td key={'homework'+index+"-num"}>{index+1}</td>
                                 <td key={'homework'+index+"-date"}>{dateToYMD(el.timestamp)}</td>
                                 <td key={'homework'+index+"-title"}>{el.name}</td>
                                 <td key={'homework'+index+"-status"}>
-                                  <StatusIcon status={el.status} handleClick = {() => {startExercise(el, index)}}/>
-                                </td>
-                                <td style={icon_td_style} key={'homework'+index+"-play"}>
-                                  <Icon active={true} active_class="essentials16-play-button-1" handleClick = {() => onPlay(el.id)}/>
+                                  <StatusIcon className="table-icon" status={el.status} handleClick = {() => {startExercise(el, index)}}/>
+                                  <Icon className="table-icon" active={true} active_class="essentials16-play-button-1" handleClick = {() => onPlay(el.id)}/>
                                 </td>
                               </tr>
                             })}
@@ -474,46 +488,46 @@ class LearningOverview extends React.Component{
     switch(view) {
       case 1:
         return (  <div className="tile is-ancestor">
-                    <div className="tile is-vertical is-4">
-                        <Tile tag={next_activity} witdth="6"/>
-                        <Tile tag={exercises_list}/>
-                        <Tile tag={words_to_train}/>
+                    <div className="tile is-vertical">
+                        <Tile tag={next_activity} witdth="6" colour_class="is-dark"/>
+                        <Tile tag={exercises_list} colour_class="is-danger"/>
+                        <Tile tag={words_to_train} colour_class="is-warning"/>
                     </div>
-                    <div className="tile is-vertical is-4">
-                        <Tile tag={calendar}/>
-                        <Tile tag={next_lessons}/>
+                    <div className="tile is-vertical">
+                        <Tile tag={calendar} colour_class="is-primary"/>
+                        <Tile tag={next_lessons} colour_class="is-link"/>
                         <Tile tag={lessons_list}/>
                     </div>
-                    <Tile tag={lesson_preview}/>
+                    <Tile tag={lesson_preview} colour_class="is-info"/>
                   </div>
                 )
       case 2:
         return (  <div className="tile is-ancestor">
-                    <div className="tile is-vertical is-4">
-                        <Tile tag={next_activity} witdth="6"/>
-                        <Tile tag={exercises_list}/>
-                        <Tile tag={words_to_train}/>
+                    <div className="tile is-vertical">
+                        <Tile tag={next_activity} witdth="6" colour_class="is-dark"/>
+                        <Tile tag={exercises_list} colour_class="is-danger"/>
+                        <Tile tag={words_to_train} colour_class="is-warning"/>
                     </div>
-                    <div className="tile is-vertical is-4">
-                        <Tile tag={calendar}/>
+                    <div className="tile is-vertical">
+                        <Tile tag={calendar} colour_class="is-primary"/>
                         <Tile tag={next_lessons}/>
                     </div>
-                    <Tile tag={lessons_list}/>
+                    <Tile tag={lessons_list} colour_class="is-info"/>
                   </div>
                 )
       default:
           return (  <div className="tile is-ancestor">
-                      <div className="tile is-vertical is-4">
-                          <Tile tag={next_activity} witdth="6"/>
-                          <Tile tag={exercises_list}/>
+                      <div className="tile is-vertical">
+                          <Tile tag={next_activity} witdth="6" colour_class="is-primary"/>
+                          <Tile tag={exercises_list} colour_class="is-link"/>
                       </div>
-                      <div className="tile is-vertical is-4">
-                          <Tile tag={calendar}/>
-                          <Tile tag={next_lessons}/>
-                          <Tile tag={lessons_list}/>
+                      <div className="tile is-vertical">
+                          <Tile tag={calendar} colour_class="is-dark"/>
+                          <Tile tag={next_lessons} colour_class="is-danger"/>
+                          <Tile tag={lessons_list} colour_class="is-warning"/>
                       </div>
-                      <div className="tile is-vertical is-4">
-                        <Tile tag={words_to_train}/>
+                      <div className="tile is-vertical">
+                        <Tile tag={words_to_train} colour_class="is-info"/>
                         <Tile tag={words_list}/>
                       </div>
                     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { MenuPub } from "./Menu"
 import Blog from "./Blog"
 import Contact from "./Contact"
@@ -49,15 +50,29 @@ class AppPub extends React.Component{
           disp_site = <p>Nothing to display</p>;
         };
 
-
+    
     return loaded ? (
-      <React.Fragment>
+      <Router>
+        <div>
           <MenuPub selectSite={this.selectSite}/>
           <section className="image is-fullwidth">
                 <img src="../../../static/ColognePanorama.jpg" alt="Panorama Kolonii"/>
           </section>
-        {disp_site}
-      </React.Fragment>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/blog">
+              <Blog />
+            </Route>
+            <Route path="/kontakt">
+              <Contact/>
+            </Route>
+            <Route path="/">
+              <Contact />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     ) : <p>{placeholder}</p>;
 
   }

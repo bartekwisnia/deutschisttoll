@@ -51,7 +51,7 @@ class Students extends React.Component{
   };
 
   handleDisplay = (id) => {
-    // console.log("change display:" + view + ',' + id)
+    // // console.log("change display:" + view + ',' + id)
     let view = id ? 1 : 2;
     this.setState({detail_id: id, detail_view: view});
   };
@@ -59,7 +59,7 @@ class Students extends React.Component{
   handleChange = e => {
     // const refresh = this.state.refresh;
     this.setState({ [e.target.name]: e.target.value});
-    console.log(e.target.name);
+    // console.log(e.target.name);
     this.forceRefresh();
     // this.setState({ [e.target.name]: e.target.value, refresh: !refresh });
   };
@@ -69,16 +69,16 @@ class Students extends React.Component{
   };
 
   forceRefresh = () => {
-    console.log("force refresh");
+    // console.log("force refresh");
     const refresh = this.state.refresh;
     this.setState({ refresh: !refresh });
   };
 
   render(){
-    console.log("render");
+    // console.log("render");
     const { endpoint, loaded, model_config, refresh, placeholder, query,
       colour, detail_view, detail_id} = this.state;
-    // console.log("render:" + detail_view + ',' + detail_id)
+    // // console.log("render:" + detail_view + ',' + detail_id)
 
     const student_form =
     <div className="column is-8 is-offset-2">
@@ -124,11 +124,11 @@ class Students extends React.Component{
 
     return loaded ? (
         <React.Fragment>
-          <section className={"hero " + colour}>
+          <section className={"hero hero-bg-img is-primary"}>
             <div className="hero-body">
-              <div className="containter">
+              <div className="container">
                 <h1 className="title">Moi uczniowie</h1>
-                <h2 className="subtitle is-5">lista i dodawanie uczniów</h2>
+                <div className="button is-static">Lista i dodawanie uczniów</div>
               </div>
             </div>
           </section>
@@ -149,7 +149,7 @@ class StudentsList extends React.Component {
   render() {
     const {data, read_only} = this.props;
     const results = data.results;
-    console.log(results);
+    // console.log(results);
     if (results.length) {
       return (
         <section>

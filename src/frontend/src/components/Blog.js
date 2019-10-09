@@ -100,9 +100,8 @@ class BlogEntry extends React.Component {
   render() {
     const {placeholder} = this.state;
     const {data, size, handleView, handleDelete, teacher} = this.props; // size - 0 full, 1 big, 2 medium, 3 small
-
-
-
+    console.log("blog entry render, data:");
+    console.log(data);
     if (!data)
       return placeholder;
     let title_size = 4;
@@ -127,8 +126,7 @@ class BlogEntry extends React.Component {
       }
     };
 
-    let exercise =  data.exercise_id ? <ExercisePlay id={data.exercise_id}/> : undefined;
-
+    let exercise =  data.exercise_id ? <ExercisePlay id={data.exercise_id} blog={true}/> : undefined;
 
     switch(size) {
       case 1:
@@ -137,7 +135,7 @@ class BlogEntry extends React.Component {
         content_size = "is-medium";
         garbage_icon = "essentials32-garbage-1";
         edit_icon = "essentials32-edit";
-        exercise = data.exercise_id ? <ExercisePlay id={data.exercise_id}/> : undefined;
+        exercise = data.exercise_id ? <ExercisePlay id={data.exercise_id} blog={true}/> : undefined;
         //img_style = {maxWidth: 800};
         if (data.text.length > 270)
           text = data.text.substring(0, 270) + " ...";
@@ -171,7 +169,7 @@ class BlogEntry extends React.Component {
 
 
     return <React.Fragment>
-              <div className="level">
+              <div className="level" style={{marginBottom: "0.5rem"}}>
                 <div className="level-left">
                   <div className="level-item">
                     <h1 className={"title is-"+title_size+" has-text-centred"}>{title}</h1>
@@ -192,16 +190,16 @@ class BlogEntry extends React.Component {
                 </div>
               </div>
               {data.subtitle &&
-              <div className="level">
+              <div className="level" style={{marginBottom: "0.5rem"}}>
                 <div className="level-item">
                   <h2 className={"subtitle is-"+subtitle_size+" has-text-centred"}>{data.subtitle}</h2>
                 </div>
               </div>
             }
-            <div className={"content is-small"}>
+            <div className={"content is-small"} style={{marginBottom: "0.5rem"}}>
                 <p className="has-text-left">{this.getUserName(data.author) + " // " +  dateToYMD(data.updated)}</p>
             </div>
-            <hr/>
+            <hr style={{marginTop: "0.0rem", marginBottom: "0.5rem"}}/>
               {picture_url &&
                   <figure className="image" style={img_style}>
                     <img src={picture_url} alt="Zdjęcie do wpisu"/>
@@ -273,12 +271,12 @@ class BlogRead extends React.Component{
       return <p>{placeholder}</p>;
 
     return (<React.Fragment>
-                <div className="column is-2 is-offset-2">
+                <div className="column is-2 is-offset-1">
                     <BlogList handleView={this.props.handleView} teacher={teacher} handleDelete={this.props.handleDelete} />
                 </div>
                 <div className="column is-6">
                   <div className="tile is-ancestor">
-                    <Tile tag={<BlogEntry data = {data} teacher={teacher} handleDelete={this.props.handleDelete} handleView={this.props.handleView}/>}/>
+                    <Tile tag={<BlogEntry data = {data} teacher={teacher} handleDelete={this.props.handleDelete} handleView={this.props.handleView}/> }/>
                   </div>
                 </div>
                 <div className="column is-1">
@@ -353,6 +351,8 @@ class BlogTiles extends React.Component{
       el1 = <BlogEntry size={1} data = {el1_data[0]} width = {6} handleView={this.props.handleView} teacher={teacher} handleDelete={this.props.handleDelete}/>;
     }
 
+    const colours = ["is-dark","is-danger","is-warning", "is-info", "is-link", "is-success"];
+
     // const el2 = elements.splice(0, 2);
 
     // {el2.map((el, index) => {
@@ -365,15 +365,17 @@ class BlogTiles extends React.Component{
                   <div className="tile is-ancestor">
                     <div className="tile is-vertical">
                       <div className="tile">
-                        <Tile tag={el1}/>
-                        <Tile width={3} tag={<ContactSmallAbout/>}/>
+                        <Tile tag={el1} width={9}/>
+                        <div className="tile is-vertical">
+                          <Tile tag={<ContactSmallAbout/>} colour_class="is-primary"/>
+                          <ContactSmall/>
+                        </div>
                       </div>
                       <div className="tile">
                         {elements.map((el, index) => {
                             const blog_entry = <BlogEntry size={3} data = {el} handleView={this.props.handleView} teacher={teacher} handleDelete={this.props.handleDelete}/>;
-                            return <Tile key={"blog_small_"+index} tag={blog_entry}/>
+                            return <Tile key={"blog_small_"+index} tag={blog_entry} colour_class={colours[index%(colours.length-1)]}/>
                             })}
-                        <Tile tag={<ContactSmall/>}/>
                       </div>
                     </div>
                   </div>
@@ -445,13 +447,13 @@ class BlogList extends React.Component{
       return <p>{placeholder}</p>;
 
     const elements = data.results;
-
+    const colours = ["is-dark","is-danger","is-warning", "is-info", "is-link", "is-success"];
     return (<React.Fragment>
               <div>
                 <ul>
                     {elements.map((el, index) => {
                         const blog_entry = <BlogEntry size={3} data = {el} handleView={this.props.handleView} teacher={teacher} handleDelete={this.props.handleDelete}/>;
-                        return <li key={"blog_entry_"+index} className="box">{blog_entry}</li>
+                        return <li style={{paddingBottom: "1.5rem"}} key={"blog_entry_"+index}><div className={"notification "+colours[index%(colours.length-1)]}>{blog_entry}</div></li>
                         })}
                 </ul>
               </div>

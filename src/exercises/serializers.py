@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Exercise, ExerciseSet, WordInExercise
+from .models import Exercise, ExerciseSet, WordInExercise, Sentence
 from dictionary.models import Word
 from dictionary.serializers import WordSerializer
 
@@ -22,7 +22,6 @@ from dictionary.serializers import WordSerializer
 
 class WordInExerciseSerializer(serializers.ModelSerializer):
     word = serializers.PrimaryKeyRelatedField(queryset=Word.objects.all())
-    # word = WordSerializer(read_only=True)
     exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
 
     class Meta:
@@ -32,26 +31,22 @@ class WordInExerciseSerializer(serializers.ModelSerializer):
 
 class ExerciseSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(choices=Exercise.TYPES)
-    # words = WordSerializer(many=True, read_only=True)
-
     words = serializers.SerializerMethodField(read_only=True)
-
-    # type_choices = serializers.JSONField(source='get_types', read_only=True)
+    sentences = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Exercise
         fields = '__all__'
-        # exclude = ('words',)
-        # exclude = ('owner', )
         extra_kwargs = {'owner': {'read_only': True, 'required': False}}
         depth = 1
 
     def get_words(self, obj):
         words = WordInExercise.objects.filter(exercise=obj)
-        # print(words)
-        # for w in words:
-        #     print(w)
         return WordInExerciseSerializer(words, many=True).data
+
+    def get_sentences(self, obj):
+        sentences = Sentence.objects.filter(exercise=obj)
+        return SentenceSerializer(sentences, many=True).data
 
 
 class ExerciseTagsSerializer(serializers.ModelSerializer):
@@ -137,3 +132,27 @@ class ExerciseSetTagsSerializer(serializers.ModelSerializer):
     #     exercise = ExerciseSerializer.objects.create(validated_data)
     #     print(exercise)
     #     return exercise
+
+
+class SentenceSerializer(serializers.ModelSerializer):
+    exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
+
+    class Meta:
+        model = Sentence
+        fields = '__all__'
+
+    # def create(self, validated_data):
+    #
+    #     request = self.context.get("request")
+    #     print(request)
+    #     if request and hasattr(request, "exercise_id"):
+    #         exercise = request.exercise_id
+    #         print(exercise)
+    #     print(validated_data)
+    #     validated_data['exercise'] = Exercise.objects.get(id=validated_data['exercise_id'])
+    #     print(validated_data)
+    #     # exercise = ExerciseSerializer.create(ExerciseSerializer(), validated_data=validated_data)
+    #     # print(validated_data)
+    #     sentence = super(SentenceSerializer, self).create(validated_data)
+    #     print(sentence)
+    #     return sentence
