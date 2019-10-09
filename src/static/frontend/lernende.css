@@ -7,6 +7,20 @@
     background-color: rgb(252, 212, 3)
 }
 
+.has-background-light-yellow {
+    background-color: rgb(252, 246, 206)
+}
+
+.hero-bg-img {
+    background: url("../../../static/ColognePanorama.jpg")center center;
+    background-size:cover;
+}
+
+.table-icon {
+        margin-right: 0px;
+        margin-left: 5px;
+      }
+
 .img-icon {
     align-items: center;
     display: inline-flex;
@@ -21,4 +35,8 @@
 .icon-hover {
     opacity: 0.5;
     filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+DateTimePicker {
+      border: 0
 }
