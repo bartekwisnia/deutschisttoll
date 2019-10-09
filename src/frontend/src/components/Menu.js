@@ -64,6 +64,11 @@ getUserName(){
             <div className="navbar-item">
               <Link to="/"><img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/></Link>
             </div>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
           </div>
           {navbar_start}
           <div className="navbar-end">
@@ -103,6 +108,11 @@ class MenuPub extends React.Component{
               <div className="navbar-item">
                 <Link to="/"><img src="../../../static/logo/LogoWhiteBanner3_1.png" width="84" height="28" alt="Deutsch ist toll!"/></Link>
               </div>
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
             </div>
             <div className="navbar-start">
               <div className="navbar-item">
