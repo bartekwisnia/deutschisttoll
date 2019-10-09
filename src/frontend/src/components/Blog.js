@@ -77,9 +77,21 @@ class Blog extends React.Component{
           break;
       }
 
-      return  <section className="section columns" style={{paddingTop: 20}}>
-                {layout}
-              </section>
+      return  <React.Fragment>
+        <section className={"hero hero-bg-img is-primary"}>
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">Blog</h1>
+              <div className="button is-static">Informacje oraz ćwiczenia z języka niemieckiego</div>
+            </div>
+          </div>
+        </section>
+        <section className="section columns" style={{paddingTop: 20}}>
+                  {layout}
+                </section>
+      </React.Fragment>
+
+
   }
 }
 
@@ -283,6 +295,39 @@ class BlogRead extends React.Component{
                     <BlogMenu handleView = {this.props.handleView} create={teacher} back={true}/>
                 </div>
          </React.Fragment>);
+  }
+}
+
+
+class BlogNewest extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      endpoint :   "/api/blog/",
+      data : [],
+      loaded: false,
+      placeholder: "Ładowanie...",
+    };
+  }
+
+  getEntry = () => {
+    //console.log("force refresh");
+    const {endpoint} = this.state;
+    const options = {limit: 1};
+    getData(endpoint, options, 'data', 'loaded', 'placeholder', this, );
+  };
+
+  componentDidMount() {
+    this.getEntry();
+  }
+
+  render(){
+    const { loaded, placeholder, endpoint, data} = this.state;
+    const {...other} = this.props;
+    if (!loaded)
+      return <p>{placeholder}</p>;
+    const new_entry = data.results[0];
+    return (<BlogEntry data = {new_entry} teacher={false} {...other}/>);
   }
 }
 
@@ -742,5 +787,5 @@ componentDidMount() {
 export default Blog;
 
 export {
-  BlogList, BlogForm,
+  BlogList, BlogForm, BlogNewest
 }

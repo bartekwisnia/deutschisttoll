@@ -1428,7 +1428,6 @@ class ConjugationPlay extends React.Component {
   }
 
   drag = (ev, index) => {
-    console.log(ev.target);
     try {
       ev.dataTransfer.setData("text", index);
     } catch (error) {

@@ -996,7 +996,7 @@ class TeachingOverview extends React.Component{
     const blog_list = <div>
                         <div className="level">
                           <div className="level-left">
-                            <h2 className="level-item subtitle"><a onClick={() => this.props.selectSite(4)}>Moje wpisy:</a></h2>
+                            <Link className="level-item subtitle" to="/blog">Moje wpisy:</Link>
                           </div>
                         </div>
                         <BlogList />

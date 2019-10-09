@@ -95,50 +95,41 @@ class Contact extends React.Component{
 
 
       return  <React.Fragment>
+      <section className={"hero hero-bg-img is-primary"}>
+        <div className="hero-body">
+          <div className="container">
+            <h1 className="title">Kontakt</h1>
+            <div className="button is-static">Dane kontaktowe oraz informacje o mnie</div>
+          </div>
+        </div>
+      </section>
       <section className="section columns" style={{paddingTop: 20}}>
       <div className="column is-8 is-offset-2">
-        <div className="tile is-ancestor is-vertical">
+        <div className="tile is-ancestor ">
+          <div className="tile is-vertical">
+            <div className="tile is-parent">
+              <div className="tile is-child">
+                {address}
+              </div>
+            </div>
+            <div className="tile is-parent">
+              <div className="tile is-child">
+                {phone}
+              </div>
+            </div>
+            <div className="tile is-parent">
+              <div className="tile is-child">
+                {email}
+              </div>
+            </div>
+          </div>
           <div className="tile">
-
-            <div className="tile is-6 has-background-yellow" style={{paddingTop: 100}}>
-              <div className="tile is-parent">
-                <div className="tile is-child">
-                  {logo}
-                </div>
+            <div className="tile is-parent">
+              <div className="tile is-child">
+                <ContactSmallAbout />
               </div>
             </div>
-
-            <div className="tile">
-              <div className="tile is-parent">
-                <div className="tile is-child">
-                  {about}
-                </div>
-              </div>
-            </div>
-
           </div>
-        <div className="tile">
-
-          <div className="tile is-parent">
-            <div className="tile is-child">
-              {address}
-            </div>
-          </div>
-
-          <div className="tile is-parent">
-            <div className="tile is-child">
-              {phone}
-            </div>
-          </div>
-
-          <div className="tile is-parent">
-            <div className="tile is-child">
-              {email}
-            </div>
-          </div>
-
-        </div>
-
       </div>
     </div>
   </section>
