@@ -1430,7 +1430,12 @@ class Lesson extends React.Component{
   }
 
   drag = (ev) => {
-    ev.dataTransfer.setData("idx", ev.target.rowIndex-1);
+    try {
+      ev.dataTransfer.setData("idx", ev.target.rowIndex-1);
+    } catch (error) {
+      const dataList = ev.dataTransfer.items;
+      dataList.add(ev.target.rowIndex-1, "idx");
+    }
   }
 
   drop = (ev) => {

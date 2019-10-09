@@ -1427,10 +1427,14 @@ class ConjugationPlay extends React.Component {
     ev.preventDefault();
   }
 
-  drag = (ev, text, index) => {
-    // console.log(ev.target);
-    ev.dataTransfer.setData("text", text);
-    ev.dataTransfer.setData("idx", index);
+  drag = (ev, index) => {
+    console.log(ev.target);
+    try {
+      ev.dataTransfer.setData("text", index);
+    } catch (error) {
+      const dataList = ev.dataTransfer.items;
+      dataList.add(index, "text");
+    }
   }
 
   drop = (ev, index, row_index) => {
@@ -1438,15 +1442,8 @@ class ConjugationPlay extends React.Component {
     // console.log(ev.target);
     const {words, results, set_results} = this.props;
     const {selection} = this.state;
-    // // console.log("drop");
-    var drag_text = ev.dataTransfer.getData("text");
-    var drag_index = ev.dataTransfer.getData("idx");
-    if (ev.target.tagName === "TD")
-      ev.target = ev.target.parentNode;
-    // // console.log(index);
-    // // console.log(row_index);
-
-
+    let drag_index = parseInt(ev.dataTransfer.getData("text"));
+    const drag_text = selection[drag_index];
     const persons = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
     const conjugation = words.map((el, index) => {return el.comment.split(',')});
     let result = false;
@@ -1550,7 +1547,7 @@ class ConjugationPlay extends React.Component {
         </div>
         <div className="buttons">
           {selection.map((el, index) => (
-            <span className="button" key={"select-button"+index} style={{cursor: 'pointer'}} draggable="true" onDragStart={(ev) => this.drag(ev, el, index)}>
+            <span className="button" key={"select-button"+index} style={{cursor: 'pointer'}} draggable="true" onDragStart={(ev) => this.drag(ev, index)}>
               {el}
             </span>
                 ))}
