@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Exercise, ExerciseSet, WordInExercise, Sentence
-from dictionary.models import Word
-from dictionary.serializers import WordSerializer
+from dictionary.models import Word, WordIcon
+from dictionary.serializers import WordSerializer, WordIconSerializer
 
 
 # class WordInExerciseSerializer(serializers.Serializer):
@@ -23,10 +23,77 @@ from dictionary.serializers import WordSerializer
 class WordInExerciseSerializer(serializers.ModelSerializer):
     word = serializers.PrimaryKeyRelatedField(queryset=Word.objects.all())
     exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
+    text = serializers.SerializerMethodField(read_only=True)
+    icon_id = serializers.IntegerField(write_only=True, required=False)
+    icon_picture = serializers.ImageField(write_only=True, required=False)
+    icon_description = serializers.CharField(write_only=True, required=False)
+    icon = WordIconSerializer(read_only=True)
 
     class Meta:
         model = WordInExercise
         fields = '__all__'
+
+    def get_text(self, obj):
+        return obj.word.text
+
+    def create(self, validated_data):
+        print(validated_data)
+        # create picture
+        if "icon_id" in list(validated_data.keys()):
+            icon_id = validated_data.pop('icon_id')
+        else:
+            icon_id = None
+        if "icon_picture" in list(validated_data.keys()):
+            icon_picture = validated_data.pop('icon_picture')
+        else:
+            icon_picture = None
+        if "icon_description" in list(validated_data.keys()):
+            icon_description = validated_data.pop('icon_description')
+        else:
+            icon_description = None
+
+        try:
+            validated_data['icon'] = WordIcon.objects.get(id=icon_id)
+            if icon_description:
+                validated_data['icon'].description = icon_description;
+                validated_data['icon'].save()
+        except WordIcon.DoesNotExist:
+            if icon_picture:
+                obj = WordIcon.objects.create(picture=icon_picture, description=icon_description)
+                validated_data['icon'] = obj
+            else:
+                validated_data['icon'] = None
+        w = super(WordInExerciseSerializer, self).create(validated_data)
+        return w
+
+    def update(self, instance, validated_data):
+
+        if "icon_id" in list(validated_data.keys()):
+            icon_id = validated_data.pop('icon_id')
+        else:
+            icon_id = None
+        if "icon_picture" in list(validated_data.keys()):
+            icon_picture = validated_data.pop('icon_picture')
+        else:
+            icon_picture = None
+        if "icon_description" in list(validated_data.keys()):
+            icon_description = validated_data.pop('icon_description')
+        else:
+            icon_description = None
+
+        try:
+            validated_data['icon'] = WordIcon.objects.get(id=icon_id)
+            if icon_description:
+                validated_data['icon'].description = icon_description;
+                validated_data['icon'].save()
+        except WordIcon.DoesNotExist:
+            if icon_picture:
+                obj = WordIcon.objects.create(picture=icon_picture, description=icon_description)
+                validated_data['icon'] = obj
+            else:
+                validated_data['icon'] = None
+        w = super(WordInExerciseSerializer, self).update(instance, validated_data)
+        return w
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -41,7 +108,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         depth = 1
 
     def get_words(self, obj):
-        words = WordInExercise.objects.filter(exercise=obj)
+        words = WordInExercise.objects.filter(exercise=obj).order_by('comment', 'group', 'word__text')
         return WordInExerciseSerializer(words, many=True).data
 
     def get_sentences(self, obj):

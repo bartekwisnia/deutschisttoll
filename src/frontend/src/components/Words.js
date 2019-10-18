@@ -379,7 +379,7 @@ class Word extends React.Component{
 
   fileChange = (e) => {
     const {data} = this.state;
-    const {icon} = data;
+    const icon = data.icon !== null ? data.icon : {id: 0, picture: '', description: ''};
     icon.picture = e.target.files[0];
     data.icon = icon;
     this.setState({ data: data});
@@ -465,8 +465,9 @@ class Word extends React.Component{
       this.setState({found_icons: null});
       const new_id = data.id;
       const translation = data.translations && data.translations.length > 0 ? data.translations[0].text : '';
+      const text = data.text;
       if (this.props.initWord)
-        this.props.initWord(new_id, translation);
+        this.props.initWord(new_id, translation, text);
     });
   };
 
@@ -514,6 +515,9 @@ class Word extends React.Component{
       case 5:
         return (
           <WordInputPL data={data} {...other}/>)
+      case 6:
+        return (
+          <WordPicture data={data} {...other}/>)
       default:
         return (
           <WordResult data={data} {...other}/>)
@@ -745,6 +749,62 @@ function WordHero(props){
     </React.Fragment>
   )
 }
+
+
+function WordPicture(props){
+  const {data, translation, exercise_icon} = props;
+  const {text} = data;
+  const icon = exercise_icon ? exercise_icon : data.icon;
+  const picture = icon ? icon.picture: "";
+  const picture_url = getPictureUrl(picture);
+
+  const text_as_array = text.split(" ");
+  const sentence = text_as_array.length > 1;
+  let preposition = sentence ? "" : data.preposition+" ";
+  if (preposition === 'pl ')
+    preposition = 'die ';
+
+  return (
+    <React.Fragment>
+    {picture_url &&
+    <div>
+      <div className="level">
+        <div className={"level-item button" +" "+props.colour}>
+          {preposition} &nbsp; <HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
+        </div>
+      </div>
+      <figure className="image" style={{minHeight: 100}}>
+        <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
+      </figure>
+    </div>
+
+    }
+    {!picture_url &&
+      <div className={"hero" +" "+props.colour+" "+props.size}>
+        <div className="hero-body">
+          <div className="level">
+            <div className="level-item has-text-centered">
+              <h1 className="title">
+                {preposition}<HighlightedText text={text} highlight_start={props.highlight_start} highlight_end={props.highlight_end}/>
+              </h1>
+            </div>
+          </div>
+          {translation &&
+            <div className="level">
+              <div className="level-item has-text-centered">
+                <h2 className="subtitle">
+                  {translation}
+                </h2>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    </React.Fragment>
+  )
+}
+
 
 
 function WordButton(props){

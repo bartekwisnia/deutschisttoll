@@ -70,7 +70,7 @@ class ExerciseListCreate(generics.ListCreateAPIView):
         query = self.request.GET.get('query')
         lesson_id = self.request.GET.get('lesson')
         # print(self.request.GET)
-        qs = Exercise.objects.filter(owner=self.request.user)
+        qs = Exercise.objects.filter(owner=self.request.user).order_by('-favourite')
         if lesson_id:
             qs = qs.exclude(lesson__id=lesson_id)
         if query:
@@ -100,7 +100,7 @@ class ExerciseRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated | IsPublic, IsOwner)
 
     def put(self, request, *args, **kwargs):
-        # print(request.data)
+        print(request.data)
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 

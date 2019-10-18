@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 from operator import __or__ as OR
 from functools import reduce
 
-from dictionary.models import Word, WordLearning
+from dictionary.models import Word, WordLearning, WordIcon
 
 User = get_user_model()
 # Create your models here.
@@ -131,7 +131,11 @@ class Exercise(models.Model):
 
     def update_words(self, user, results):
         print("update words")
+
         words_set = self.words.all()
+        print(words_set)
+        if self.type == 'SORT':
+            words_set.exclude(comment='group')
         print(words_set)
         print(results)
         allowed_types = ('DES_PIC', 'SEL_TRANS', 'PUZ', 'CLICK', 'SORT')
@@ -177,8 +181,10 @@ class WordInExercise(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     translation = models.CharField(max_length=30, blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
+    group = models.CharField(max_length=100, blank=True, null=True)
     highlight_start = models.IntegerField(default=0, blank=True)
     highlight_end = models.IntegerField(default=0, blank=True)
+    icon = models.ForeignKey(WordIcon, related_name='words_in_exercises', on_delete=models.SET_NULL, blank=True, null=True)
 
 
 def exercise_set_get_config():

@@ -824,6 +824,22 @@ class WordConjugationForm extends React.Component {
   };
 }
 
+function getPictureUrl(picture){
+  let picture_url = "";
+  if (picture) {
+    if (typeof picture === 'string'){
+      picture_url = picture;
+    }
+    else {
+      picture_url = URL.createObjectURL(picture);
+    }
+  }
+  else {
+    picture_url = '../../static/frontend/upload-symbol_318-30030.jpg';
+  };
+  return picture_url;
+}
+
 
 class WordInExercise extends React.Component {
     constructor(props){
@@ -837,8 +853,34 @@ class WordInExercise extends React.Component {
     this.setState({word: word});
   }
 
+  setGroup = (e) => {
+    const {index} = this.props;
+    const value = e.target.checked ? "group" : "";
+    this.props.handleChangeWord({atr: "comment", val: value}, index);
+  }
+
+  findPicture = (text) => {
+    const {id} = this.props;
+    const {endpoint_icon} = this.state;
+    const options = {query: text, limit: 3}
+    getData(endpoint_icon, options, 'found_icons', '', 'placeholder', this);
+  };
+
+  pictureSelect = (index) => {
+    const {data, found_icons} = this.state;
+    const {icon} = data;
+    icon.id = found_icons.results[index].id;
+    icon.picture = found_icons.results[index].picture;
+    icon.description = found_icons.results[index].description;
+    data.icon = icon;
+    this.setState({ data: data, found_icons: null});
+    this.props.iconChange(e.target.files[0], index);
+  };
+
+
+
   render () {
-    const {el, index, ...other} = this.props;
+    const {el, index, exercise_type, groups, ...other} = this.props;
     const {word} = this.state;
     // console.log("render Word in Exercise");
     // console.log(word);
@@ -846,11 +888,18 @@ class WordInExercise extends React.Component {
     const word_id = el ? el.word : null;
     const translation = el ? el.translation : '';
     const comment = el ? el.comment : '';
+    const group = el ? el.group : '';
     const required = el ? true : false;
     const highlight_start = el ? el.highlight_start : 0;
     const highlight_end = el ? el.highlight_end : 0;
     // <mark>highlighted text</mark>
     const highlight = highlight_start > 0 || highlight_end > 0;
+    const sort = exercise_type === "SORT";
+    const icon = el ? el.icon : undefined;
+    const picture = icon ? icon.picture: "";
+    const description = icon ? icon.description: "";
+
+    const picture_url = getPictureUrl(picture);
 
     return (
 
@@ -859,7 +908,7 @@ class WordInExercise extends React.Component {
         <div className="columns">
           <div className="column is-11">
               <Word
-                   initWord={(id, trans) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}], index)}
+                   initWord={(id, trans, text) => this.props.handleChangeWord([{atr: 'word', val: id}, {atr: 'translation', val: trans}, {atr: 'text', val: text}], index)}
                    view={2} // subform
                    id={word_id}
                    required = {required}
@@ -872,9 +921,36 @@ class WordInExercise extends React.Component {
                  <p className="control">
                    <input className="input is-info" type="text" name="translation" size="10" value={translation} placeholder="tłumaczenie" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
                  </p>
-                 <p className="control">
-                   <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
-                 </p>
+                 {sort ?
+                  <React.Fragment>
+                   <label className="checkbox">
+                     <input type="checkbox" name="group" checked={comment === "group"} onChange={this.setGroup}/>
+                     &nbsp;Grupa
+                   </label>
+                   {comment !== "group" &&
+                       <div className="control">
+                         <div className="select has-text-centred">
+                           <select name="group"
+                                   autoFocus=""
+                                   placeholder="grupa"
+                                   onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)}
+                                   value={group}>
+                             {groups.map((entry, index) => <option value={entry} key={index}>{entry}</option>)}
+                           </select>
+                         </div>
+                       </div>
+                   }
+                   {comment === "group" &&
+                   <p className="control">
+                     <input className="input is-info" type="text" name="group" size="10" value={group} placeholder="nazwa grupy" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                   </p>
+                   }
+                 </React.Fragment>
+                 :
+                <p className="control">
+                  <input className="input is-info" type="text" name="comment" size="10" value={comment} placeholder="komentarz/grupa" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
+                </p>
+                }
                  <p className="control">
                    <input className="input" type="text" name="highlight_start" size="2" value={highlight_start} placeholder="podświetlenie od znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
                  </p>
@@ -888,6 +964,25 @@ class WordInExercise extends React.Component {
                  <p className="control">
                    <input className="input" type="text" name="highlight_end" size="2" value={highlight_end} placeholder="podświetlenie do znaku" onChange={(e) => this.props.handleChangeWord({atr: e.target.name, val: e.target.value}, index)} />
                  </p>
+
+                 <div className="file has-name">
+                   <label className="file-label">
+                     <figure className="image is-32x32">
+                       <img src={picture_url} alt="Załaduj zdjęcie" className="exercise-picture"/>
+                     </figure>
+                     <input className="file-input"
+                           type="file"
+                           name="picture"
+                           autoFocus=""
+                           placeholder="Obrazek"
+                           onChange={(e) => this.props.iconChange(index,e.target.files[0])}
+                     />
+                   </label>
+                 </div>
+                 <p className="control">
+                   <input className="input is-primary" type="text" name="description" value={description} placeholder="opis zdjęcia" onChange={(e) => this.props.iconDescriptionChange(index, e.target.value)} />
+                 </p>
+
               </div>
             </div>
             </React.Fragment>
@@ -900,30 +995,6 @@ class WordInExercise extends React.Component {
         <hr/>
       </React.Fragment>
 );
-  };
-}
-
-class ConjugationForm extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        };
-    };
-
-  render () {
-    const {words, ...other} = this.props;
-    // console.log("render dictionary form")
-    // console.log(words)
-    return (
-      <React.Fragment>
-        {words.map((el, index) => {
-          // console.log("Word number "+index);
-          return <WordConjugationForm key={"Word number "+index} el={el} index={index} {...other} />
-        })}
-        <WordConjugationForm key={"New word"+words.length} {...other}/>
-      </React.Fragment>
-
-    );
   };
 }
 
@@ -1308,6 +1379,378 @@ function ResultDisplay(props){
   };
 
   return (<span className={button_class}>{text}</span>);
+}
+
+class SortForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, ...other} = this.props;
+    // console.log("render dictionary form")
+    // console.log(words)
+    return (
+      <React.Fragment>
+        {words.map((el, index) => {
+          // console.log("Word number "+index);
+          return <WordSortForm key={"Word number "+index} el={el} index={index} {...other} />
+        })}
+        <WordSortForm key={"New word"+words.length} {...other}/>
+      </React.Fragment>
+
+    );
+  };
+}
+
+
+class SortPreview extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        groups: [],
+        grouped: [],
+        };
+    };
+
+
+  getWordIdx = (group_idx, word_idx) => {
+      const {grouped} = this.state;
+      const {words} = this.props;
+      console.log(grouped);
+      console.log(words);
+      for(let i = 0; i < words.length; i++) {
+        if(words[i].id === grouped[group_idx][word_idx].id)
+          return i;
+      }
+
+      return undefined;
+    }
+
+  getResult= (group_idx, word_idx) => {
+      const {results} = this.props;
+      const words_idx = this.getWordIdx(group_idx, word_idx);
+      if (!results)
+        return undefined;
+      if (results.length < words_idx)
+        return undefined;
+      if (typeof(results[words_idx]) === 'undefined')
+        return undefined;
+      return results[words_idx];
+    }
+
+
+  componentDidMount() {
+    const {words, results} = this.props;
+    const groups = [];
+    const grouped = [];
+    var length = 0;
+
+    for(let i = 0; i < words.length; i++) {
+        if (words[i].comment === "group") {
+          groups.push(words[i]);
+        }
+    }
+
+    for(let i = 0; i < words.length; i++) {
+
+        if (words[i].comment !== "group") {
+          for(let j = 0; j < groups.length; j++) {
+
+            if (words[i].group === groups[j].group){
+              length = grouped.length;
+              if (length <= j){
+                for(let k = 0; k < (j - length + 1); k++) {
+                    grouped.push([]);
+                  }
+              }
+              grouped[j].push(words[i]);
+            }
+          }
+        }
+    }
+
+    this.setState({groups: groups, grouped: grouped});
+  }
+
+  render () {
+    const {words, results, set_results} = this.props;
+    const {groups, grouped} = this.state;
+    if (words.length === 0){
+      return <p>Brak słów</p>
+    }
+    if (groups.length === 0){
+      return <p>Błąd</p>
+    }
+
+    return (
+      <React.Fragment>
+
+      <div className="tile is-ancestor" key="drop area">
+        {groups.map((el, index) => <div className="tile is-parent" onDrop={(ev) => this.drop(ev, index)} onDragOver={this.allowDrop}>
+                                      <div className="tile is-child">
+                                        <React.Fragment>
+                                        <Word
+                                          view={6} // picture
+                                          id={el.word}
+                                          colour={quasiRandomColour(index)}
+                                          size=""
+                                          translation=""
+                                          highlight_start={el.highlight_start}
+                                          highlight_end={el.highlight_end}
+                                          exercise_icon={el.icon}
+                                        />
+                                        <div className="level">
+                                        </div>
+                                        {grouped.length > index &&
+                                        <div className="buttons">
+                                          {grouped[index].map((el2, index2) => (
+                                            <span className="button" key={"grouped-button"+index2}>
+                                              {el2.text}
+                                            </span>
+                                                ))}
+                                        </div>
+                                        }
+
+                                        </React.Fragment>
+                                      </div>
+                                 </div>)
+        }
+      </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+class SortPlay extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        selection: [],
+        groups: [],
+        grouped: [],
+        };
+    };
+
+    handleCheck = (index) => {
+      const {results} = this.props;
+      results[index] = true;
+      this.props.setResults(results);
+    };
+
+    checkDone = (index) => {
+        const {results} = this.props;
+        if (!results)
+          return false;
+        if (results.length < index)
+          return false;
+        if (typeof(results[index]) === 'undefined')
+          return false;
+        return true;
+      }
+
+  checkResult = (index) => {
+    const {results} = this.props;
+    if (this.checkDone(index)){
+        return results[index];
+    }
+    else {
+      return undefined;
+    }
+  }
+
+  allowDrop = (ev) => {
+    ev.preventDefault();
+  }
+
+  drag = (ev, index) => {
+    try {
+      ev.dataTransfer.setData("text", index);
+    } catch (error) {
+      const dataList = ev.dataTransfer.items;
+      dataList.add(index, "text");
+    }
+  }
+
+  drop = (ev, index) => {
+    ev.preventDefault();
+    // console.log(ev.target);
+    const {words, results, set_results} = this.props;
+    const {selection, groups, grouped} = this.state;
+    const drag_index = parseInt(ev.dataTransfer.getData("text"));
+    const drag_word = selection[drag_index];
+    console.log(selection);
+    console.log(groups);
+    console.log(grouped);
+    console.log(drag_word);
+    const drop_word = groups[index];
+    console.log(drop_word);
+    let drag_word_index = 0;
+
+    for(let i = 0; i < words.length; i++) {
+      if(drag_word.id === words[i].id){
+        drag_word_index = i;
+        break;
+      }
+    }
+
+    let length = results.length;
+    if (length <= drag_word_index){
+      for(let i = 0; i < (drag_word_index - length + 1); i++) {
+          results.push(undefined);
+        }
+    }
+
+    const result = drag_word.group === drop_word.group;
+
+    if(result){
+      results[drag_word_index] = result;
+      length = grouped.length;
+      if (length <= index){
+        for(let i = 0; i < (index - length + 1); i++) {
+            grouped.push([]);
+          }
+      }
+      grouped[index].push(drag_word);
+      selection.splice(drag_index, 1);
+    }
+
+    console.log(selection);
+    console.log(groups);
+    console.log(grouped);
+
+
+    this.setState({selection: selection, grouped: grouped}, () => this.props.setResults(results));
+  }
+
+  componentDidMount() {
+    const {words, results} = this.props;
+    const groups = [];
+    const selection = [];
+    for(let i = 0; i < words.length; i++) {
+        if (words[i].comment === "group") {
+          groups.push(words[i]);
+          length = results.length;
+          if (length <= i){
+            for(let j = 0; j < (i - length + 1); j++) {
+                results.push(undefined);
+              }
+          }
+          results[i] = true;
+        }
+        else {
+          selection.push(words[i]);
+        }
+    }
+
+    shuffleArray(selection);
+    this.setState({groups: groups, selection: selection});
+  }
+
+  render () {
+    const {words, results, set_results} = this.props;
+    const {selection, groups, grouped} = this.state;
+
+    if (words.length === 0){
+      return <p>Brak słów</p>;
+    }
+
+
+    return (
+      <React.Fragment>
+        <div className="tile is-ancestor" key="drop area">
+          {groups.map((el, index) => <div className="tile is-parent" onDrop={(ev) => this.drop(ev, index)} onDragOver={this.allowDrop}>
+                                        <div className="tile is-child">
+                                          <React.Fragment>
+                                          <Word
+                                            view={6} // picture
+                                            id={el.word}
+                                            colour={quasiRandomColour(index)}
+                                            size=""
+                                            translation=""
+                                            highlight_start={el.highlight_start}
+                                            highlight_end={el.highlight_end}
+                                            exercise_icon={el.icon}
+                                          />
+
+                                          {grouped.length > index && <React.Fragment>
+                                          <div className="level">
+                                          </div>
+                                          <div className="buttons">
+                                            {grouped[index].map((el2, index2) => (
+                                              <span className="button" key={"grouped-button"+index2}>
+                                                {el2.text}
+                                              </span>
+                                                  ))}
+                                          </div>
+                                          </React.Fragment>
+                                          }
+
+                                          </React.Fragment>
+                                        </div>
+                                   </div>)
+          }
+        </div>
+        <div className="buttons" key="drag area">
+          {selection.map((el, index) => (
+            <span className="button" key={"select-button"+index} style={{cursor: 'pointer'}} draggable="true" onDragStart={(ev) => this.drag(ev, index)}>
+              {el.text}
+            </span>
+                ))}
+        </div>
+      </React.Fragment>
+    );
+  };
+}
+
+
+class Sort extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+    changeGame = (index) => {
+      this.setState({ game: index });
+    };
+
+  render () {
+    const {preview, play, ...other} = this.props;
+    if (play)
+      return (<SortPlay {...other}/>);
+    if (preview)
+      return (<SortPreview {...other}/>);
+    return (<DictionaryForm exercise_type={"SORT"} {...other}/>);
+  };
+}
+
+
+class ConjugationForm extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        };
+    };
+
+  render () {
+    const {words, ...other} = this.props;
+    // console.log("render dictionary form")
+    // console.log(words)
+    return (
+      <React.Fragment>
+        {words.map((el, index) => {
+          // console.log("Word number "+index);
+          return <WordConjugationForm key={"Word number "+index} el={el} index={index} {...other} />
+        })}
+        <WordConjugationForm key={"New word"+words.length} {...other}/>
+      </React.Fragment>
+
+    );
+  };
 }
 
 
@@ -1758,6 +2201,10 @@ function TypeSpecificContent(props){
     {
     return <Conjugation {...other}/>
   }
+  if (exercise_type === 'SORT')
+    {
+    return <Sort {...other}/>
+  }
   return <div className="field"></div>
 }
 
@@ -1813,7 +2260,7 @@ class ExerciseForm extends React.Component {
           words[index][param[i].atr] = param[i].val;
           }
     else {
-      const new_word ={id: 0, exercise: 0, word: 0, translation: '', comment: '', highlight_start: 0, highlight_end: 0};
+      const new_word ={id: 0, exercise: 0, word: 0, text:'', translation: '', comment: '', group: '', highlight_start: 0, highlight_end: 0};
       for (var i = 0; i < param.length; i++) {
           new_word[param[i].atr] = param[i].val;
           }
@@ -1823,13 +2270,34 @@ class ExerciseForm extends React.Component {
     this.setState({ data: data });
   };
 
+  iconChange = (index, file) => {
+    const {data} = this.state;
+    const words = data.words;
+    const icon = words[index].icon !== null ? words[index].icon : {id: 0, picture: '', description: ''};
+    icon.picture = file;
+    words[index].icon = icon;
+    data.words = words;
+    this.setState({ data: data});
+  };
+
+  iconDescriptionChange = (index, value) => {
+    const {data} = this.state;
+    const words = data.words;
+
+    const {icon} = words[index];
+    icon.description = value;
+    words[index].icon = icon;
+    data.words = words;
+    this.setState({ data: data});
+  };
+
   changeWordID = (id, index) => {
     const data = this.state.data;
     const words = data.words;
     if (index)
       words[index].word = id;
     else {
-      const new_word ={exercise: this.props.id, word: id, translation: '', comment: '', highlight_start: 0, highlight_end: 0};
+      const new_word ={exercise: this.props.id, word: id, translation: '', comment: '', group: '', highlight_start: 0, highlight_end: 0};
       words.push(new_word);
     }
     data.words = words;
@@ -1838,13 +2306,13 @@ class ExerciseForm extends React.Component {
 
   favouriteChange = () => {
     const data = this.state.data;
-    data['favourite'] = !data['favourite'];
+    data['favourite'] = data['favourite'] ? false : true;
     this.setState({ data: data });
   };
 
   publicChange = () => {
     const data = this.state.data;
-    data['public'] = !data['public'];
+    data['public'] = data['public'] ? false : true;
     this.setState({ data: data });
   };
 
@@ -1924,15 +2392,25 @@ saveWord = (word_in_ex) => {
   const {word_in_ex_endpoint } = this.state;
   const endpoint = word_in_ex_endpoint;
   const formData = new FormData();
-  const {id, exercise, word, translation, comment, highlight_start, highlight_end } = word_in_ex;
+  const {id, exercise, word, translation, comment, group, highlight_start, highlight_end, icon} = word_in_ex;
   const method = id ? "put" : "post";
 
   formData.append('exercise', exercise);
   formData.append('word', word);
   formData.append('translation', translation);
   formData.append('comment', comment);
+  formData.append('group', group);
   formData.append('highlight_start', highlight_start);
   formData.append('highlight_end', highlight_end);
+
+  if (icon){
+    if (icon.id)
+      formData.append('icon_id', icon.id);
+    else{
+      formData.append('icon_picture', icon.picture);
+    }
+    formData.append('icon_description', icon.description);
+  }
 
   const url = id ? endpoint+id : endpoint;
   const csrftoken = getCookie('csrftoken');
@@ -2008,17 +2486,17 @@ handleSubmit = e => {
   e.preventDefault();
   const {id, endpoint} = this.props;
   const { data, refresh, copy } = this.state;
-  const { title, type, categories, level, picture, favourite} = data;
-  const is_public = data['public']
+  const { title, type, categories, level, picture} = data;
+  const is_public = data['public'] ? 'true' : 'false';
+  const is_favourite = data['favourite'] ? 'true' : 'false';
   const formData = new FormData();
   const method = (id && !copy) ? "put" : "post";
   formData.append('title', title);
   formData.append('type', type);
   formData.append('categories', categories);
   formData.append('level', level);
-  formData.append('favourite', favourite);
+  formData.append('favourite', is_favourite);
   formData.append('public', is_public);
-
   if (typeof picture !== 'string'){
     formData.append('picture', picture);
   };
@@ -2068,6 +2546,13 @@ handleSubmit = e => {
       picture_url = '../../static/frontend/upload-symbol_318-30030.jpg';
       picture_name = "Nie wybrano zdjęcia";
     };
+
+    const groups = [];
+    for(let i = 0; i < words.length; i++) {
+        if (words[i].comment === "group") {
+          groups.push(words[i].group);
+        }
+    }
 
     const type_choices = loaded ? model_config.type_choices : {};
     return loaded ? (
@@ -2123,9 +2608,11 @@ handleSubmit = e => {
                 </div>
               </div>
 
-              <TypeSpecificContent exercise_type={type} words={words}
+              <TypeSpecificContent exercise_type={type} words={words} groups={groups}
                                   picture_url={picture_url}
                                   fileChange={this.fileChange}
+                                  iconChange={this.iconChange}
+                                  iconDescriptionChange={this.iconDescriptionChange}
                                   dict={dict}
                                   handleChangeWord={this.handleChangeWord}
                                   deleteWord={this.deleteWord}
@@ -2451,7 +2938,11 @@ checkComplete = (callback) => {
     else if (results.length === words.length){
       status = 3;
       for (var i = 0; i < results.length; i++) {
-          if (!results[i]){
+          if(typeof(results[i]) === 'undefined'){
+            status = 1;
+            break;
+          }
+          else if (!results[i]){
             status = 2;
             break;
           }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getData } from "./Utils";
+import { getData, getCookie } from "./Utils";
 
 
 class Icon extends Component {
@@ -140,10 +140,41 @@ class ContentList1 extends React.Component {
       );
   }
 
+  toggleData = (id, index, key) => {
+    const {endpoint} = this.props;
+    const {data} = this.state;
+    const {results} = data;
+    const el = results[index]
+    el[key] = el[key] ? false : true;
+
+    const formData = new FormData();
+    const method =  "put";
+    formData.append(key, el[key] ? 'true' : 'false');
+
+    const url = endpoint+id;
+
+    const csrftoken = getCookie('csrftoken');
+    const conf = {
+      method: method,
+      body: formData,
+      headers: new Headers({'X-CSRFToken': csrftoken})
+    };
+    fetch(url, conf)
+    .then(response => {
+      console.log(response);
+      if(response.status === 200){
+        this.setState({data: data});
+      }
+    })
+  };
+
   componentDidMount() {
     // For list with data given from parent
     if (!this.props.data)
       getData(this.props.endpoint, this.props.options, 'data', 'loaded', 'placeholder', this);
+    else {
+      this.setState({data: this.props.data, loaded: true});
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -151,6 +182,9 @@ class ContentList1 extends React.Component {
       this.setState({refresh: this.props.refresh});
       if (!this.props.data)
         getData(this.props.endpoint, this.props.options, 'data', 'loaded', 'placeholder', this);
+      else {
+          this.setState({data: this.props.data, loaded: true});
+        }
       }
   }
 
@@ -186,10 +220,10 @@ class ContentList1 extends React.Component {
                  </td>
       return <React.Fragment>
             <td style={icon_td_style} key={el.id+"-favourite"}>
-              <Icon active={el.favourite} active_class="essentials16-like-1" inactive_class="essentials16-dislike-1" handleClick = {() => this.props.handleUpdate(el.id, index, {'favourite': !el.favourite})}/>
+              <Icon active={el.favourite} active_class="essentials16-like-1" inactive_class="essentials16-dislike-1" handleClick = {() => this.toggleData(el.id, index, 'favourite')}/>
             </td>
             <td style={icon_td_style} key={el.id+"-public"}>
-              <Icon active={el.public} active_class="essentials16-worldwide" handleClick = {() => this.props.handleUpdate(el.id, index, {'public': !el.public})}/>
+              <Icon active={el.public} active_class="essentials16-worldwide" handleClick = {() => this.toggleData(el.id, index, 'public')}/>
             </td>
             <td style={icon_td_style} key={el.id+"-delete"}>
               <Icon active={true} active_class="essentials16-garbage-1"  handleClick = {() => this.props.handleDelete(el.id)}/>
