@@ -2273,8 +2273,7 @@ class ExerciseForm extends React.Component {
   iconChange = (index, file) => {
     const {data} = this.state;
     const words = data.words;
-    console.log(words[index].icon);
-    const icon = typeof(words[index].icon) === "undefined" ? {id: 0, picture: '', description: ''} : words[index].icon;
+    const icon = words[index].icon == null ? {id: 0, picture: '', description: ''} : words[index].icon;
     icon.picture = file;
     words[index].icon = icon;
     data.words = words;
