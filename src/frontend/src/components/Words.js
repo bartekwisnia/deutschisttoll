@@ -379,7 +379,7 @@ class Word extends React.Component{
 
   fileChange = (e) => {
     const {data} = this.state;
-    const icon = data.icon !== null ? data.icon : {id: 0, picture: '', description: ''};
+    const icon = data.icon ? data.icon : {id: 0, picture: '', description: ''};
     icon.picture = e.target.files[0];
     data.icon = icon;
     this.setState({ data: data});
